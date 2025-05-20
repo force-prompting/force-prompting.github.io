@@ -2,6 +2,7 @@
 const INITIAL_IMAGE_PATH = "scsc-static/rose5-grid/_rosegrid5.png"; // 🌟 REPLACE with your image path (e.g., "scsc-static/images/your-interactive-image.png")
 const VIDEOS_BASE_PATH = "scsc-static/rose5-grid/videos/"; // 🌟 REPLACE with path to your videos folder (e.g., "scsc-static/videos/poke_demo_videos/")
 const MAX_DRAG_PROPORTION_OF_WIDTH = 0.5; // User arrow max length is 1/2 of frame width
+const DEBUG_SHOW_FILENAME = false; // 🌟 NEW FLAG: Set to true to show filename, false to hide
 
 // 🌟 PASTE YOUR FULL JSON DATA HERE
 // Ensure the keys (coordinates, angles, forces) are strings as in your example.
@@ -540,12 +541,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const staticImage = document.getElementById('staticImage');
     const canvas = document.getElementById('canvasOverlay');
     const videoPlayer = document.getElementById('videoPlayer');
+    const debugFilenameDisplay = document.getElementById('debugFilenameDisplay'); // 🌟 NEW: Get the debug display element
 
-    // Check if elements exist before proceeding
     if (!container || !staticImage || !canvas || !videoPlayer) {
         console.error("Interactive demo elements not found! Make sure the HTML structure is correct.");
+        if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+            debugFilenameDisplay.textContent = "Error: Core demo HTML elements missing.";
+            debugFilenameDisplay.style.display = 'block';
+        }
         return;
     }
+    // Ensure debugFilenameDisplay exists if flag is true, otherwise it's optional
+    if (DEBUG_SHOW_FILENAME && !debugFilenameDisplay) {
+        console.warn("Debug filename display element ('debugFilenameDisplay') not found in HTML, but DEBUG_SHOW_FILENAME is true.");
+    }
+
+
     const ctx = canvas.getContext('2d');
 
     let isDragging = false;
@@ -592,57 +603,54 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchToStaticImage() {
         videoPlayer.style.display = 'none';
         videoPlayer.pause();
-        if (videoPlayer.src !== '' && videoPlayer.src !== null) { // Check if src is set and not empty
-             try { videoPlayer.removeAttribute('src'); } catch(e) {/* ignore */} // More robust way to clear
-             try { videoPlayer.load(); } catch(e) {/* ignore */} // Force re-evaluation or stop loading
+        if (videoPlayer.src !== '' && videoPlayer.src !== null) {
+             try { videoPlayer.removeAttribute('src'); } catch(e) {/* ignore */}
+             try { videoPlayer.load(); } catch(e) {/* ignore */}
         }
         staticImage.style.display = 'block';
         canvas.style.display = 'block';
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 🌟 MODIFIED: Clear debug display
+        if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+            debugFilenameDisplay.textContent = '';
+            debugFilenameDisplay.style.display = 'none';
+        }
     }
     
-    // Function to set up image dimensions and canvas
     function setupImageAndCanvas() {
         imageWidth = staticImage.offsetWidth;
         imageHeight = staticImage.offsetHeight;
         if (imageWidth === 0 || imageHeight === 0) {
-            // Image might not be fully rendered yet or hidden
-            console.warn("Image dimensions are zero. Retrying setup shortly or ensure image is visible.");
-            // setTimeout(setupImageAndCanvas, 100); // Optional: retry if needed, but onload should handle
+            console.warn("Image dimensions are zero. Ensure image is visible and loaded.");
             return;
         }
         canvas.width = imageWidth;
         canvas.height = imageHeight;
         maxPixelDragLength = imageWidth * MAX_DRAG_PROPORTION_OF_WIDTH;
         console.log(`Interactive demo image: ${imageWidth}x${imageHeight}, Max drag: ${maxPixelDragLength}px`);
-        switchToStaticImage(); // Ensure initial state
+        switchToStaticImage();
     }
 
     staticImage.onload = () => {
         setupImageAndCanvas();
     };
     
-    // If image is already cached and loaded, onload might not fire
     if (staticImage.complete && staticImage.naturalWidth > 0) {
-        staticImage.onload(); // Manually call if already loaded
+        staticImage.onload();
     } else if (staticImage.naturalWidth === 0 && staticImage.src !== INITIAL_IMAGE_PATH) {
-        // If src is not yet set by config, set it now
         staticImage.src = INITIAL_IMAGE_PATH;
-    } else if (staticImage.naturalWidth === 0 && staticImage.src === INITIAL_IMAGE_PATH) {
-        // Src is set, but image not loaded, wait for onload
     }
-
 
     container.addEventListener('mousedown', (e) => {
         if (videoPlayer.style.display === 'block' && !videoPlayer.paused) {
             switchToStaticImage();
             return;
         }
-        // Ensure image dimensions are known before starting interaction
         if (!imageWidth || imageWidth === 0) {
             console.warn("Image not fully loaded or dimensions not set. Please wait.");
-            setupImageAndCanvas(); // Try to set up again
-            if (!imageWidth || imageWidth === 0) return; // Still not ready
+            setupImageAndCanvas(); 
+            if (!imageWidth || imageWidth === 0) return; 
         }
 
         isDragging = true;
@@ -677,14 +685,14 @@ document.addEventListener('DOMContentLoaded', () => {
         isDragging = false;
 
         const rect = container.getBoundingClientRect();
-        let endX = e.clientX - rect.left; // Use clientX/Y for consistency with mousedown
+        let endX = e.clientX - rect.left; 
         let endY = e.clientY - rect.top;
 
         let dx = endX - startX;
         let dy = endY - startY;
         let pixelLength = Math.sqrt(dx * dx + dy * dy);
 
-        if (pixelLength < 1) { // Minimum drag to trigger, avoid zero division
+        if (pixelLength < 1) { 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             return;
         }
@@ -715,9 +723,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (!closestCoordKey) {
-        console.error("Could not find a closest coordinate point in JSON.");
-        switchToStaticImage();
-        return;
+            console.error("Could not find a closest coordinate point in JSON.");
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+                debugFilenameDisplay.textContent = "Debug: Closest coordinate point not found.";
+                debugFilenameDisplay.style.display = 'block';
+            }
+            switchToStaticImage();
+            return;
         }
 
         let angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
@@ -726,6 +738,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const coordData = videoData[closestCoordKey];
         if (!coordData) {
             console.error("No data for coordinate:", closestCoordKey);
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+                debugFilenameDisplay.textContent = `Debug: No data for coordinate ${closestCoordKey}.`;
+                debugFilenameDisplay.style.display = 'block';
+            }
             switchToStaticImage();
             return;
         }
@@ -736,6 +752,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (closestNumericAngle === null) {
             console.error("Could not find a closest angle for:", closestCoordKey, angleDeg);
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+                debugFilenameDisplay.textContent = `Debug: No closest angle for ${closestCoordKey}, ${angleDeg.toFixed(1)}°.`;
+                debugFilenameDisplay.style.display = 'block';
+            }
             switchToStaticImage();
             return;
         }
@@ -746,6 +766,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (targetNumericForce === null) {
             console.error("Could not determine target force category for normalized force:", normalizedForce);
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+                debugFilenameDisplay.textContent = `Debug: Could not determine target force category.`;
+                debugFilenameDisplay.style.display = 'block';
+            }
             switchToStaticImage();
             return;
         }
@@ -754,6 +778,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const angleData = coordData[closestAngleKey];
         if (!angleData) {
             console.error("No angle data for:", closestCoordKey, closestAngleKey);
+             if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+                debugFilenameDisplay.textContent = `Debug: No data for ${closestCoordKey} -> ${closestAngleKey}.`;
+                debugFilenameDisplay.style.display = 'block';
+            }
             switchToStaticImage();
             return;
         }
@@ -761,20 +789,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoFileArray = angleData[targetForceKey];
 
         if (videoFileArray && videoFileArray.length > 0) {
-        const videoFilename = videoFileArray[0];
-        console.log(`Playing: Coord ${closestCoordKey}, Angle ${closestAngleKey} (${angleDeg.toFixed(1)}°), Force ${targetForceKey} (norm: ${normalizedForce.toFixed(2)}), File: ${videoFilename}`);
+            const videoFilename = videoFileArray[0];
+            console.log(`Playing: Coord ${closestCoordKey}, Angle ${closestAngleKey} (${angleDeg.toFixed(1)}°), Force ${targetForceKey} (norm: ${normalizedForce.toFixed(2)}), File: ${videoFilename}`);
 
-        staticImage.style.display = 'none';
-        canvas.style.display = 'none';
-        videoPlayer.style.display = 'block';
-        videoPlayer.src = VIDEOS_BASE_PATH + videoFilename;
-        videoPlayer.play().catch(err => {
-            console.error("Error playing video:", err);
-            switchToStaticImage();
-        });
+            // 🌟 MODIFIED: Display filename if debug flag is true
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+                debugFilenameDisplay.textContent = `Playing: ${videoFilename}`;
+                debugFilenameDisplay.style.display = 'block';
+            }
+
+            staticImage.style.display = 'none';
+            canvas.style.display = 'none';
+            videoPlayer.style.display = 'block';
+            videoPlayer.src = VIDEOS_BASE_PATH + videoFilename;
+            videoPlayer.play().catch(err => {
+                console.error("Error playing video:", err);
+                if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+                    debugFilenameDisplay.textContent = `Error playing: ${videoFilename}`;
+                    debugFilenameDisplay.style.display = 'block';
+                }
+                switchToStaticImage();
+            });
         } else {
-        console.warn(`Video not found for: Coord ${closestCoordKey}, Angle ${closestAngleKey}, Force ${targetForceKey}`);
-        switchToStaticImage();
+            console.warn(`Video not found for: Coord ${closestCoordKey}, Angle ${closestAngleKey}, Force ${targetForceKey}`);
+            // 🌟 MODIFIED: Display "not found" message if debug flag is true
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+                debugFilenameDisplay.textContent = `Video not found for: ${closestCoordKey} / ${closestAngleKey}° / ${targetForceKey} force`;
+                debugFilenameDisplay.style.display = 'block';
+            }
+            switchToStaticImage();
         }
     });
 
@@ -784,18 +827,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     videoPlayer.addEventListener('error', (e) => {
         console.error("Video player error:", e);
-        // alert("Error: Could not play the video. Check console for details."); // Optional user alert
+        // 🌟 MODIFIED: Update debug display on video error
+        if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+            debugFilenameDisplay.textContent = `Video player error for: ${videoPlayer.src.split('/').pop()}`;
+            debugFilenameDisplay.style.display = 'block';
+        }
         switchToStaticImage();
     });
 
-    // Ensure the image src is set from config if not already set by HTML
-    if (!staticImage.getAttribute('src') || staticImage.getAttribute('src') === "YOUR_IMAGE_PATH.PNG") {
+    if (!staticImage.getAttribute('src') || staticImage.getAttribute('src') === "YOUR_IMAGE_PATH.PNG" || staticImage.getAttribute('src') === "") {
         staticImage.src = INITIAL_IMAGE_PATH;
     }
-     // Initial call to set up things if image is somehow already loaded but onload didn't run for setup
     if (staticImage.complete && staticImage.naturalWidth > 0 && (!imageWidth || imageWidth === 0)) {
         setupImageAndCanvas();
     } else {
-        switchToStaticImage(); // Ensure clean initial state
+        switchToStaticImage();
     }
 });
