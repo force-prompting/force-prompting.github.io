@@ -690,6 +690,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let dy = currentY - startY;
         let dragDistance = Math.sqrt(dx * dx + dy * dy);
 
+        const normStartX = startX / imageWidth;
+        const normStartY = startY / imageHeight;
+
+        const availableJsonCoordKeys = Object.keys(videoData);
+        let closestCoordKey = null;
+        let minCoordDist = Infinity;
+
         if (dragDistance > maxPixelDragLength) {
             const ratio = maxPixelDragLength / dragDistance;
             dx *= ratio;
@@ -731,27 +738,83 @@ document.addEventListener('DOMContentLoaded', () => {
         let closestCoordKey = null;
         let minCoordDist = Infinity;
 
+        // Loop to find the closest coordinate key based on normalized distance
         availableJsonCoordKeys.forEach(keyStr => {
-            const jsonCoord = parseCoordString(keyStr);
+            const jsonCoord = parseCoordString(keyStr); // parseCoordString returns {x, y} or null
             if (jsonCoord) {
-                const jsonY_equivalent_from_top = 1.0 - jsonCoord.y;
+                // Assuming jsonCoord.y is % from bottom, convert to % from top for comparison
+                const jsonY_equivalent_from_top = 1.0 - jsonCoord.y; 
+
+                // normStartX, normStartY are normalized click coordinates (% from top-left)
                 const dist = Math.sqrt(Math.pow(normStartX - jsonCoord.x, 2) + Math.pow(normStartY - jsonY_equivalent_from_top, 2));
                 if (dist < minCoordDist) {
-                    minCoordDist = dist;
+                    minCoordDist = dist; // minCoordDist is the smallest *normalized* distance
                     closestCoordKey = keyStr;
                 }
             }
         });
 
+        // Check if any closest coordinate was found
         if (!closestCoordKey) {
             console.error("Could not find a closest coordinate point in JSON.");
             if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                 debugFilenameDisplay.textContent = "Debug: Closest coordinate point not found.";
                 debugFilenameDisplay.style.display = 'block';
             }
+            switchToStaticImage(); // switchToStaticImage should clear the canvas/arrow
+            return;
+        }
+
+        // --- NEW: Check actual pixel distance to the found closestCoordKey ---
+        const MAX_ALLOWED_PIXEL_DISTANCE_TO_INTERACTIVE_POINT = 100; 
+        const closestJsonCoordData = parseCoordString(closestCoordKey);
+
+        if (!closestJsonCoordData) { 
+            console.error("Error parsing the identified closestCoordKey:", closestCoordKey);
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+                debugFilenameDisplay.textContent = "Debug: Error parsing closestCoordKey string.";
+                debugFilenameDisplay.style.display = 'block';
+            }
             switchToStaticImage();
             return;
         }
+
+        const cjx_norm = closestJsonCoordData.x; // Normalized x from JSON data
+        const cjy_from_json_bottom = closestJsonCoordData.y; // Normalized y from JSON data (% from bottom)
+        const cjy_norm_from_top = 1.0 - cjy_from_json_bottom; // Convert to % from top
+
+        // Calculate deltas in normalized coordinates
+        const deltaX_norm = normStartX - cjx_norm;
+        const deltaY_norm = normStartY - cjy_norm_from_top;
+
+        // Ensure imageWidth and imageHeight are valid before using them
+        if (!imageWidth || imageWidth === 0 || !imageHeight || imageHeight === 0) {
+            console.error("Image dimensions are not available for pixel distance calculation in mouseup.");
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+                debugFilenameDisplay.textContent = "Debug: Image dimensions missing for distance check.";
+                debugFilenameDisplay.style.display = 'block';
+            }
+            switchToStaticImage(); // Fallback
+            return;
+        }
+
+        // Convert normalized deltas to pixel deltas and calculate actual pixel distance
+        const actualPixelDistance = Math.sqrt(Math.pow(deltaX_norm * imageWidth, 2) + Math.pow(deltaY_norm * imageHeight, 2));
+
+        if (actualPixelDistance > MAX_ALLOWED_PIXEL_DISTANCE_TO_INTERACTIVE_POINT) {
+            console.log(`Clicked too far from any interactive point. Actual distance: ${actualPixelDistance.toFixed(1)}px (Max allowed: ${MAX_ALLOWED_PIXEL_DISTANCE_TO_INTERACTIVE_POINT}px). No video will be served.`);
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+                debugFilenameDisplay.textContent = `Debug: Click too far (${actualPixelDistance.toFixed(1)}px > ${MAX_ALLOWED_PIXEL_DISTANCE_TO_INTERACTIVE_POINT}px). No video.`;
+                debugFilenameDisplay.style.display = 'block';
+            }
+            switchToStaticImage(); // This will clear the canvas (and the drawn arrow) and show the static image.
+            return; // Stop further processing, no video is played.
+        }
+        // --- END OF NEW PIXEL DISTANCE CHECK ---
+
+        // If the code reaches here, it means a closestCoordKey was found AND 
+        // it's within the MAX_ALLOWED_PIXEL_DISTANCE_TO_INTERACTIVE_POINT.
+        // Now, proceed with the original logic to determine angle, force, and play the video.
 
         let angleDeg = Math.atan2(-dy, dx) * (180 / Math.PI);
         if (angleDeg < 0) angleDeg += 360;
