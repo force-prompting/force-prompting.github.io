@@ -531,17 +531,22 @@ const videoData = {
         }
     }
 };
+
+
+
+
+
+
+
 const PREDEFINED_FORCES = [0.050, 0.500, 0.950];
 // --- End Configuration ---
 
-// Ensure DOM elements are available before trying to get them.
-// We'll add event listeners after the DOM is loaded.
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('demoContainer');
     const staticImage = document.getElementById('staticImage');
     const canvas = document.getElementById('canvasOverlay');
     const videoPlayer = document.getElementById('videoPlayer');
-    const debugFilenameDisplay = document.getElementById('debugFilenameDisplay'); // 🌟 NEW: Get the debug display element
+    const debugFilenameDisplay = document.getElementById('debugFilenameDisplay');
 
     if (!container || !staticImage || !canvas || !videoPlayer) {
         console.error("Interactive demo elements not found! Make sure the HTML structure is correct.");
@@ -551,11 +556,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return;
     }
-    // Ensure debugFilenameDisplay exists if flag is true, otherwise it's optional
     if (DEBUG_SHOW_FILENAME && !debugFilenameDisplay) {
         console.warn("Debug filename display element ('debugFilenameDisplay') not found in HTML, but DEBUG_SHOW_FILENAME is true.");
     }
 
+    // Set poster for video player to initial image for better visual fallback
+    videoPlayer.poster = INITIAL_IMAGE_PATH;
 
     const ctx = canvas.getContext('2d');
 
@@ -600,21 +606,26 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
     }
 
-    function switchToStaticImage() {
+    function switchToStaticImage(clearDebug = true) {
         videoPlayer.style.display = 'none';
-        videoPlayer.pause();
-        if (videoPlayer.src !== '' && videoPlayer.src !== null) {
-             try { videoPlayer.removeAttribute('src'); } catch(e) {/* ignore */}
-             try { videoPlayer.load(); } catch(e) {/* ignore */}
+        if (!videoPlayer.paused) {
+            videoPlayer.pause();
         }
+        // No longer removing src or calling load() here to prevent conflicts
+
         staticImage.style.display = 'block';
         canvas.style.display = 'block';
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // 🌟 MODIFIED: Clear debug display
-        if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-            debugFilenameDisplay.textContent = '';
-            debugFilenameDisplay.style.display = 'none';
+        if (DEBUG_SHOW_FILENAME && debugFilenameDisplay && clearDebug) {
+            // Clear filename only if it's not an error message or "not found"
+             if (debugFilenameDisplay.textContent &&
+                !debugFilenameDisplay.textContent.toLowerCase().includes("error") &&
+                !debugFilenameDisplay.textContent.toLowerCase().includes("not found") &&
+                !debugFilenameDisplay.textContent.toLowerCase().includes("loading")) {
+                debugFilenameDisplay.textContent = '';
+                debugFilenameDisplay.style.display = 'none';
+            }
         }
     }
     
@@ -627,6 +638,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         canvas.width = imageWidth;
         canvas.height = imageHeight;
+        videoPlayer.width = imageWidth; // Match video player dimensions
+        videoPlayer.height = imageHeight;
         maxPixelDragLength = imageWidth * MAX_DRAG_PROPORTION_OF_WIDTH;
         console.log(`Interactive demo image: ${imageWidth}x${imageHeight}, Max drag: ${maxPixelDragLength}px`);
         switchToStaticImage();
@@ -636,28 +649,35 @@ document.addEventListener('DOMContentLoaded', () => {
         setupImageAndCanvas();
     };
     
-    if (staticImage.complete && staticImage.naturalWidth > 0) {
-        staticImage.onload();
-    } else if (staticImage.naturalWidth === 0 && staticImage.src !== INITIAL_IMAGE_PATH) {
-        staticImage.src = INITIAL_IMAGE_PATH;
+    // Ensure image src is set if not already, then setup
+    if (staticImage.getAttribute('src') !== INITIAL_IMAGE_PATH || !staticImage.complete) {
+        staticImage.src = INITIAL_IMAGE_PATH; // This will trigger onload if src changes or image wasn't loaded
+    } else if (staticImage.complete && staticImage.naturalWidth > 0) { // Image already loaded
+        setupImageAndCanvas();
     }
 
+
     container.addEventListener('mousedown', (e) => {
+        // If video is playing, click switches to static image AND allows immediate drawing
         if (videoPlayer.style.display === 'block' && !videoPlayer.paused) {
             switchToStaticImage();
-            return;
+            // DO NOT return; proceed to set up dragging for the current click.
         }
+
         if (!imageWidth || imageWidth === 0) {
-            console.warn("Image not fully loaded or dimensions not set. Please wait.");
+            console.warn("Image not fully loaded or dimensions not set. Attempting setup.");
             setupImageAndCanvas(); 
-            if (!imageWidth || imageWidth === 0) return; 
+            if (!imageWidth || imageWidth === 0) {
+                 console.error("Failed to setup image dimensions on mousedown. Aborting drag.");
+                 return; // Abort if setup fails
+            }
         }
 
         isDragging = true;
         const rect = container.getBoundingClientRect();
         startX = e.clientX - rect.left;
         startY = e.clientY - rect.top;
-        e.preventDefault();
+        e.preventDefault(); // Prevent default drag (e.g., image ghost) and text selection
     });
 
     document.addEventListener('mousemove', (e) => {
@@ -671,11 +691,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let dragDistance = Math.sqrt(dx * dx + dy * dy);
 
         if (dragDistance > maxPixelDragLength) {
-        const ratio = maxPixelDragLength / dragDistance;
-        dx *= ratio;
-        dy *= ratio;
-        currentX = startX + dx;
-        currentY = startY + dy;
+            const ratio = maxPixelDragLength / dragDistance;
+            dx *= ratio;
+            dy *= ratio;
+            currentX = startX + dx;
+            currentY = startY + dy;
         }
         drawArrow(startX, startY, currentX, currentY);
     });
@@ -712,23 +732,20 @@ document.addEventListener('DOMContentLoaded', () => {
         let minCoordDist = Infinity;
 
         availableJsonCoordKeys.forEach(keyStr => {
-        const jsonCoord = parseCoordString(keyStr);
-        if (jsonCoord) {
-
-            // Convert the JSON ypos (assumed to be % from bottom) to % from top for comparison
-            const jsonY_equivalent_from_top = 1.0 - jsonCoord.y; // <<<<<<< NEW: Conversion step
-
-            const dist = Math.sqrt(Math.pow(normStartX - jsonCoord.x, 2) + Math.pow(normStartY - jsonY_equivalent_from_top, 2));
-            if (dist < minCoordDist) {
-            minCoordDist = dist;
-            closestCoordKey = keyStr;
+            const jsonCoord = parseCoordString(keyStr);
+            if (jsonCoord) {
+                const jsonY_equivalent_from_top = 1.0 - jsonCoord.y;
+                const dist = Math.sqrt(Math.pow(normStartX - jsonCoord.x, 2) + Math.pow(normStartY - jsonY_equivalent_from_top, 2));
+                if (dist < minCoordDist) {
+                    minCoordDist = dist;
+                    closestCoordKey = keyStr;
+                }
             }
-        }
         });
 
         if (!closestCoordKey) {
             console.error("Could not find a closest coordinate point in JSON.");
-            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                 debugFilenameDisplay.textContent = "Debug: Closest coordinate point not found.";
                 debugFilenameDisplay.style.display = 'block';
             }
@@ -736,13 +753,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let angleDeg = Math.atan2(-dy, dx) * (180 / Math.PI)
+        let angleDeg = Math.atan2(-dy, dx) * (180 / Math.PI);
         if (angleDeg < 0) angleDeg += 360;
 
         const coordData = videoData[closestCoordKey];
         if (!coordData) {
             console.error("No data for coordinate:", closestCoordKey);
-            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                 debugFilenameDisplay.textContent = `Debug: No data for coordinate ${closestCoordKey}.`;
                 debugFilenameDisplay.style.display = 'block';
             }
@@ -756,7 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (closestNumericAngle === null) {
             console.error("Could not find a closest angle for:", closestCoordKey, angleDeg);
-            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                 debugFilenameDisplay.textContent = `Debug: No closest angle for ${closestCoordKey}, ${angleDeg.toFixed(1)}°.`;
                 debugFilenameDisplay.style.display = 'block';
             }
@@ -770,7 +787,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (targetNumericForce === null) {
             console.error("Could not determine target force category for normalized force:", normalizedForce);
-            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+            if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                 debugFilenameDisplay.textContent = `Debug: Could not determine target force category.`;
                 debugFilenameDisplay.style.display = 'block';
             }
@@ -782,7 +799,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const angleData = coordData[closestAngleKey];
         if (!angleData) {
             console.error("No angle data for:", closestCoordKey, closestAngleKey);
-             if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
+             if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                 debugFilenameDisplay.textContent = `Debug: No data for ${closestCoordKey} -> ${closestAngleKey}.`;
                 debugFilenameDisplay.style.display = 'block';
             }
@@ -794,34 +811,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (videoFileArray && videoFileArray.length > 0) {
             const videoFilename = videoFileArray[0];
-            console.log(`Playing: Coord ${closestCoordKey}, Angle ${closestAngleKey} (${angleDeg.toFixed(1)}°), Force ${targetForceKey} (norm: ${normalizedForce.toFixed(2)}), File: ${videoFilename}`);
+            console.log(`Preparing: Coord ${closestCoordKey}, Angle ${closestAngleKey} (${angleDeg.toFixed(1)}°), Force ${targetForceKey} (norm: ${normalizedForce.toFixed(2)}), File: ${videoFilename}`);
 
-            // 🌟 MODIFIED: Display filename if debug flag is true
+            // Ensure static image is visible, video is hidden (this is our "loading" state)
+            staticImage.style.display = 'block';
+            canvas.style.display = 'block'; // Keep canvas with arrow visible during load prep
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear arrow for clean slate if needed, or keep drawn one
+            drawArrow(startX, startY, startX + dx, startY + dy); // Redraw the final arrow on canvas before video load
+
+            videoPlayer.style.display = 'none';
+            if(!videoPlayer.paused) videoPlayer.pause();
+
+
             if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                debugFilenameDisplay.textContent = `Playing: ${videoFilename}`;
+                debugFilenameDisplay.textContent = `Loading: ${videoFilename}`;
                 debugFilenameDisplay.style.display = 'block';
             }
-
-            staticImage.style.display = 'none';
-            canvas.style.display = 'none';
-            videoPlayer.style.display = 'block';
+            
             videoPlayer.src = VIDEOS_BASE_PATH + videoFilename;
-            videoPlayer.play().catch(err => {
-                console.error("Error playing video:", err);
-                if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) { // 🌟 MODIFIED
-                    debugFilenameDisplay.textContent = `Error playing: ${videoFilename}`;
-                    debugFilenameDisplay.style.display = 'block';
+
+            const onVideoReadyToPlay = () => {
+                videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay);
+                videoPlayer.removeEventListener('error', onVideoLoadError);
+
+                if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+                    debugFilenameDisplay.textContent = `Playing: ${videoFilename}`;
+                }
+                
+                staticImage.style.display = 'none';
+                canvas.style.display = 'none'; // Hide canvas when video plays
+                videoPlayer.style.display = 'block';
+                videoPlayer.play().catch(err => {
+                    console.error("Error playing video:", err);
+                    if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+                        debugFilenameDisplay.textContent = `Error playing: ${videoFilename}`;
+                    }
+                    switchToStaticImage();
+                });
+            };
+
+            const onVideoLoadError = (e) => {
+                videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay);
+                videoPlayer.removeEventListener('error', onVideoLoadError);
+                console.error(`Error loading video data for ${videoFilename}:`, e);
+                if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+                    debugFilenameDisplay.textContent = `Error loading: ${videoFilename}`;
                 }
                 switchToStaticImage();
-            });
+            };
+            
+            videoPlayer.addEventListener('loadeddata', onVideoReadyToPlay);
+            videoPlayer.addEventListener('error', onVideoLoadError);
+            videoPlayer.load(); // Explicitly call load
+
         } else {
             console.warn(`Video not found for: Coord ${closestCoordKey}, Angle ${closestAngleKey}, Force ${targetForceKey}`);
-            // 🌟 MODIFIED: Display "not found" message if debug flag is true
             if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                 debugFilenameDisplay.textContent = `Video not found for: ${closestCoordKey} / ${closestAngleKey}° / ${targetForceKey} force`;
                 debugFilenameDisplay.style.display = 'block';
             }
-            switchToStaticImage();
+            switchToStaticImage(); // Show static image, clear arrow from canvas
         }
     });
 
@@ -830,21 +879,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     videoPlayer.addEventListener('error', (e) => {
+        // This is a general error handler for the video element, e.g., during playback
+        // Specific load errors are handled by onVideoLoadError
         console.error("Video player error:", e);
-        // 🌟 MODIFIED: Update debug display on video error
+        const currentVideoSrc = videoPlayer.currentSrc || "unknown video";
         if (DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-            debugFilenameDisplay.textContent = `Video player error for: ${videoPlayer.src.split('/').pop()}`;
+            debugFilenameDisplay.textContent = `Video player error for: ${currentVideoSrc.split('/').pop()}`;
             debugFilenameDisplay.style.display = 'block';
         }
         switchToStaticImage();
     });
 
-    if (!staticImage.getAttribute('src') || staticImage.getAttribute('src') === "YOUR_IMAGE_PATH.PNG" || staticImage.getAttribute('src') === "") {
-        staticImage.src = INITIAL_IMAGE_PATH;
-    }
-    if (staticImage.complete && staticImage.naturalWidth > 0 && (!imageWidth || imageWidth === 0)) {
-        setupImageAndCanvas();
-    } else {
+    // Initial state: show the static image
+    // The staticImage.onload handler or its alternative path should call setupImageAndCanvas, which calls switchToStaticImage.
+    // If the image path is invalid or image fails to load, console errors will indicate this.
+    // A final switchToStaticImage() call can be a fallback if setupImageAndCanvas wasn't triggered.
+    if (!imageWidth && staticImage.complete && staticImage.naturalWidth === 0) {
+        // Image might have failed to load if src was initially bad and onload didn't fire correctly
+        console.warn("Initial image may not have loaded correctly. Forcing static view.");
         switchToStaticImage();
     }
 });
