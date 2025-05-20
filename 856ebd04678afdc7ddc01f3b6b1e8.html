@@ -37,12 +37,61 @@
   href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="scsc-static/css/index.css">
 
+  <style>
+    #pokeDemoSection { /* Styles the section containing the demo */
+        padding-top: 30px;    /* Add some spacing */
+        padding-bottom: 30px;
+        /* background-color: #f7f7f7; /* Optional: a slightly different background for this section */
+    }
+    #pokeDemoTitle { /* Styles the title of your demo section */
+        margin-bottom: 1rem; /* Space below the title */
+    }
+    #demoContainer { /* The main container for your interactive image/video */
+      position: relative;   /* Important for positioning the canvas overlay */
+      cursor: crosshair;    /* Changes mouse cursor to indicate interactivity */
+      max-width: 560px;     /* Adjust to your preferred max demo size */
+      width: 90%;           /* Responsive width */
+      margin: 20px auto;    /* Centers the demo container and adds some margin */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Adds a subtle shadow */
+      border-radius: 8px;   /* Optional: rounded corners */
+      overflow: hidden;     /* Ensures video doesn't spill if it's larger due to aspect ratio */
+    }
+    #staticImage { /* Your initial placeholder image */
+      display: block;       /* Removes extra space below the image */
+      width: 100%;          /* Makes image responsive within the container */
+      height: auto;         /* Maintains aspect ratio */
+      /* border: 1px solid #ddd; /* Optional: a light border */
+    }
+    #canvasOverlay { /* The canvas for drawing the arrow */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* Allows mouse clicks to "pass through" to underlying elements if needed, but mousedown is on container */
+    }
+    #videoPlayer { /* The video element */
+      display: none;        /* Initially hidden */
+      width: 100%;          /* Makes video responsive */
+      height: auto;         /* Maintains aspect ratio */
+      /* border: 1px solid #ddd; /* Optional: a light border */
+    }
+    #demoContainer .demo-instructions { /* For the instruction text */
+      text-align: center;
+      font-size: 0.95em;
+      color: #555;
+      margin-bottom: 1.5rem; /* Space above the demo itself */
+    }
+  </style>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="scsc-static/js/fontawesome.all.min.js"></script>
   <script src="scsc-static/js/bulma-carousel.min.js"></script>
   <script src="scsc-static/js/bulma-slider.min.js"></script>
   <script src="scsc-static/js/index.js"></script>
+
+  <script src="scsc-static/js/interactive_demo_poke.js" defer></script>
 </head>
 <body>
 
@@ -234,6 +283,21 @@
 </section>
 
 
+
+
+<section class="section hero" id="pokeDemoSection"> <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-three-fifths"> <h2 class="title is-3" id="pokeDemoTitle">Try It Yourself! Interactive Poke Demo</h2>
+        <p class="subtitle demo-instructions">
+          Click on an object in the image below and drag to "poke" it with a certain force and direction. Release the mouse to see the generated video!
+        </p>
+      </div>
+    </div>
+    <div id="demoContainer">
+      <img id="staticImage" src="" alt="Interactive Object - Click and Drag to Poke"> <canvas id="canvasOverlay"></canvas>
+      <video id="videoPlayer" playsinline></video> </div>
+  </div>
+</section>
 
 
 
