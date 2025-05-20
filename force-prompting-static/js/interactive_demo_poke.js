@@ -1,6 +1,6 @@
 // --- Configuration ---
-const INITIAL_IMAGE_PATH = "scsc-static/rose5-grid/rosegrid5.png"; // 🌟 REPLACE with your image path (e.g., "scsc-static/images/your-interactive-image.png")
-const VIDEOS_BASE_PATH = "scsc-static/rose5-grid/videos/"; // 🌟 REPLACE with path to your videos folder (e.g., "scsc-static/videos/poke_demo_videos/")
+const INITIAL_IMAGE_PATH = "force-prompting-static/rose5-grid/rosegrid5.png"; // 🌟 REPLACE with your image path (e.g., "force-prompting-static/images/your-interactive-image.png")
+const VIDEOS_BASE_PATH = "force-prompting-static/rose5-grid/videos/"; // 🌟 REPLACE with path to your videos folder (e.g., "force-prompting-static/videos/poke_demo_videos/")
 const MAX_DRAG_PROPORTION_OF_WIDTH = 0.25; // User arrow max length is 1/2 of frame width
 const DEBUG_SHOW_FILENAME = true; // 🌟 NEW FLAG: Set to true to show filename, false to hide
 
