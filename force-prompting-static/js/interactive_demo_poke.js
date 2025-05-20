@@ -97,6 +97,85 @@ const videoData = {
             ]
         }
     },
+    "(0.43, 0.57)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_180.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_180.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "225.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_225.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_225.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_225.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "270.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_270.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_270.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.43__ypos_0.57__angle_270.00__force_0.950__video_0.mp4"
+            ]
+        }
+    },
     "(0.46, 0.62)": {
         "0.00": {
             "0.050": [
@@ -187,6 +266,96 @@ const videoData = {
             ]
         }
     },
+    "(0.48, 0.66)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_180.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_180.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "225.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_225.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_225.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_225.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "270.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_270.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_270.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_270.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "315.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_315.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.48__ypos_0.66__angle_315.00__force_0.950__video_0.mp4"
+            ]
+        }
+    },
     "(0.52, 0.40)": {
         "0.00": {
             "0.050": [
@@ -271,6 +440,9 @@ const videoData = {
             ],
             "0.500": [
                 "step-5000__file_id__rosegrid5__xpos_0.52__ypos_0.40__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.52__ypos_0.40__angle_315.00__force_0.950__video_0.mp4"
             ]
         }
     },
@@ -628,6 +800,93 @@ const videoData = {
             ],
             "0.500": [
                 "step-5000__file_id__rosegrid5__xpos_0.61__ypos_0.65__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.61__ypos_0.65__angle_315.00__force_0.950__video_0.mp4"
+            ]
+        }
+    },
+    "(0.62, 0.62)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_180.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_180.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "225.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_225.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_225.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_225.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "270.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_270.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_270.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_270.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "315.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.62__ypos_0.62__angle_315.00__force_0.050__video_0.mp4"
             ]
         }
     },
@@ -892,6 +1151,102 @@ const videoData = {
         "315.00": {
             "0.050": [
                 "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.68__angle_315.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.68__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.68__angle_315.00__force_0.950__video_0.mp4"
+            ]
+        }
+    },
+    "(0.67, 0.70)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_180.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_180.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "225.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_225.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_225.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_225.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "270.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_270.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_270.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_270.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "315.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_315.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.67__ypos_0.70__angle_315.00__force_0.950__video_0.mp4"
             ]
         }
     },
@@ -1069,6 +1424,9 @@ const videoData = {
             ],
             "0.500": [
                 "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.37__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.37__angle_315.00__force_0.950__video_0.mp4"
             ]
         }
     },
@@ -1243,6 +1601,142 @@ const videoData = {
         "315.00": {
             "0.050": [
                 "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.67__angle_315.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.67__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.67__angle_315.00__force_0.950__video_0.mp4"
+            ]
+        }
+    },
+    "(0.69, 0.71)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.69__ypos_0.71__angle_180.00__force_0.050__video_0.mp4"
+            ]
+        }
+    },
+    "(0.70, 0.38)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_180.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_180.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "225.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_225.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_225.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_225.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "270.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_270.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_270.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.70__ypos_0.38__angle_270.00__force_0.950__video_0.mp4"
             ]
         }
     },
@@ -1336,6 +1830,85 @@ const videoData = {
             ]
         }
     },
+    "(0.72, 0.27)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_180.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_180.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "225.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_225.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_225.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_225.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "270.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_270.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_270.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.72__ypos_0.27__angle_270.00__force_0.950__video_0.mp4"
+            ]
+        }
+    },
     "(0.74, 0.28)": {
         "0.00": {
             "0.050": [
@@ -1417,6 +1990,12 @@ const videoData = {
         "315.00": {
             "0.050": [
                 "step-5000__file_id__rosegrid5__xpos_0.74__ypos_0.28__angle_315.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.74__ypos_0.28__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.74__ypos_0.28__angle_315.00__force_0.950__video_0.mp4"
             ]
         }
     },
@@ -1600,6 +2179,147 @@ const videoData = {
             ]
         }
     },
+    "(0.78, 0.71)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_180.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_180.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "225.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_225.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_225.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_225.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "270.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_270.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_270.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_270.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "315.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_315.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.78__ypos_0.71__angle_315.00__force_0.950__video_0.mp4"
+            ]
+        }
+    },
+    "(0.79, 0.69)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.79__ypos_0.69__angle_180.00__force_0.050__video_0.mp4"
+            ]
+        }
+    },
     "(0.79, 0.79)": {
         "0.00": {
             "0.050": [
@@ -1766,6 +2486,17 @@ const videoData = {
             ],
             "0.950": [
                 "step-5000__file_id__rosegrid5__xpos_0.80__ypos_0.70__angle_270.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "315.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.80__ypos_0.70__angle_315.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.80__ypos_0.70__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.80__ypos_0.70__angle_315.00__force_0.950__video_0.mp4"
             ]
         }
     },
@@ -1949,6 +2680,57 @@ const videoData = {
             ]
         }
     },
+    "(0.81, 0.75)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.75__angle_180.00__force_0.050__video_0.mp4"
+            ]
+        }
+    },
     "(0.81, 0.81)": {
         "0.00": {
             "0.050": [
@@ -2030,6 +2812,102 @@ const videoData = {
         "315.00": {
             "0.050": [
                 "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.81__angle_315.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.81__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.81__ypos_0.81__angle_315.00__force_0.950__video_0.mp4"
+            ]
+        }
+    },
+    "(0.82, 0.80)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_180.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_180.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "225.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_225.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_225.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_225.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "270.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_270.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_270.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_270.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "315.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_315.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_315.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.82__ypos_0.80__angle_315.00__force_0.950__video_0.mp4"
             ]
         }
     },
@@ -2122,13 +3000,59 @@ const videoData = {
                 "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.70__angle_315.00__force_0.950__video_0.mp4"
             ]
         }
+    },
+    "(0.83, 0.77)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "45.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_45.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_45.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_45.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "90.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_90.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_90.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_90.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "135.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_135.00__force_0.050__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_135.00__force_0.500__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_135.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__rosegrid5__xpos_0.83__ypos_0.77__angle_180.00__force_0.050__video_0.mp4"
+            ]
+        }
     }
 };
-
-
-
-
-
 
 
 const PREDEFINED_FORCES = [0.050, 0.500, 0.950];
