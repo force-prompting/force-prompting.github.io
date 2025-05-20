@@ -2,7 +2,7 @@
 const INITIAL_IMAGE_PATH = "scsc-static/rose5-grid/_rosegrid5.png"; // 🌟 REPLACE with your image path (e.g., "scsc-static/images/your-interactive-image.png")
 const VIDEOS_BASE_PATH = "scsc-static/rose5-grid/videos/"; // 🌟 REPLACE with path to your videos folder (e.g., "scsc-static/videos/poke_demo_videos/")
 const MAX_DRAG_PROPORTION_OF_WIDTH = 0.5; // User arrow max length is 1/2 of frame width
-const DEBUG_SHOW_FILENAME = false; // 🌟 NEW FLAG: Set to true to show filename, false to hide
+const DEBUG_SHOW_FILENAME = true; // 🌟 NEW FLAG: Set to true to show filename, false to hide
 
 // 🌟 PASTE YOUR FULL JSON DATA HERE
 // Ensure the keys (coordinates, angles, forces) are strings as in your example.
@@ -714,7 +714,11 @@ document.addEventListener('DOMContentLoaded', () => {
         availableJsonCoordKeys.forEach(keyStr => {
         const jsonCoord = parseCoordString(keyStr);
         if (jsonCoord) {
-            const dist = Math.sqrt(Math.pow(normStartX - jsonCoord.x, 2) + Math.pow(normStartY - jsonCoord.y, 2));
+
+            // Convert the JSON ypos (assumed to be % from bottom) to % from top for comparison
+            const jsonY_equivalent_from_top = 1.0 - jsonCoord.y; // <<<<<<< NEW: Conversion step
+
+            const dist = Math.sqrt(Math.pow(normStartX - jsonCoord.x, 2) + Math.pow(normStartY - jsonY_equivalent_from_top, 2));
             if (dist < minCoordDist) {
             minCoordDist = dist;
             closestCoordKey = keyStr;
@@ -732,7 +736,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        let angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
+        let angleDeg = Math.atan2(-dy, dx) * (180 / Math.PI)
         if (angleDeg < 0) angleDeg += 360;
 
         const coordData = videoData[closestCoordKey];
