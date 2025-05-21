@@ -23,13 +23,9 @@ function initLineDragInstance(containerElement) {
     let LINE_DEMO_PREDEFINED_FORCES = []; // Will be populated from JSON for this instance
 
     // --- Get unique elements for this instance ---
-    // Child elements are selected by CLASS NAME relative to the current containerElement
     const staticImage = containerElement.querySelector('.line-static-image');
     const canvas = containerElement.querySelector('.line-canvas-overlay');
     const videoPlayer = containerElement.querySelector('.line-video-player');
-
-    // The debug display is a sibling to the containerElement, within the same parent.
-    // This selection assumes the HTML structure where debug display is next to or near the container, under the same direct parent.
     const debugFilenameDisplay = containerElement.parentElement.querySelector('.line-debug-filename-display');
 
     if (!staticImage || !canvas || !videoPlayer) {
@@ -56,7 +52,6 @@ function initLineDragInstance(containerElement) {
     }
 
     const effectiveRootDir = rootDir.endsWith('/') ? rootDir : rootDir + '/';
-
     LINE_DEMO_INITIAL_IMAGE_PATH = effectiveRootDir + "initial_frame.png";
     LINE_DEMO_VIDEOS_BASE_PATH = effectiveRootDir + "videos/";
     LINE_DEMO_VIDEO_DATA_PATH = effectiveRootDir + "video_specs.json";
@@ -68,19 +63,17 @@ function initLineDragInstance(containerElement) {
     videoPlayer.poster = LINE_DEMO_INITIAL_IMAGE_PATH;
     const ctx = canvas.getContext('2d');
 
-    // --- Instance-specific State Variables ---
     let videoData = {};
     let singleCoordKey = null;
     let interactionPointNorm = null;
     let interactionPointPx = null;
     let jsonAllowedAngles = [];
     let lastProjectedDx = 0, lastProjectedDy = 0;
-
     let isDragging = false;
     let dragOriginX, dragOriginY;
     let imageWidth = 0, imageHeight = 0, maxPixelDragLength = 0;
 
-    // --- Utility Functions (scoped to this instance or can be global if pure) ---
+    // --- Utility Functions ---
     function findClosestNumericValue(target, values) {
         if (!values || values.length === 0) return null;
         return values.reduce((prev, curr) =>
@@ -106,105 +99,76 @@ function initLineDragInstance(containerElement) {
 
     function drawGuidanceSliderAndBead() {
         if (!interactionPointPx || jsonAllowedAngles.length === 0 || canvas.width === 0 || canvas.height === 0) return;
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear first
-
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         const centerX = interactionPointPx.x;
         const centerY = interactionPointPx.y;
-
         const angleRad = jsonAllowedAngles[0] * Math.PI / 180;
         const lineDx = Math.cos(angleRad) * maxPixelDragLength;
         const lineDy = -Math.sin(angleRad) * maxPixelDragLength;
-
-        // Draw dashed guidance lines
         ctx.beginPath();
         ctx.moveTo(centerX - lineDx, centerY - lineDy);
         ctx.lineTo(centerX + lineDx, centerY + lineDy);
-        ctx.strokeStyle = 'rgba(255, 255, 255, 1.0)'; // White dashed lines
+        ctx.strokeStyle = 'rgba(255, 255, 255, 1.0)';
         ctx.lineWidth = 3;
         ctx.setLineDash([5, 5]);
         ctx.stroke();
-        ctx.setLineDash([]); // Reset line dash
-
-        // Draw central bead (circle)
+        ctx.setLineDash([]);
         ctx.beginPath();
         ctx.arc(centerX, centerY, BEAD_RADIUS, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'; // White circle
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
         ctx.fill();
-        ctx.strokeStyle = 'rgba(200, 200, 200, 1)'; // Light grey border for the white circle for better visibility
+        ctx.strokeStyle = 'rgba(200, 200, 200, 1)';
         ctx.lineWidth = 1;
         ctx.stroke();
     }
 
     function drawArrow(x1, y1, x2, y2) {
         if (canvas.width === 0 || canvas.height === 0) return;
-        
-        const headLength = 25; // Length of the arrowhead's sides from tip to base corner
-        const arrowLineWidth = 8; // Thickness of the arrow's shaft
-        
-        const angle = Math.atan2(y2 - y1, x2 - x1); // Angle of the arrow's direction
-        const wingAngle = Math.PI / 6; // Angle of the arrowhead wings from the shaft (e.g., 30 degrees for a common arrowhead shape)
-
-        // Calculate the depth of the arrowhead along its central axis.
-        // This is the distance from the tip (x2,y2) to the point where the shaft should meet the base of the head.
+        const headLength = 25;
+        const arrowLineWidth = 8;
+        const angle = Math.atan2(y2 - y1, x2 - x1);
+        const wingAngle = Math.PI / 6;
         const arrowheadDepth = headLength * Math.cos(wingAngle);
-
-        // Calculate the total length of the arrow from its start (x1,y1) to its tip (x2,y2)
         const totalLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-
-        // Only draw the shaft if the total arrow length is greater than the arrowhead's depth.
-        // This prevents drawing a shaft if the arrow is too short to accommodate its own head.
         if (totalLength > arrowheadDepth) {
-            // Calculate the end point for the arrow's shaft.
-            // The shaft should end where the base of the arrowhead begins.
             const shaftEndX = x2 - arrowheadDepth * Math.cos(angle);
             const shaftEndY = y2 - arrowheadDepth * Math.sin(angle);
-
-            // Draw the arrow shaft (the line part)
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(shaftEndX, shaftEndY);
-            ctx.strokeStyle = 'rgba(255, 255, 0, 0.9)'; // Yellow color for the arrow line
-            ctx.lineWidth = arrowLineWidth; 
-            ctx.lineCap = 'butt'; // Use 'butt' for a flat end that meets the arrowhead base cleanly
+            ctx.strokeStyle = 'rgba(255, 255, 0, 0.9)';
+            ctx.lineWidth = arrowLineWidth;
+            ctx.lineCap = 'butt';
             ctx.stroke();
         }
-
-        // Draw the arrow head (the triangular tip)
-        ctx.beginPath(); // Start a new path for the head
-        ctx.moveTo(x2, y2); // The tip of the arrow is at (x2, y2)
-        
-        // Calculate the coordinates of the two base corners of the arrowhead triangle
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
         const baseCorner1X = x2 - headLength * Math.cos(angle - wingAngle);
         const baseCorner1Y = y2 - headLength * Math.sin(angle - wingAngle);
         const baseCorner2X = x2 - headLength * Math.cos(angle + wingAngle);
         const baseCorner2Y = y2 - headLength * Math.sin(angle + wingAngle);
-        
         ctx.lineTo(baseCorner1X, baseCorner1Y);
         ctx.lineTo(baseCorner2X, baseCorner2Y);
-        ctx.closePath(); // Connects the last point back to moveTo (x2,y2), forming the triangle
-        
-        ctx.fillStyle = 'rgba(255, 255, 0, 0.9)'; // Yellow color for the arrow head
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(255, 255, 0, 0.9)';
         ctx.fill();
     }
 
     function switchToStaticImage(clearDebug = true) {
         videoPlayer.style.display = 'none';
         if (!videoPlayer.paused) videoPlayer.pause();
-
         if (imageWidth > 0 && imageHeight > 0) {
             staticImage.style.display = 'block';
             canvas.style.display = 'block';
             if (interactionPointPx) {
                 drawGuidanceSliderAndBead();
             } else {
-                 ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear if no point
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
         } else {
             staticImage.style.display = 'block';
             canvas.style.display = 'none';
         }
-
         if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay && clearDebug) {
             const currentText = debugFilenameDisplay.textContent || "";
             if (!currentText.toLowerCase().includes("error") &&
@@ -219,20 +183,16 @@ function initLineDragInstance(containerElement) {
     function setupImageAndCanvas() {
         imageWidth = staticImage.offsetWidth;
         imageHeight = staticImage.offsetHeight;
-
         if (imageWidth === 0 || imageHeight === 0) {
-            // Fallback to natural dimensions if offsetWidth/Height are 0 (e.g. display:none)
             imageWidth = staticImage.naturalWidth;
             imageHeight = staticImage.naturalHeight;
         }
-        
         if (imageWidth > 0 && imageHeight > 0) {
             canvas.width = imageWidth;
             canvas.height = imageHeight;
-            videoPlayer.width = imageWidth; // Set video dimensions
+            videoPlayer.width = imageWidth;
             videoPlayer.height = imageHeight;
             maxPixelDragLength = imageWidth * LINE_DEMO_MAX_DRAG_PROPORTION_OF_WIDTH;
-
             if (interactionPointNorm) {
                 interactionPointPx = {
                     x: interactionPointNorm.x * imageWidth,
@@ -241,29 +201,27 @@ function initLineDragInstance(containerElement) {
             }
         } else {
             console.error(`Line Drag Demo (${containerElement.id}): Failed to get valid dimensions for static image.`, LINE_DEMO_INITIAL_IMAGE_PATH);
-            canvas.style.display = 'none'; // Hide canvas if image dimensions are invalid
+            canvas.style.display = 'none';
         }
-        switchToStaticImage(false); // Initial draw, don't clear debug if it's showing an error
-         if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay && (!debugFilenameDisplay.textContent || !debugFilenameDisplay.textContent.toLowerCase().includes("error"))) {
-             debugFilenameDisplay.textContent = interactionPointPx ? 'Drag the white bead in the allowed directions.' : `Demo (${containerElement.id}): Interaction disabled - No valid interaction point.`;
-         }
+        switchToStaticImage(false);
+        if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay && (!debugFilenameDisplay.textContent || !debugFilenameDisplay.textContent.toLowerCase().includes("error"))) {
+            debugFilenameDisplay.textContent = interactionPointPx ? 'Drag the white bead in the allowed directions.' : `Demo (${containerElement.id}): Interaction disabled - No valid interaction point.`;
+        }
     }
 
     function initializeInteractiveDemo() {
         staticImage.src = LINE_DEMO_INITIAL_IMAGE_PATH;
-
         staticImage.onload = () => {
             if (staticImage.naturalWidth > 0 && staticImage.naturalHeight > 0) {
                 setupImageAndCanvas();
             } else {
-                // This case can happen if the image file is valid but has 0x0 dimensions, or is corrupted in a way that gives 0 dimensions
                 console.error(`Line Drag Demo (${containerElement.id}): Static image loaded but naturalWidth/Height is 0. Path: ${LINE_DEMO_INITIAL_IMAGE_PATH}`);
                 if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                     debugFilenameDisplay.textContent = `Demo (${containerElement.id}) Error: Static image reports no dimensions.`;
                     debugFilenameDisplay.style.color = 'red';
                 }
-                staticImage.style.display = 'block'; // Show the (potentially broken) image icon
-                canvas.style.display = 'none'; // Hide canvas as it can't be sized
+                staticImage.style.display = 'block';
+                canvas.style.display = 'none';
             }
         };
         staticImage.onerror = () => {
@@ -272,219 +230,201 @@ function initLineDragInstance(containerElement) {
                 debugFilenameDisplay.textContent = `Demo (${containerElement.id}) Error: Failed to load static image: ${LINE_DEMO_INITIAL_IMAGE_PATH.split('/').pop()}.`;
                 debugFilenameDisplay.style.color = 'red';
             }
-            // Attempt to show something even if image fails
-            staticImage.style.display = 'block'; // Shows broken image icon
+            staticImage.style.display = 'block';
             canvas.style.display = 'none';
             videoPlayer.style.display = 'none';
         };
-
-        // Check if image is already loaded (e.g., from cache)
-        // Important: also check if the src is already set to the one we want, to avoid re-triggering load for the same image.
         if (staticImage.complete && staticImage.getAttribute('src') === LINE_DEMO_INITIAL_IMAGE_PATH) {
-             // Use a small timeout to ensure layout has settled if image was loaded very quickly
-             setTimeout(() => {
+            setTimeout(() => {
                 if (staticImage.naturalWidth > 0 && staticImage.naturalHeight > 0) {
-                    // If imageWidth wasn't set (e.g. display:none initially), set it up.
                     if (!imageWidth || imageWidth === 0) setupImageAndCanvas();
-                } else if (staticImage.naturalWidth === 0 && staticImage.src) { 
-                    // If it's complete but has no dimensions, and src is set, it's likely an error state
-                    staticImage.onerror(); // Manually trigger onerror logic
+                } else if (staticImage.naturalWidth === 0 && staticImage.src) {
+                    staticImage.onerror();
                 }
-            }, 50); // 50ms delay, adjust if needed
+            }, 50);
         }
 
-
-        // Event Listeners
-        containerElement.addEventListener('mousedown', (e) => {
-            // If video is playing, clicking should stop it and show static image.
+        // --- Event Handler for Drag Start (Mouse and Touch) ---
+        function handleDragStart(e) {
             if (videoPlayer.style.display === 'block' && !videoPlayer.paused) {
                 switchToStaticImage();
-                // return; // Don't start new drag if video was playing
             }
-            // Ensure all necessary components are ready for interaction
             if (!interactionPointPx || !imageWidth || imageWidth === 0 || maxPixelDragLength === 0) return;
 
-            // If a mousedown occurs on the container, and the preceding checks for video state
-            // and interaction readiness (interactionPointPx, imageWidth, etc.) have passed,
-            // then always initiate a drag controlling the pointer from the bead's center.
-            // The clickX, clickY, and distToCenter calculations are no longer needed here
-            // to decide *if* a drag starts.
-
-            isDragging = true; // This instance is now dragging
-            dragOriginX = interactionPointPx.x; // Drag always originates from the bead's center
-            dragOriginY = interactionPointPx.y; // Drag always originates from the bead's center
-            lastProjectedDx = 0; // Reset last projection
+            isDragging = true;
+            dragOriginX = interactionPointPx.x;
+            dragOriginY = interactionPointPx.y;
+            lastProjectedDx = 0;
             lastProjectedDy = 0;
-            e.preventDefault(); // Prevent text selection or other default behaviors
-        });
+            
+            // Prevent default behaviors:
+            // - Text selection for mouse
+            // - Scroll/zoom for touch starting on the element
+            e.preventDefault(); 
+        }
 
-        // Mouse move listener on the document to handle dragging outside the element
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging || !interactionPointPx || jsonAllowedAngles.length < 2) return; // Only if this instance is dragging
+        // --- Event Handler for Drag Move (Mouse and Touch) ---
+        function handleDragMove(e) {
+            if (!isDragging || !interactionPointPx || jsonAllowedAngles.length < 2) return;
 
-            const rect = containerElement.getBoundingClientRect(); // Use this instance's container
-            let currentX = e.clientX - rect.left;
-            let currentY = e.clientY - rect.top;
+            const rect = containerElement.getBoundingClientRect();
+            let clientX, clientY;
 
-            // Raw displacement from drag origin
+            if (e.touches && e.touches.length > 0) { // Touch event
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+                // Prevent scrolling while dragging with finger inside the container
+                e.preventDefault(); 
+            } else { // Mouse event
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            let currentX = clientX - rect.left;
+            let currentY = clientY - rect.top;
             let rawDx = currentX - dragOriginX;
             let rawDy = currentY - dragOriginY;
-            
-            // Optimization: if no mouse movement and no previous arrow, don't redraw
+
             if (rawDx === 0 && rawDy === 0 && lastProjectedDx === 0 && lastProjectedDy === 0) {
                 return;
             }
-            
-            // Angle of the mouse movement
-            const mouseAngleRad = Math.atan2(-rawDy, rawDx); // Negative dy because canvas y is inverted
-            
-            // Allowed angles (converted to radians)
+
+            const mouseAngleRad = Math.atan2(-rawDy, rawDx);
             const angle1Rad = jsonAllowedAngles[0] * Math.PI / 180;
             const angle2Rad = jsonAllowedAngles[1] * Math.PI / 180;
-
-            // Determine which of the two allowed axes is closer to the mouse angle
             const diffToAngle1 = Math.abs(shortestAngleDistRad(mouseAngleRad, angle1Rad));
             const diffToAngle2 = Math.abs(shortestAngleDistRad(mouseAngleRad, angle2Rad));
             const chosenAxisAngleRad = (diffToAngle1 < diffToAngle2) ? angle1Rad : angle2Rad;
-
-            // Project the raw displacement onto the chosen axis
             const axisUnitDx = Math.cos(chosenAxisAngleRad);
-            const axisUnitDy = -Math.sin(chosenAxisAngleRad); // Negative sin for canvas y-coordinates
-            const projectedScalar = rawDx * axisUnitDx + rawDy * axisUnitDy; // Dot product
-
-            // Calculate the projected displacement vector
+            const axisUnitDy = -Math.sin(chosenAxisAngleRad);
+            const projectedScalar = rawDx * axisUnitDx + rawDy * axisUnitDy;
             let projectedDx = projectedScalar * axisUnitDx;
             let projectedDy = projectedScalar * axisUnitDy;
             let dragDistance = Math.sqrt(projectedDx * projectedDx + projectedDy * projectedDy);
 
-            // Clamp the drag distance to the maximum allowed
             if (dragDistance > maxPixelDragLength) {
                 const ratio = maxPixelDragLength / dragDistance;
                 projectedDx *= ratio;
                 projectedDy *= ratio;
             }
-            lastProjectedDx = projectedDx; // Store for mouseup
+            lastProjectedDx = projectedDx;
             lastProjectedDy = projectedDy;
 
-            drawGuidanceSliderAndBead(); // Redraw bead and guidance line (also clears)
-            // Only draw arrow if there's significant projected movement
-            if (Math.sqrt(projectedDx*projectedDx + projectedDy*projectedDy) > 1) { // Threshold to avoid tiny arrows
-                 drawArrow(dragOriginX, dragOriginY, dragOriginX + projectedDx, dragOriginY + projectedDy);
+            drawGuidanceSliderAndBead();
+            if (Math.sqrt(projectedDx * projectedDx + projectedDy * projectedDy) > 1) {
+                drawArrow(dragOriginX, dragOriginY, dragOriginX + projectedDx, dragOriginY + projectedDy);
             }
-        });
+        }
 
-        // Mouse up listener on the document to end drag universally
-        document.addEventListener('mouseup', () => {
-            if (!isDragging || !interactionPointPx) { // Only act if this instance was dragging
-                isDragging = false; // Ensure it's reset if somehow missed
+        // --- Event Handler for Drag End (Mouse and Touch) ---
+        function handleDragEnd() {
+            if (!isDragging || !interactionPointPx) {
+                isDragging = false;
                 return;
             }
-            isDragging = false; // Stop dragging for this instance
+            isDragging = false;
 
-            // Check for necessary data before proceeding
             if (Object.keys(videoData).length === 0 || !singleCoordKey) { switchToStaticImage(); return; }
             if (!imageWidth || imageWidth === 0 || !maxPixelDragLength || maxPixelDragLength === 0) { switchToStaticImage(); return; }
 
             const pixelLength = Math.sqrt(lastProjectedDx * lastProjectedDx + lastProjectedDy * lastProjectedDy);
-
-            // If drag was too short, just revert to static image with bead
-            if (pixelLength < 5) { // Minimum drag threshold to trigger video
-                switchToStaticImage(); // Redraws bead without arrow
+            if (pixelLength < 5) {
+                switchToStaticImage();
                 return;
             }
 
             const coordData = videoData[singleCoordKey];
             if (!coordData) { switchToStaticImage(); return; }
 
-            // Determine the chosen angle based on the drag direction
             let actualAngleDeg = Math.atan2(-lastProjectedDy, lastProjectedDx) * (180 / Math.PI);
-            if (actualAngleDeg < 0) actualAngleDeg += 360; // Normalize to 0-360
+            if (actualAngleDeg < 0) actualAngleDeg += 360;
 
             const angle1 = jsonAllowedAngles[0];
             const angle2 = jsonAllowedAngles[1];
-            // Calculate difference to each allowed angle, handling wrap-around
             let diff1 = Math.abs(actualAngleDeg - angle1); if (diff1 > 180) diff1 = 360 - diff1;
             let diff2 = Math.abs(actualAngleDeg - angle2); if (diff2 > 180) diff2 = 360 - diff2;
             const chosenAngleForVideo = (diff1 < diff2) ? angle1 : angle2;
-            const closestAngleKey = chosenAngleForVideo.toFixed(2); // Match JSON key format
+            const closestAngleKey = chosenAngleForVideo.toFixed(2);
 
-            // Determine the force magnitude
             const normalizedForce = pixelLength / maxPixelDragLength;
             const targetNumericForce = findClosestNumericValue(normalizedForce, LINE_DEMO_PREDEFINED_FORCES);
-
             if (targetNumericForce === null) { switchToStaticImage(); return; }
-            const targetForceKey = targetNumericForce.toFixed(3); // Match JSON key format
+            const targetForceKey = targetNumericForce.toFixed(3);
 
             const angleData = coordData[closestAngleKey];
             if (!angleData) { switchToStaticImage(); return; }
 
             const videoFileArray = angleData[targetForceKey];
             if (videoFileArray && videoFileArray.length > 0) {
-                const videoFilename = videoFileArray[0]; // Assuming the first video in array is the one to play
-
-                // Keep the arrow drawn during video load by redrawing
+                const videoFilename = videoFileArray[0];
                 drawGuidanceSliderAndBead();
                 drawArrow(dragOriginX, dragOriginY, dragOriginX + lastProjectedDx, dragOriginY + lastProjectedDy);
-
-                videoPlayer.style.display = 'none'; // Hide video player initially
-                if (!videoPlayer.paused) videoPlayer.pause(); // Pause if it was somehow playing
-
+                videoPlayer.style.display = 'none';
+                if (!videoPlayer.paused) videoPlayer.pause();
                 if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                     debugFilenameDisplay.textContent = `Loading: ${videoFilename}`;
                 }
                 videoPlayer.src = LINE_DEMO_VIDEOS_BASE_PATH + videoFilename;
 
                 const onVideoReadyToPlay = () => {
-                    videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay); // Clean up listener
-                    videoPlayer.removeEventListener('error', onVideoLoadError); // Clean up error listener
+                    videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay);
+                    videoPlayer.removeEventListener('error', onVideoLoadError);
                     if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                         debugFilenameDisplay.textContent = `Playing: ${videoFilename}`;
                     }
-                    staticImage.style.display = 'none'; // Hide static image
-                    canvas.style.display = 'none'; // Hide canvas overlay
-                    videoPlayer.style.display = 'block'; // Show video player
+                    staticImage.style.display = 'none';
+                    canvas.style.display = 'none';
+                    videoPlayer.style.display = 'block';
                     videoPlayer.play().catch(err => {
                         console.error(`Line Drag Demo (${containerElement.id}): Error playing video:`, err);
                         if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) debugFilenameDisplay.textContent = `Error playing: ${videoFilename}`;
-                        switchToStaticImage(); // Fallback to static image on play error
+                        switchToStaticImage();
                     });
                 };
                 const onVideoLoadError = (e) => {
-                    videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay); // Clean up listener
-                    videoPlayer.removeEventListener('error', onVideoLoadError); // Clean up error listener
+                    videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay);
+                    videoPlayer.removeEventListener('error', onVideoLoadError);
                     console.error(`Line Drag Demo (${containerElement.id}): Error loading video data for ${videoFilename}:`, e);
-                     if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) debugFilenameDisplay.textContent = `Error loading: ${videoFilename}`;
-                    switchToStaticImage(); // Fallback to static image on load error
+                    if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) debugFilenameDisplay.textContent = `Error loading: ${videoFilename}`;
+                    switchToStaticImage();
                 };
-
                 videoPlayer.addEventListener('loadeddata', onVideoReadyToPlay);
                 videoPlayer.addEventListener('error', onVideoLoadError);
-                videoPlayer.load(); // Start loading the video
+                videoPlayer.load();
             } else {
-                 if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
+                if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                     debugFilenameDisplay.textContent = `Video not found for force ${targetForceKey} at angle ${closestAngleKey}.`;
                 }
-                switchToStaticImage(); // Fallback if no video file found
+                switchToStaticImage();
             }
-        });
+        }
 
-        // Video player event listeners
+        // --- Add Event Listeners ---
+        // Mouse events
+        containerElement.addEventListener('mousedown', handleDragStart);
+        document.addEventListener('mousemove', handleDragMove);
+        document.addEventListener('mouseup', handleDragEnd);
+
+        // Touch events
+        containerElement.addEventListener('touchstart', handleDragStart, { passive: false }); // passive: false to allow preventDefault
+        document.addEventListener('touchmove', handleDragMove, { passive: false });    // passive: false to allow preventDefault
+        document.addEventListener('touchend', handleDragEnd);
+        document.addEventListener('touchcancel', handleDragEnd); // Handle cases like finger sliding off screen
+
         videoPlayer.addEventListener('ended', () => switchToStaticImage());
         videoPlayer.addEventListener('error', (e) => {
-            // This is a general error handler for the video element itself
             const currentVideoSrc = videoPlayer.currentSrc || "unknown video";
             console.error(`Line Drag Demo (${containerElement.id}): Video player error event.`, e, "Video source:", currentVideoSrc);
             if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                 debugFilenameDisplay.textContent = `Video player error for: ${currentVideoSrc.split('/').pop()}`;
             }
-            switchToStaticImage(); // Always revert to static image on video error
+            switchToStaticImage();
         });
     }
 
-    // --- Initialize This Instance ---
     if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
         debugFilenameDisplay.textContent = `Demo (${containerElement.id}): Loading video data...`;
-        debugFilenameDisplay.style.display = 'block'; // Ensure visible
+        debugFilenameDisplay.style.display = 'block';
     }
 
     fetch(LINE_DEMO_VIDEO_DATA_PATH)
@@ -505,25 +445,17 @@ function initLineDragInstance(containerElement) {
             if (!parsedCoords) {
                 throw new Error(`Could not parse coordinate key: ${singleCoordKey} for ${effectiveRootDir}`);
             }
-            // Convert y from bottom (standard in JSON) to y from top (standard for canvas)
             interactionPointNorm = { x: parsedCoords.x, y_from_top: 1.0 - parsedCoords.y };
-
-            // Extract allowed angles and forces from the loaded data
             const angleDataForForceExtraction = videoData[singleCoordKey];
             const angleKeys = Object.keys(angleDataForForceExtraction);
             if (angleKeys.length !== 2) {
-                // This demo specifically expects two angles (forming a line)
                 throw new Error(`Expected 2 angles for interaction point ${singleCoordKey} in ${effectiveRootDir}, found ${angleKeys.length}: ${angleKeys.join(', ')}`);
             }
-            jsonAllowedAngles = angleKeys.map(parseFloat).sort((a,b) => a-b); // Store as numbers, sorted
-
-            // Validate that angles are 180 degrees apart
+            jsonAllowedAngles = angleKeys.map(parseFloat).sort((a, b) => a - b);
             const angleDiff = Math.abs(jsonAllowedAngles[0] - jsonAllowedAngles[1]);
-            if (Math.abs(angleDiff - 180) > 0.1 && Math.abs((angleDiff % 360) - 180) > 0.1 ) { // Check direct and wrapped difference
-                 throw new Error(`Angles ${jsonAllowedAngles[0]}° and ${jsonAllowedAngles[1]}° in ${effectiveRootDir} are not 180° apart. Difference: ${angleDiff}°`);
+            if (Math.abs(angleDiff - 180) > 0.1 && Math.abs((angleDiff % 360) - 180) > 0.1) {
+                throw new Error(`Angles ${jsonAllowedAngles[0]}° and ${jsonAllowedAngles[1]}° in ${effectiveRootDir} are not 180° apart. Difference: ${angleDiff}°`);
             }
-
-            // Extract predefined forces (strengths) from one of the angles (assuming they are consistent)
             const firstAngleKey = angleKeys[0];
             const forcesData = angleDataForForceExtraction[firstAngleKey];
             if (!forcesData || Object.keys(forcesData).length === 0) {
@@ -533,22 +465,19 @@ function initLineDragInstance(containerElement) {
             if (LINE_DEMO_PREDEFINED_FORCES.length === 0) {
                 throw new Error(`No forces could be extracted from video_specs.json for ${effectiveRootDir}.`);
             }
-
             if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                 debugFilenameDisplay.textContent = `Demo (${containerElement.id}): Data loaded. Initializing image...`;
+                debugFilenameDisplay.textContent = `Demo (${containerElement.id}): Data loaded. Initializing image...`;
             }
-            initializeInteractiveDemo(); // Proceed to initialize with image and canvas
+            initializeInteractiveDemo();
         })
         .catch(error => {
             console.error(`Line Drag Demo (${containerElement.id}): Fatal Error processing video data or initializing:`, error);
             if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                debugFilenameDisplay.textContent = `Demo (${containerElement.id}) FATAL ERROR: ${error.message.substring(0, 100)}...`; // Keep message short
+                debugFilenameDisplay.textContent = `Demo (${containerElement.id}) FATAL ERROR: ${error.message.substring(0, 100)}...`;
                 debugFilenameDisplay.style.color = 'red';
             }
-            // Ensure these are reset so the demo doesn't try to use invalid data
             interactionPointNorm = null;
             jsonAllowedAngles = [];
-            // Attempt to initialize in a degraded state (e.g., just show static image or error)
-            initializeInteractiveDemo(); 
+            initializeInteractiveDemo();
         });
 }
