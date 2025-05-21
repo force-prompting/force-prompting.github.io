@@ -143,7 +143,7 @@
                 <a href="https://nategillman.com/" target="_blank">Nate Gillman</a><sup>1</sup>,
               </span>
               <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=LQvi5XAAAAAJ" target="_blank">Charles Herrmann</a><sup>2</sup>,
+                <a href="https://scholar.google.com/citations?user=LQvi5XAAAAAJ" target="_blank">Charles Herrmann</a><sup>2</sup>*,
               </span>
               <span class="author-block">
                 <a href="https://tempoxylophone.github.io/" target="_blank">Michael Freeman</a><sup>1</sup>, 
@@ -158,7 +158,7 @@
                 <a href="https://deqings.github.io/" target="_blank">Deqing Sun</a><sup>2</sup>,
               </span>
               <span class="author-block">
-                <a href="https://chensun.me/" target="_blank">Chen Sun</a><sup>1</sup>
+                <a href="https://chensun.me/" target="_blank">Chen Sun</a><sup>1</sup>*
               </span>
 
             </div>
@@ -227,16 +227,32 @@
 
 <!-- Teaser video-->
 <section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video poster="" id="tree" autoplay muted loop playsinline>
-        <!-- Your video here -->
-        <source src="force-prompting-static/videos/motion_null_cropped.mp4" type="video/mp4">
-      </video>
-      <br><br>
-      <h2 class="subtitle has-text-centered">
-        Video version of our teaser (small row: step 1, train force-conditoned video genmo; my vision for this is to have video versionf of our flag and ball and plant training data; remaining rows, just video version of teaser, i.e. applications with headers)
-      </h2>
+  <div class="columns is-multiline is-variable is-4 is-vcentered is-centered" style="padding-top: 0;">
+    <div class="column is-four-fifths">
+      <div class="has-text-centered">
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">1. Train a Force Conditioned Video Model with Limited Synthetic Data</h2>
+          </div>
+        </div>
+
+        <video poster="" autoplay="" muted="" loop="" playsinline="">
+          <source src="./force-prompting-static/teaser/teaser_keynote_video_train.mp4" type="video/mp4">
+        </video>
+
+        <!-- Weird for this to be here, but whatever -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width" style="margin-top: 3rem; margin-bottom: 1.5rem;">
+            <h2 class="title is-3">2. Video Model Generalizes Force Conditioning</h2>
+          </div>
+        </div>
+
+        <video poster="" autoplay="" muted="" loop="" playsinline="">
+          <source src="./force-prompting-static/teaser/teaser_keynote_video_train.mp4" type="video/mp4">
+        </video>
+
+      </div>
     </div>
   </div>
 </section>
@@ -250,7 +266,26 @@
         <h2 class="title is-3">Overview</h2>
         <div class="content has-text-justified">
           <p>
-            Short + sweet version of our abstract
+            We investigate using physical forces as a control
+signal for video generation and propose <b>force prompts</b> which enable users to interact
+with images through both localized point forces, such as poking a plant, and global
+wind force fields, such as wind blowing on fabric.
+</p>
+<p>
+The main challenge of force prompting is the difficulty in obtaining high quality paired force-video training
+data. Our key finding is that video generation models can <b>generalize
+remarkably well</b> when adapted to follow physical force conditioning from videos
+synthesized by Blender, even with limited demonstrations of few objects (e.g.,
+flying flags, rolling balls, etc.). Our method can generate videos which simulate
+forces across diverse geometries, settings, and materials. We also try to understand
+the source of this generalization and perform ablations on the training data that
+reveal two key elements: visual diversity and the use of specific text keywords
+during training.
+</p>
+<p>
+In addition, our approach is trained on only around 15k training examples
+for a single day on four A100 GPUs, making these techniques broadly accessible for
+future research.
           </p>
         </div>
       </div>
@@ -260,14 +295,6 @@
 <!-- End paper abstract -->
 
 
-
-
-
-
-
-
-
-
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
@@ -275,9 +302,11 @@
       <div class="columns is-centered has-text-centered">
         <h2 class="title is-3">Interacting with Images Using Force Prompts</h2>
       </div>
-      <h2 class="subtitle has-text-centered">
-        Two columns of videos; left column has pokes, right column has wind. 
-        Just a few cherrypicked fun examples for each, before we get into the weeds of our taxonomy of applications.
+      <h2 class="subtitle">
+        A user can interact with an image by specifying a force vector (location, angle, magnitude) on the image. With this force prompt, the video generator then generates the resultant scene. No physics simulator used at inference time!
+      </h2>
+      <h2 class="subtitle">        
+        While currently the results are <b style="color:red">not real-time</b> we believe that they show the potential of future video generation models as they get faster, more efficient, and more powerful.
       </h2>
       <video poster="" id="tree" autoplay muted loop playsinline>
         <!-- Your video here -->
@@ -293,7 +322,7 @@
     <div class="hero-body">
       <br><br>
       <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Directional control with point force model</h2>
+        <h2 class="title is-3">Local Force Prompts</h2>
       </div>
       <h2 class="subtitle has-text-centered">
         Apples, blueberries, dandelions being poked to the left and to the right
@@ -302,43 +331,31 @@
   </div>
 </section>
 
-
-<section class="teaser hero is-light">
+<section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
       <br><br>
       <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Angle control with wind force model</h2>
+        <h2 class="title is-3">Global Force Prompts</h2>
       </div>
       <h2 class="subtitle has-text-centered">
-        Hair in all 8 directions
+        Apples, blueberries, dandelions being poked to the left and to the right
       </h2>
     </div>
   </div>
 </section>
 
-
-
-
-<section class="section hero" id="pokeDemoSection"> <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-three-fifths"> <h2 class="title is-3" id="pokeDemoTitle">Try It Yourself! Interactive Poke Demo</h2>
-        <p class="subtitle demo-instructions">
-          Click on an object in the image below and drag to "poke" it with a certain force and direction. Release the mouse to see the generated video!
-        </p>
-      </div>
-    </div>
-    <div id="demoContainer">
-      <img id="staticImage" src="" alt="Interactive Object - Click and Drag to Poke"> <canvas id="canvasOverlay"></canvas>
-      <video id="videoPlayer" playsinline></video> </div>
-  </div>
-<!-- comment out this div when we no longer need to debug -->
+<section class="hero teaser">
   <div class="container is-max-desktop">
-    <div id="demoContainer">
-      <img id="staticImage" src="" alt="Interactive Object - Click and Drag to Poke"> <canvas id="canvasOverlay"></canvas>
-      <video id="videoPlayer" playsinline></video>
+    <div class="hero-body">
+      <br><br>
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Hints at Mass Understanding</h2>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        Apples, blueberries, dandelions being poked to the left and to the right
+      </h2>
     </div>
-      <div id="debugFilenameDisplay" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em;"></div>
   </div>
 </section>
 
