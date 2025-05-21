@@ -137,25 +137,53 @@ function initLineDragInstance(containerElement) {
 
     function drawArrow(x1, y1, x2, y2) {
         if (canvas.width === 0 || canvas.height === 0) return;
-        // Don't clearRect here, drawGuidanceSliderAndBead or drag mousemove should handle clearing
         
-        // Arrow line
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = 'rgba(255, 255, 0, 1.0)'; // Yellow arrow line
-        ctx.lineWidth = 5; // Increased thickness
-        ctx.stroke();
+        const headLength = 25; // Length of the arrowhead's sides from tip to base corner
+        const arrowLineWidth = 8; // Thickness of the arrow's shaft
+        
+        const angle = Math.atan2(y2 - y1, x2 - x1); // Angle of the arrow's direction
+        const wingAngle = Math.PI / 6; // Angle of the arrowhead wings from the shaft (e.g., 30 degrees for a common arrowhead shape)
 
-        // Arrow head
-        const headLength = 15; // Increased head length for a larger tip
-        const angle = Math.atan2(y2 - y1, x2 - x1);
-        ctx.beginPath();
-        ctx.moveTo(x2, y2);
-        ctx.lineTo(x2 - headLength * Math.cos(angle - Math.PI / 6), y2 - headLength * Math.sin(angle - Math.PI / 6));
-        ctx.lineTo(x2 - headLength * Math.cos(angle + Math.PI / 6), y2 - headLength * Math.sin(angle + Math.PI / 6));
-        ctx.closePath();
-        ctx.fillStyle = 'rgba(255, 255, 0, 1.0)'; // Yellow arrow head
+        // Calculate the depth of the arrowhead along its central axis.
+        // This is the distance from the tip (x2,y2) to the point where the shaft should meet the base of the head.
+        const arrowheadDepth = headLength * Math.cos(wingAngle);
+
+        // Calculate the total length of the arrow from its start (x1,y1) to its tip (x2,y2)
+        const totalLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+        // Only draw the shaft if the total arrow length is greater than the arrowhead's depth.
+        // This prevents drawing a shaft if the arrow is too short to accommodate its own head.
+        if (totalLength > arrowheadDepth) {
+            // Calculate the end point for the arrow's shaft.
+            // The shaft should end where the base of the arrowhead begins.
+            const shaftEndX = x2 - arrowheadDepth * Math.cos(angle);
+            const shaftEndY = y2 - arrowheadDepth * Math.sin(angle);
+
+            // Draw the arrow shaft (the line part)
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(shaftEndX, shaftEndY);
+            ctx.strokeStyle = 'rgba(255, 255, 0, 0.9)'; // Yellow color for the arrow line
+            ctx.lineWidth = arrowLineWidth; 
+            ctx.lineCap = 'butt'; // Use 'butt' for a flat end that meets the arrowhead base cleanly
+            ctx.stroke();
+        }
+
+        // Draw the arrow head (the triangular tip)
+        ctx.beginPath(); // Start a new path for the head
+        ctx.moveTo(x2, y2); // The tip of the arrow is at (x2, y2)
+        
+        // Calculate the coordinates of the two base corners of the arrowhead triangle
+        const baseCorner1X = x2 - headLength * Math.cos(angle - wingAngle);
+        const baseCorner1Y = y2 - headLength * Math.sin(angle - wingAngle);
+        const baseCorner2X = x2 - headLength * Math.cos(angle + wingAngle);
+        const baseCorner2Y = y2 - headLength * Math.sin(angle + wingAngle);
+        
+        ctx.lineTo(baseCorner1X, baseCorner1Y);
+        ctx.lineTo(baseCorner2X, baseCorner2Y);
+        ctx.closePath(); // Connects the last point back to moveTo (x2,y2), forming the triangle
+        
+        ctx.fillStyle = 'rgba(255, 255, 0, 0.9)'; // Yellow color for the arrow head
         ctx.fill();
     }
 
