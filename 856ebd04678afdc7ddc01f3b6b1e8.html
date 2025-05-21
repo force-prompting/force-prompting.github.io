@@ -116,6 +116,83 @@
       box-shadow: 0 0 5px rgba(50, 115, 220, 0.5);
     }
 
+    /* Styles for the new Line Drag Demo Gallery */
+    .line-drag-gallery-item {
+      display: none; /* Initially hide all demo items */
+      /* animation: fadeIn 0.5s; You can add a simple fade-in animation */
+    }
+    .line-drag-gallery-item.is-active {
+      display: block; /* Show the active demo item */
+    }
+
+    /* NEW Styles for categorized gallery thumbnails */
+    .gallery-categories-container {
+      display: flex;
+      flex-wrap: wrap; /* Allow wrapping to new line on smaller screens */
+      justify-content: space-around; /* Distribute space around categories */
+      align-items: flex-start; /* Align items to the top if they have different heights */
+      margin-top: 20px;
+      margin-bottom: 30px; /* Space before the demo display area */
+      gap: 5px; /* Space between category boxes */
+    }
+
+    .gallery-category-box {
+      box-sizing: border-box; /* Ensures padding and border are included in the width/height */
+      border: 1px solid #d1d1d1;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      margin-bottom: 15px; /* Applied when boxes wrap to the next line */
+
+      /* --- Adjustments for narrower boxes --- */
+      flex-grow: 0;         /* Prevent boxes from growing to fill extra horizontal space */
+      flex-shrink: 1;       /* Allow boxes to shrink if container is too narrow, down to min-width */
+      flex-basis: 220px;    /* Set their ideal width. Adjust this value as desired. */
+                            /* For example, try 200px, 240px, etc. */
+
+      min-width: 240px;     /* The minimum width a box can shrink to before wrapping.
+                               Should generally be less than or equal to flex-basis.
+                               Adjust this to control how much they can squish on smaller screens. */
+    }
+
+    .gallery-category-box h3.title { /* Target Bulma title specifically */
+      margin-bottom: 15px; /* More space below category title */
+      color: #363636; /* Darker text for title */
+      font-size: 1.25rem; /* Adjust title size if needed */
+    }
+
+    /* MODIFIED Styles for the icon group container */
+    .line-drag-gallery-thumbnails-group {
+      display: flex;          /* To layout its children (the row divs) */
+      flex-direction: column; /* Stack rows vertically */
+      align-items: center;    /* Center the row divs themselves */
+      gap: 8px;               /* Vertical gap BETWEEN the two rows of icons. Adjust as needed. */
+                              /* Previously, this class handled horizontal icon gaps too. */
+    }
+    /* END NEW Styles for categorized gallery thumbnails */
+
+
+    /* MODIFIED/EXISTING Styles for thumbnails */
+    .line-drag-gallery-thumb {
+      width: 70px; /* Adjust size as needed */
+      height: 70px; /* Adjust size as needed */
+      object-fit: cover;
+      border: 2px solid transparent;
+      margin: 0; /* Using gap for spacing now */
+      cursor: pointer;
+      border-radius: 4px; /* Optional: rounded corners for thumbnails */
+      transition: border-color 0.3s ease, transform 0.2s ease;
+    }
+    .line-drag-gallery-thumb:hover {
+      border-color: #b0bec5; /* Light border on hover */
+      transform: scale(1.05);
+    }
+    .line-drag-gallery-thumb.is-active-thumb {
+      border-color: #3273dc; /* Bulma's primary color, or choose your own */
+      box-shadow: 0 0 8px rgba(50, 115, 220, 0.6);
+      transform: scale(1.05); /* Keep scale for active */
+    }
+
   </style>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -389,20 +466,34 @@
       </div>
     </div>
 
-    <div class="line-drag-gallery-thumbnails">
-      <img src="force-prompting-static/drag-poke-videos/toycar1/initial_frame_cropped.png" alt="Thumbnail toycar1" class="line-drag-gallery-thumb" data-target="gallery-item-toycar1">
-      <img src="force-prompting-static/drag-poke-videos/toycar2/initial_frame_cropped.png" alt="Thumbnail toycar2" class="line-drag-gallery-thumb" data-target="gallery-item-toycar2">
-      <img src="force-prompting-static/drag-poke-videos/toycar3/initial_frame_cropped.png" alt="Thumbnail toycar3" class="line-drag-gallery-thumb" data-target="gallery-item-toycar3">
-      <img src="force-prompting-static/drag-poke-videos/toycar4/initial_frame_cropped.png" alt="Thumbnail toycar4" class="line-drag-gallery-thumb" data-target="gallery-item-toycar4">
-      <img src="force-prompting-static/drag-poke-videos/ornament1/initial_frame_cropped.png" alt="Thumbnail ornament1" class="line-drag-gallery-thumb" data-target="gallery-item-ornament1">
-      <img src="force-prompting-static/drag-poke-videos/ornament2/initial_frame_cropped.png" alt="Thumbnail ornament2" class="line-drag-gallery-thumb" data-target="gallery-item-ornament2">
-      <img src="force-prompting-static/drag-poke-videos/mia/initial_frame_cropped.png" alt="Thumbnail mia" class="line-drag-gallery-thumb" data-target="gallery-item-mia">
-      <img src="force-prompting-static/drag-poke-videos/apple2/initial_frame_cropped.png" alt="Thumbnail apple2" class="line-drag-gallery-thumb" data-target="gallery-item-apple2">
-      <img src="force-prompting-static/drag-poke-videos/apple3/initial_frame_cropped.png" alt="Thumbnail apple3" class="line-drag-gallery-thumb" data-target="gallery-item-apple3">
-      <img src="force-prompting-static/drag-poke-videos/blueberrybush2/initial_frame_cropped.png" alt="Thumbnail blueberrybush2" class="line-drag-gallery-thumb" data-target="gallery-item-blueberrybush2">
-      <img src="force-prompting-static/drag-poke-videos/blueberrybush4/initial_frame_cropped.png" alt="Thumbnail blueberrybush4" class="line-drag-gallery-thumb" data-target="gallery-item-blueberrybush4">
-      <img src="force-prompting-static/drag-poke-videos/dandelion1/initial_frame_cropped.png" alt="Thumbnail dandelion1" class="line-drag-gallery-thumb" data-target="gallery-item-dandelion1">
-      <img src="force-prompting-static/drag-poke-videos/dandelion3/initial_frame_cropped.png" alt="Thumbnail dandelion3" class="line-drag-gallery-thumb" data-target="gallery-item-dandelion3">
+    <div class="gallery-categories-container">
+      <div class="gallery-category-box" id="category-type1" style="background-color: #e0f7fa;"> <h3 class="title is-5 has-text-centered">Linear Motion</h3>
+        <div class="line-drag-gallery-thumbnails-group">
+          <img src="force-prompting-static/drag-poke-videos/toycar1/initial_frame_cropped.png" alt="Thumbnail toycar1" class="line-drag-gallery-thumb" data-target="gallery-item-toycar1">
+          <img src="force-prompting-static/drag-poke-videos/toycar2/initial_frame_cropped.png" alt="Thumbnail toycar2" class="line-drag-gallery-thumb" data-target="gallery-item-toycar2">
+          <img src="force-prompting-static/drag-poke-videos/toycar3/initial_frame_cropped.png" alt="Thumbnail toycar3" class="line-drag-gallery-thumb" data-target="gallery-item-toycar3">
+          <img src="force-prompting-static/drag-poke-videos/toycar4/initial_frame_cropped.png" alt="Thumbnail toycar4" class="line-drag-gallery-thumb" data-target="gallery-item-toycar4">
+        </div>
+      </div>
+
+      <div class="gallery-category-box" id="category-type2" style="background-color: #fff9c4;"> <h3 class="title is-5 has-text-centered">Oscillatory Motion</h3>
+        <div class="line-drag-gallery-thumbnails-group">
+          <img src="force-prompting-static/drag-poke-videos/ornament1/initial_frame_cropped.png" alt="Thumbnail ornament1" class="line-drag-gallery-thumb" data-target="gallery-item-ornament1">
+          <img src="force-prompting-static/drag-poke-videos/ornament2/initial_frame_cropped.png" alt="Thumbnail ornament2" class="line-drag-gallery-thumb" data-target="gallery-item-ornament2">
+          <img src="force-prompting-static/drag-poke-videos/mia/initial_frame_cropped.png" alt="Thumbnail mia" class="line-drag-gallery-thumb" data-target="gallery-item-mia">
+          <img src="force-prompting-static/drag-poke-videos/apple3/initial_frame_cropped.png" alt="Thumbnail apple3" class="line-drag-gallery-thumb" data-target="gallery-item-apple3">
+        </div>
+      </div>
+
+      <div class="gallery-category-box" id="category-type3" style="background-color: #f8bbd0;"> <h3 class="title is-5 has-text-centered">Complex Motion</h3>
+        <div class="line-drag-gallery-thumbnails-group">
+          <img src="force-prompting-static/drag-poke-videos/apple2/initial_frame_cropped.png" alt="Thumbnail apple2" class="line-drag-gallery-thumb" data-target="gallery-item-apple2">
+          <img src="force-prompting-static/drag-poke-videos/blueberrybush2/initial_frame_cropped.png" alt="Thumbnail blueberrybush2" class="line-drag-gallery-thumb" data-target="gallery-item-blueberrybush2">
+          <img src="force-prompting-static/drag-poke-videos/blueberrybush4/initial_frame_cropped.png" alt="Thumbnail blueberrybush4" class="line-drag-gallery-thumb" data-target="gallery-item-blueberrybush4">
+          <img src="force-prompting-static/drag-poke-videos/dandelion1/initial_frame_cropped.png" alt="Thumbnail dandelion1" class="line-drag-gallery-thumb" data-target="gallery-item-dandelion1">
+          <img src="force-prompting-static/drag-poke-videos/dandelion3/initial_frame_cropped.png" alt="Thumbnail dandelion3" class="line-drag-gallery-thumb" data-target="gallery-item-dandelion3">
+        </div>
+      </div>
     </div>
 
     <div id="lineDragGalleryDisplayArea">
@@ -673,6 +764,69 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
     if (galleryItems.length > 0 && galleryThumbs.length > 0) {
       setActiveItem(galleryThumbs[0].dataset.target, true);
     }
+
+    // ✨ NEW function to arrange icons into specific row patterns
+    function arrangeIconRows() {
+      const galleryThumbGroups = document.querySelectorAll('.line-drag-gallery-thumbnails-group');
+
+      galleryThumbGroups.forEach(group => {
+        // Get all actual icon image elements (<img>) within this group
+        const icons = Array.from(group.children).filter(child => child.tagName === 'IMG' && child.classList.contains('line-drag-gallery-thumb'));
+        const numIcons = icons.length;
+
+        if (numIcons === 0) return; // Skip if no icons
+
+        // Clear the group to rebuild its content with row divs.
+        // The 'icons' array holds the actual DOM elements, so event listeners on them are preserved.
+        group.innerHTML = '';
+
+        let topRowCount;
+        if (numIcons % 2 === 0) { // Even number of icons
+          topRowCount = numIcons / 2;
+        } else { // Odd number of icons (e.g., 1, 3, 5)
+          topRowCount = Math.floor(numIcons / 2); // Results in fewer icons on top for odd counts (e.g., 5 icons -> 2 top, 3 bottom)
+        }
+
+        // Create the first row div
+        const row1Div = document.createElement('div');
+        row1Div.style.display = 'flex';
+        row1Div.style.justifyContent = 'center';
+        row1Div.style.gap = '8px'; // Horizontal gap between icons in this row
+        row1Div.style.width = '100%'; // Ensures the flex justification centers icons within the available space
+
+        for (let i = 0; i < topRowCount; i++) {
+          if (icons[i]) { // Append icons for the top row
+            row1Div.appendChild(icons[i]);
+          }
+        }
+        
+        // Only append the row if it actually contains icons
+        if (row1Div.children.length > 0) {
+            group.appendChild(row1Div);
+        }
+
+        // Create the second row div
+        const row2Div = document.createElement('div');
+        row2Div.style.display = 'flex';
+        row2Div.style.justifyContent = 'center';
+        row2Div.style.gap = '8px'; // Horizontal gap between icons in this row
+        row2Div.style.width = '100%';
+
+        for (let i = topRowCount; i < numIcons; i++) {
+          if (icons[i]) { // Append remaining icons for the bottom row
+            row2Div.appendChild(icons[i]);
+          }
+        }
+        
+        // Only append the row if it actually contains icons
+        if (row2Div.children.length > 0) {
+            group.appendChild(row2Div);
+        }
+      });
+    }
+
+    // Call the new function to arrange icons after initial setup
+    arrangeIconRows();
   });
 </script>
 
