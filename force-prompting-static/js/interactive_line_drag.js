@@ -1,6 +1,6 @@
 // --- Static Configuration (can remain as constants if they apply to ALL demos) ---
 const LINE_DEMO_MAX_DRAG_PROPORTION_OF_WIDTH = 0.25;
-const LINE_DEMO_DEBUG_SHOW_FILENAME = true; // Applies to all instances if true
+const LINE_DEMO_DEBUG_SHOW_FILENAME = false; // Applies to all instances if true
 const LINE_DEMO_CLICK_TOLERANCE_RADIUS = 200; // Pixels, for clicking the central bead
 const BEAD_RADIUS = 11;
 // --- End Static Configuration ---
@@ -369,16 +369,29 @@ function initLineDragInstance(containerElement) {
                 const onVideoReadyToPlay = () => {
                     videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay);
                     videoPlayer.removeEventListener('error', onVideoLoadError);
+
                     if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                         debugFilenameDisplay.textContent = `Playing: ${videoFilename}`;
                     }
+
+                    // --- Suggested Fix ---
+                    // Ensure the video player's dimensions are explicitly set via inline CSS
+                    // right before making it visible. This uses the imageWidth and imageHeight
+                    // captured in setupImageAndCanvas.
+                    if (imageWidth > 0 && imageHeight > 0) {
+                        videoPlayer.style.width = imageWidth + 'px';
+                        videoPlayer.style.height = imageHeight + 'px';
+                    }
+                    // --- End Suggested Fix ---
+
                     staticImage.style.display = 'none';
                     canvas.style.display = 'none';
-                    videoPlayer.style.display = 'block';
+                    videoPlayer.style.display = 'block'; // Now display the video player
+
                     videoPlayer.play().catch(err => {
                         console.error(`Line Drag Demo (${containerElement.id}): Error playing video:`, err);
                         if (LINE_DEMO_DEBUG_SHOW_FILENAME && debugFilenameDisplay) debugFilenameDisplay.textContent = `Error playing: ${videoFilename}`;
-                        switchToStaticImage();
+                        switchToStaticImage(); // Revert to static image on play error
                     });
                 };
                 const onVideoLoadError = (e) => {
