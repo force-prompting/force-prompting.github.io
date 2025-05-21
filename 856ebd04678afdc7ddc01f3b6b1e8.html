@@ -385,11 +385,214 @@ future research.
       <h2 class="subtitle">        
         While currently the results are <b style="color:red">not real-time</b> we believe that they show the potential of future video generation models as they get faster, more efficient, and more powerful.
       </h2>
-      <video poster="" id="tree" autoplay muted loop playsinline>
-        <!-- Your video here -->
-        <source src="force-prompting-static/videos/motion_spurious_cropped.mp4"
-        type="video/mp4">
-      </video>
+
+
+        <section class="section hero is-light" id="interactiveLineDragGallery">
+          <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+              <div class="column is-three-fifths">
+                <h2 class="title is-3">Try It Yourself! <br>Interactive Force Prompting Demos</h2>
+                <p class="subtitle demo-instructions">
+                  Click on a thumbnail below to select a demo. Then, click on the white bead in the image and drag along the indicated line. Release the mouse to see the generated video!
+                </p>
+              </div>
+            </div>
+
+            <div class="gallery-categories-container">
+              <div class="gallery-category-box" id="category-type1" style="background-color: #e0f7fa;"> <h3 class="title is-5 has-text-centered">Linear Motion</h3>
+                <div class="line-drag-gallery-thumbnails-group">
+                  <img src="force-prompting-static/drag-poke-videos/toycar1/initial_frame_cropped.png" alt="Thumbnail toycar1" class="line-drag-gallery-thumb" data-target="gallery-item-toycar1">
+                  <img src="force-prompting-static/drag-poke-videos/toycar2/initial_frame_cropped.png" alt="Thumbnail toycar2" class="line-drag-gallery-thumb" data-target="gallery-item-toycar2">
+                  <img src="force-prompting-static/drag-poke-videos/toycar3/initial_frame_cropped.png" alt="Thumbnail toycar3" class="line-drag-gallery-thumb" data-target="gallery-item-toycar3">
+                  <img src="force-prompting-static/drag-poke-videos/toycar4/initial_frame_cropped.png" alt="Thumbnail toycar4" class="line-drag-gallery-thumb" data-target="gallery-item-toycar4">
+                </div>
+              </div>
+
+              <div class="gallery-category-box" id="category-type2" style="background-color: #fff9c4;"> <h3 class="title is-5 has-text-centered">Oscillatory Motion</h3>
+                <div class="line-drag-gallery-thumbnails-group">
+                  <img src="force-prompting-static/drag-poke-videos/ornament1/initial_frame_cropped.png" alt="Thumbnail ornament1" class="line-drag-gallery-thumb" data-target="gallery-item-ornament1">
+                  <img src="force-prompting-static/drag-poke-videos/ornament2/initial_frame_cropped.png" alt="Thumbnail ornament2" class="line-drag-gallery-thumb" data-target="gallery-item-ornament2">
+                  <img src="force-prompting-static/drag-poke-videos/mia/initial_frame_cropped.png" alt="Thumbnail mia" class="line-drag-gallery-thumb" data-target="gallery-item-mia">
+                  <img src="force-prompting-static/drag-poke-videos/apple3/initial_frame_cropped.png" alt="Thumbnail apple3" class="line-drag-gallery-thumb" data-target="gallery-item-apple3">
+                </div>
+              </div>
+
+              <div class="gallery-category-box" id="category-type3" style="background-color: #f8bbd0;"> <h3 class="title is-5 has-text-centered">Complex Motion</h3>
+                <div class="line-drag-gallery-thumbnails-group">
+                  <img src="force-prompting-static/drag-poke-videos/apple2/initial_frame_cropped.png" alt="Thumbnail apple2" class="line-drag-gallery-thumb" data-target="gallery-item-apple2">
+                  <img src="force-prompting-static/drag-poke-videos/blueberrybush2/initial_frame_cropped.png" alt="Thumbnail blueberrybush2" class="line-drag-gallery-thumb" data-target="gallery-item-blueberrybush2">
+                  <img src="force-prompting-static/drag-poke-videos/blueberrybush4/initial_frame_cropped.png" alt="Thumbnail blueberrybush4" class="line-drag-gallery-thumb" data-target="gallery-item-blueberrybush4">
+                  <img src="force-prompting-static/drag-poke-videos/dandelion1/initial_frame_cropped.png" alt="Thumbnail dandelion1" class="line-drag-gallery-thumb" data-target="gallery-item-dandelion1">
+                  <img src="force-prompting-static/drag-poke-videos/dandelion3/initial_frame_cropped.png" alt="Thumbnail dandelion3" class="line-drag-gallery-thumb" data-target="gallery-item-dandelion3">
+                </div>
+              </div>
+            </div>
+
+            <div id="lineDragGalleryDisplayArea">
+
+              <!-- toycar1 -->
+              <div id="gallery-item-toycar1" class="line-drag-gallery-item">
+                <div id="lineDemoContainerToyCar1" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/toycar1/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 2)
+                </div> -->
+              </div>
+
+              <!-- toycar2 -->
+              <div id="gallery-item-toycar2" class="line-drag-gallery-item">
+                <div id="lineDemoContainerToyCar2" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/toycar2/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 2)
+                </div> -->
+              </div>
+
+              <!-- toycar3 -->
+              <div id="gallery-item-toycar3" class="line-drag-gallery-item">
+                <div id="lineDemoContainerToyCar3" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/toycar3/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 2)
+                </div> -->
+              </div>
+
+              <!-- toycar4 -->
+              <div id="gallery-item-toycar4" class="line-drag-gallery-item">
+                <div id="lineDemoContainerToyCar4" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/toycar4/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 2)
+                </div> -->
+              </div>
+
+              <!-- ornament1 -->
+              <div id="gallery-item-ornament1" class="line-drag-gallery-item">
+                <div id="lineDemoContainerOrnament1" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/ornament1/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 2)
+                </div> -->
+              </div>
+
+              <!-- ornament2 -->
+              <div id="gallery-item-ornament2" class="line-drag-gallery-item">
+                <div id="lineDemoContainerOrnament2" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/ornament2/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 2)
+                </div> -->
+              </div>
+
+              <!-- mia -->
+              <div id="gallery-item-mia" class="line-drag-gallery-item">
+                <div id="lineDemoContainerMia" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/mia/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 2)
+                </div> -->
+              </div>
+
+              <!-- apple2 -->
+              <div id="gallery-item-apple2" class="line-drag-gallery-item">
+                <div id="lineDemoContainerApple2" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/apple2/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 2)
+                </div> -->
+              </div>
+
+              <!-- apple3 -->
+              <div id="gallery-item-apple3" class="line-drag-gallery-item">
+                <div id="lineDemoContainerApple3" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/apple3/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 3)
+                </div> -->
+              </div>
+
+              <!-- blueberrybush2 -->
+              <div id="gallery-item-blueberrybush2" class="line-drag-gallery-item">
+                <div id="lineDemoContainerBlueberryBush2" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/blueberrybush2/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 3)
+                </div> -->
+              </div>
+
+              <!-- blueberrybush4 -->
+              <div id="gallery-item-blueberrybush4" class="line-drag-gallery-item">
+                <div id="lineDemoContainerBlueberryBush4" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/blueberrybush4/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 3)
+                </div> -->
+              </div>
+
+              <!-- dandelion1 -->
+              <div id="gallery-item-dandelion1" class="line-drag-gallery-item">
+                <div id="lineDemoContainerDandelion1" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/dandelion1/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 3)
+                </div> -->
+              </div>
+
+              <!-- dandelion3 -->
+              <div id="gallery-item-dandelion3" class="line-drag-gallery-item">
+                <div id="lineDemoContainerDandelion3" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/dandelion3/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
+                  <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
+                  <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                  <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+                <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
+                  Line Drag Demo Initializing... (Apple 3)
+                </div> -->
+              </div>
+
+            </div>
+
+          </div>
+        </section>
+
+
+
     </div>
   </div>
 </section>
@@ -472,209 +675,6 @@ future research.
 
 
 
-<section class="section hero is-light" id="interactiveLineDragGallery">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-three-fifths">
-        <h2 class="title is-3">Try It Yourself! <br>Interactive Force Prompting Demos</h2>
-        <p class="subtitle demo-instructions">
-          Click on a thumbnail below to select a demo. Then, click on the white bead in the image and drag along the indicated line. Release the mouse to see the generated video!
-        </p>
-      </div>
-    </div>
-
-    <div class="gallery-categories-container">
-      <div class="gallery-category-box" id="category-type1" style="background-color: #e0f7fa;"> <h3 class="title is-5 has-text-centered">Linear Motion</h3>
-        <div class="line-drag-gallery-thumbnails-group">
-          <img src="force-prompting-static/drag-poke-videos/toycar1/initial_frame_cropped.png" alt="Thumbnail toycar1" class="line-drag-gallery-thumb" data-target="gallery-item-toycar1">
-          <img src="force-prompting-static/drag-poke-videos/toycar2/initial_frame_cropped.png" alt="Thumbnail toycar2" class="line-drag-gallery-thumb" data-target="gallery-item-toycar2">
-          <img src="force-prompting-static/drag-poke-videos/toycar3/initial_frame_cropped.png" alt="Thumbnail toycar3" class="line-drag-gallery-thumb" data-target="gallery-item-toycar3">
-          <img src="force-prompting-static/drag-poke-videos/toycar4/initial_frame_cropped.png" alt="Thumbnail toycar4" class="line-drag-gallery-thumb" data-target="gallery-item-toycar4">
-        </div>
-      </div>
-
-      <div class="gallery-category-box" id="category-type2" style="background-color: #fff9c4;"> <h3 class="title is-5 has-text-centered">Oscillatory Motion</h3>
-        <div class="line-drag-gallery-thumbnails-group">
-          <img src="force-prompting-static/drag-poke-videos/ornament1/initial_frame_cropped.png" alt="Thumbnail ornament1" class="line-drag-gallery-thumb" data-target="gallery-item-ornament1">
-          <img src="force-prompting-static/drag-poke-videos/ornament2/initial_frame_cropped.png" alt="Thumbnail ornament2" class="line-drag-gallery-thumb" data-target="gallery-item-ornament2">
-          <img src="force-prompting-static/drag-poke-videos/mia/initial_frame_cropped.png" alt="Thumbnail mia" class="line-drag-gallery-thumb" data-target="gallery-item-mia">
-          <img src="force-prompting-static/drag-poke-videos/apple3/initial_frame_cropped.png" alt="Thumbnail apple3" class="line-drag-gallery-thumb" data-target="gallery-item-apple3">
-        </div>
-      </div>
-
-      <div class="gallery-category-box" id="category-type3" style="background-color: #f8bbd0;"> <h3 class="title is-5 has-text-centered">Complex Motion</h3>
-        <div class="line-drag-gallery-thumbnails-group">
-          <img src="force-prompting-static/drag-poke-videos/apple2/initial_frame_cropped.png" alt="Thumbnail apple2" class="line-drag-gallery-thumb" data-target="gallery-item-apple2">
-          <img src="force-prompting-static/drag-poke-videos/blueberrybush2/initial_frame_cropped.png" alt="Thumbnail blueberrybush2" class="line-drag-gallery-thumb" data-target="gallery-item-blueberrybush2">
-          <img src="force-prompting-static/drag-poke-videos/blueberrybush4/initial_frame_cropped.png" alt="Thumbnail blueberrybush4" class="line-drag-gallery-thumb" data-target="gallery-item-blueberrybush4">
-          <img src="force-prompting-static/drag-poke-videos/dandelion1/initial_frame_cropped.png" alt="Thumbnail dandelion1" class="line-drag-gallery-thumb" data-target="gallery-item-dandelion1">
-          <img src="force-prompting-static/drag-poke-videos/dandelion3/initial_frame_cropped.png" alt="Thumbnail dandelion3" class="line-drag-gallery-thumb" data-target="gallery-item-dandelion3">
-        </div>
-      </div>
-    </div>
-
-    <div id="lineDragGalleryDisplayArea">
-
-      <!-- toycar1 -->
-      <div id="gallery-item-toycar1" class="line-drag-gallery-item">
-        <div id="lineDemoContainerToyCar1" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/toycar1/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 2)
-        </div> -->
-      </div>
-
-      <!-- toycar2 -->
-      <div id="gallery-item-toycar2" class="line-drag-gallery-item">
-        <div id="lineDemoContainerToyCar2" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/toycar2/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 2)
-        </div> -->
-      </div>
-
-      <!-- toycar3 -->
-      <div id="gallery-item-toycar3" class="line-drag-gallery-item">
-        <div id="lineDemoContainerToyCar3" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/toycar3/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 2)
-        </div> -->
-      </div>
-
-      <!-- toycar4 -->
-      <div id="gallery-item-toycar4" class="line-drag-gallery-item">
-        <div id="lineDemoContainerToyCar4" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/toycar4/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 2)
-        </div> -->
-      </div>
-
-      <!-- ornament1 -->
-      <div id="gallery-item-ornament1" class="line-drag-gallery-item">
-        <div id="lineDemoContainerOrnament1" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/ornament1/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 2)
-        </div> -->
-      </div>
-
-      <!-- ornament2 -->
-      <div id="gallery-item-ornament2" class="line-drag-gallery-item">
-        <div id="lineDemoContainerOrnament2" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/ornament2/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 2)
-        </div> -->
-      </div>
-
-      <!-- mia -->
-      <div id="gallery-item-mia" class="line-drag-gallery-item">
-        <div id="lineDemoContainerMia" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/mia/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 2)
-        </div> -->
-      </div>
-
-      <!-- apple2 -->
-      <div id="gallery-item-apple2" class="line-drag-gallery-item">
-        <div id="lineDemoContainerApple2" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/apple2/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 2)
-        </div> -->
-      </div>
-
-      <!-- apple3 -->
-      <div id="gallery-item-apple3" class="line-drag-gallery-item">
-        <div id="lineDemoContainerApple3" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/apple3/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 3)
-        </div> -->
-      </div>
-
-      <!-- blueberrybush2 -->
-      <div id="gallery-item-blueberrybush2" class="line-drag-gallery-item">
-        <div id="lineDemoContainerBlueberryBush2" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/blueberrybush2/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 3)
-        </div> -->
-      </div>
-
-      <!-- blueberrybush4 -->
-      <div id="gallery-item-blueberrybush4" class="line-drag-gallery-item">
-        <div id="lineDemoContainerBlueberryBush4" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/blueberrybush4/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 3)
-        </div> -->
-      </div>
-
-      <!-- dandelion1 -->
-      <div id="gallery-item-dandelion1" class="line-drag-gallery-item">
-        <div id="lineDemoContainerDandelion1" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/dandelion1/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 3)
-        </div> -->
-      </div>
-
-      <!-- dandelion3 -->
-      <div id="gallery-item-dandelion3" class="line-drag-gallery-item">
-        <div id="lineDemoContainerDandelion3" class="js-line-drag-demo" data-root-dir="force-prompting-static/drag-poke-videos/dandelion3/" style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: crosshair;">
-          <img class="line-static-image" src="" alt="Interactive Object - Drag Bead Along Line" style="display: block; width: 100%; height: auto;">
-          <canvas class="line-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-          <video class="line-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
-        </div>
-        <!-- <div class="line-debug-filename-display" style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #333; min-height: 1.2em; padding: 8px; background-color: #eee; border: 1px solid #ddd; max-width: 560px; margin-left: auto; margin-right: auto;">
-          Line Drag Demo Initializing... (Apple 3)
-        </div> -->
-      </div>
-
-    </div>
-
-  </div>
-</section>
 
 
 
