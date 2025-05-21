@@ -1,0 +1,38 @@
+{
+    "(0.62, 0.51)": {
+        "0.00": {
+            "0.050": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_0.00__force_0.050__video_0.mp4"
+            ],
+            "0.250": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_0.00__force_0.250__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.750": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_0.00__force_0.750__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_0.00__force_0.950__video_0.mp4"
+            ]
+        },
+        "180.00": {
+            "0.050": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_180.00__force_0.050__video_0.mp4"
+            ],
+            "0.250": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_180.00__force_0.250__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.750": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_180.00__force_0.750__video_0.mp4"
+            ],
+            "0.950": [
+                "step-5000__file_id__gridornament2__xpos_0.62__ypos_0.51__angle_180.00__force_0.950__video_0.mp4"
+            ]
+        }
+    }
+}
