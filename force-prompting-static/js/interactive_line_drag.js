@@ -1,7 +1,8 @@
 // --- Static Configuration (can remain as constants if they apply to ALL demos) ---
 const LINE_DEMO_MAX_DRAG_PROPORTION_OF_WIDTH = 0.25;
 const LINE_DEMO_DEBUG_SHOW_FILENAME = true; // Applies to all instances if true
-const LINE_DEMO_CLICK_TOLERANCE_RADIUS = 15; // Pixels, for clicking the central bead
+const LINE_DEMO_CLICK_TOLERANCE_RADIUS = 200; // Pixels, for clicking the central bead
+const BEAD_RADIUS = 11;
 // --- End Static Configuration ---
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -127,7 +128,7 @@ function initLineDragInstance(containerElement) {
 
         // Draw central bead (circle)
         ctx.beginPath();
-        ctx.arc(centerX, centerY, LINE_DEMO_CLICK_TOLERANCE_RADIUS * 0.7, 0, 2 * Math.PI);
+        ctx.arc(centerX, centerY, BEAD_RADIUS, 0, 2 * Math.PI);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.9)'; // White circle
         ctx.fill();
         ctx.strokeStyle = 'rgba(200, 200, 200, 1)'; // Light grey border for the white circle for better visibility
@@ -298,28 +299,23 @@ function initLineDragInstance(containerElement) {
             // If video is playing, clicking should stop it and show static image.
             if (videoPlayer.style.display === 'block' && !videoPlayer.paused) {
                 switchToStaticImage();
-                return; // Don't start new drag if video was playing
+                // return; // Don't start new drag if video was playing
             }
             // Ensure all necessary components are ready for interaction
             if (!interactionPointPx || !imageWidth || imageWidth === 0 || maxPixelDragLength === 0) return;
 
-            const rect = containerElement.getBoundingClientRect();
-            let clickX = e.clientX - rect.left;
-            let clickY = e.clientY - rect.top;
+            // If a mousedown occurs on the container, and the preceding checks for video state
+            // and interaction readiness (interactionPointPx, imageWidth, etc.) have passed,
+            // then always initiate a drag controlling the pointer from the bead's center.
+            // The clickX, clickY, and distToCenter calculations are no longer needed here
+            // to decide *if* a drag starts.
 
-            // Calculate distance from click to the center of the bead
-            const distToCenter = Math.sqrt(Math.pow(clickX - interactionPointPx.x, 2) + Math.pow(clickY - interactionPointPx.y, 2));
-
-            if (distToCenter <= LINE_DEMO_CLICK_TOLERANCE_RADIUS) {
-                isDragging = true; // This instance is now dragging
-                dragOriginX = interactionPointPx.x;
-                dragOriginY = interactionPointPx.y;
-                lastProjectedDx = 0; // Reset last projection
-                lastProjectedDy = 0;
-                e.preventDefault(); // Prevent text selection or other default behaviors
-            } else {
-                isDragging = false; // Click was outside the bead
-            }
+            isDragging = true; // This instance is now dragging
+            dragOriginX = interactionPointPx.x; // Drag always originates from the bead's center
+            dragOriginY = interactionPointPx.y; // Drag always originates from the bead's center
+            lastProjectedDx = 0; // Reset last projection
+            lastProjectedDy = 0;
+            e.preventDefault(); // Prevent text selection or other default behaviors
         });
 
         // Mouse move listener on the document to handle dragging outside the element
