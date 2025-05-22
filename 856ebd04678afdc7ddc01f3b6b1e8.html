@@ -311,13 +311,22 @@
 
         <div class="columns is-centered has-text-centered">
           <div class="column is-full-width">
-            <h2 class="title is-3">1. Train a Force Conditioned Video Model with Limited Synthetic Data</h2>
-          </div>
-        </div>
+            <h2 class="title is-3">1. Train a Force Conditioned Video Model with <b style="color:red">Limited</b> Synthetic Data</h2>
 
-        <video poster="" autoplay="" muted="" loop="" playsinline="">
-          <source src="./force-prompting-static/teaser/teaser_keynote_video_train.mp4" type="video/mp4">
-        </video>
+            <h3 class="title is-4"><b style="color:pink">Local Force Model (Poke)</h3>
+              <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <source src="./force-prompting-static/teaser/teaser_keynote_video_train_poke.mp4" type="video/mp4">
+              </video>
+
+              <h3 class="title is-4"><b style="color:lightblue">Global Force Model (Wind)</h3>
+                <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                  <source src="./force-prompting-static/teaser/teaser_keynote_video_train_wind.mp4" type="video/mp4">
+                </video>      
+
+
+          </div>
+
+      </div>
 
         <!-- Weird for this to be here, but whatever -->
         <div class="columns is-centered has-text-centered">
@@ -326,10 +335,59 @@
           </div>
         </div>
 
-        <video poster="" autoplay="" muted="" loop="" playsinline="">
-          <source src="./force-prompting-static/teaser/teaser_keynote_video_train.mp4" type="video/mp4">
-        </video>
-
+        <div class="columns is-multiline is-variable is-4">
+          <div class="column is-half">
+            <div class="has-text-centered">
+  
+              <div class="subtitle-with-button" style="margin-bottom: 0.5rem;">
+                <h2 class="title is-4" style="color:lightblue">Generalizes to Different Settings and Materials</h2>
+                <a href="https://motion-prompting.github.io/index.html#interacting" class="button is-secondary subtitle-button">See More</a>
+              </div>
+  
+              <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <source src="./force-prompting-static/teaser/teaser_keynote_video_wind_settings.mp4" type="video/mp4" controls height="240">
+              </video>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="has-text-centered">
+  
+              <div class="subtitle-with-button" style="margin-bottom: 0.5rem;" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <h2 class="title is-4" style="color:lightpink">Generalizes to Different Objects and Geometries</h2>
+                <a href="https://motion-prompting.github.io/index.html#interacting" class="button is-secondary subtitle-button">See More</a>
+              </div>
+  
+              <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <source src="./force-prompting-static/teaser/teaser_keynote_video_poke_generalize_objects.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="has-text-centered">
+  
+              <div class="subtitle-with-button" style="margin-bottom: 0.5rem;">
+                <h2 class="title is-4" style="color:lightblue">Generalizes to Different Affordances</h2>
+                <a href="https://motion-prompting.github.io/index.html#primitives" class="button is-secondary subtitle-button">See More</a>
+              </div>
+  
+              <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <source src="./force-prompting-static/teaser/teaser_keynote_video_wind_affordances.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="has-text-centered">
+  
+              <div class="subtitle-with-button" style="margin-bottom: 0.5rem;">
+                <h2 class="title is-4" style="color:pink">Hints at Mass Understanding</h2>
+                <a href="https://motion-prompting.github.io/index.html#depth" class="button is-secondary subtitle-button">See More</a>
+              </div>
+              <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <source src="./force-prompting-static/teaser/teaser_keynote_video_poke_hint_at_material_laundry.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -384,7 +442,7 @@ future research.
         A user can interact with an image by specifying a force vector (location, angle, magnitude) on the image. With this force prompt, the video generator then generates the resultant scene. No physics simulator used at inference time!
       </h2>
       <h2 class="subtitle">        
-        While currently the results are <b style="color:red">not real-time</b> we believe that they show the potential of future video generation models as they get faster, more efficient, and more powerful.
+        While currently the results are <b style="color:red">not real-time or per-frame causal</b> (though it is causal with respect to the conditioning signal), we believe that they show the potential of future video generation models as they get faster, more efficient, and more powerful.
       </h2>
 
 
