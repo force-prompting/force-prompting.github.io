@@ -204,6 +204,7 @@
 
   <script src="force-prompting-static/js/interactive_demo_poke.js" defer></script>
   <script src="force-prompting-static/js/interactive_line_drag.js" defer></script>
+  <script src="force-prompting-static/js/interactive_angle_drag.js" defer></script>
 </head>
 <body>
 
@@ -638,6 +639,20 @@ future research.
     </div>
   </div>
 </section>
+
+
+<div id="angleDemoContainerHair" class="js-angle-drag-demo"
+     data-root-dir="force-prompting-static/demo-wind-videos/src-videos-wind/"
+     data-initial-image-file="hair3.png"
+     data-videos-dir="videos/"
+     data-specs-file="video_specs.json"
+     style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+
+    <img class="angle-static-image" src="" alt="Interactive Angle Selector" style="display: block; width: 100%; height: auto;">
+    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; /* pointer-events: none; NO, canvas handles clicks */"></canvas>
+    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+
+</div>
 
 
 
