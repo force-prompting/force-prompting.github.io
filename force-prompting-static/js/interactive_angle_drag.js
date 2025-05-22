@@ -210,18 +210,23 @@ function initAngleSelectorInstance(containerElement) {
     }
 
     function handleDragStart(e) {
-        if (!imageWidth || !circleRadiusPx) {
+        // Check if canvas and circle parameters are initialized
+        if (!imageWidth || !imageHeight || !circleRadiusPx) {
             console.warn(`Angle Drag Demo (${containerElement.id}): Drag start ignored, setup incomplete.`);
+            // Attempt to refresh dimensions if function exists and setup is incomplete
             if (typeof containerElement.forceRefreshDimensions === 'function') {
                 containerElement.forceRefreshDimensions();
-                if (!imageWidth || !circleRadiusPx) return;
+                // Re-check if dimensions are now valid
+                if (!imageWidth || !imageHeight || !circleRadiusPx) return;
             } else {
-                return;
+                return; // Exit if setup is still incomplete
             }
         }
 
+        // If a video is playing, switch to the static image view first.
+        // The icon will be at its lastSelectedUserAngleDeg from the previous interaction.
         if (videoPlayer.style.display === 'block' && !videoPlayer.paused) {
-            switchToStaticImage(); // Switch to static, icon will be at lastSelectedUserAngleDeg
+            switchToStaticImage();
         }
 
         const rect = canvas.getBoundingClientRect();
@@ -236,24 +241,32 @@ function initAngleSelectorInstance(containerElement) {
         const canvasX = clientX - rect.left;
         const canvasY = clientY - rect.top;
 
-        const distToCenter = Math.sqrt(Math.pow(canvasX - circleCenterX, 2) + Math.pow(canvasY - circleCenterY, 2));
+        // --- MODIFICATION FOR CLICK ANYWHERE ---
+        // The drag will now start regardless of where the user clicks on the canvas.
+        // The ANGLE_SELECTOR_DRAG_START_TOLERANCE_PX check is removed.
 
-        if (Math.abs(distToCenter - circleRadiusPx) < ANGLE_SELECTOR_DRAG_START_TOLERANCE_PX) {
-            isDragging = true;
-            // Update currentBeadMathAngleRad based on the drag point
-            currentBeadMathAngleRad = Math.atan2(canvasY - circleCenterY, canvasX - circleCenterX);
-            
-            const currentUserAngle = convertMathAngleToUserAngle(currentBeadMathAngleRad);
-            const rotationForIcon = -((currentUserAngle - 180 + 360) % 360);
-            drawCircleAndIcon(currentBeadMathAngleRad, rotationForIcon);
+        isDragging = true;
 
-            document.addEventListener('mousemove', handleDragMove);
-            document.addEventListener('mouseup', handleDragEnd);
-            document.addEventListener('touchmove', handleDragMove, { passive: false });
-            document.addEventListener('touchend', handleDragEnd);
-            document.addEventListener('touchcancel', handleDragEnd);
-            e.preventDefault();
-        }
+        // Calculate the angle from the circle center to the actual click/touch point.
+        // This angle determines the initial position of the bead on the circle,
+        // effectively "snapping" the interaction point to the circle.
+        currentBeadMathAngleRad = Math.atan2(canvasY - circleCenterY, canvasX - circleCenterX);
+        
+        // Update the icon's visual state immediately to reflect this new starting angle.
+        const currentUserAngle = convertMathAngleToUserAngle(currentBeadMathAngleRad);
+        const rotationForIcon = -((currentUserAngle - 180 + 360) % 360);
+        drawCircleAndIcon(currentBeadMathAngleRad, rotationForIcon);
+
+        // Add event listeners for drag movement and end.
+        document.addEventListener('mousemove', handleDragMove);
+        document.addEventListener('mouseup', handleDragEnd);
+        document.addEventListener('touchmove', handleDragMove, { passive: false }); // passive: false to allow preventDefault
+        document.addEventListener('touchend', handleDragEnd);
+        document.addEventListener('touchcancel', handleDragEnd);
+        
+        // Prevent default browser actions (e.g., text selection during drag, page scrolling on touch).
+        e.preventDefault();
+        // --- END OF MODIFICATION ---
     }
 
     function handleDragMove(e) {
