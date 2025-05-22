@@ -390,12 +390,14 @@ future research.
 
         <section class="section hero is-light" id="interactiveLineDragGallery">
           <div class="container is-max-desktop">
-            <div class="columns is-centered has-text-centered">
-              <div class="column is-three-fifths">
-                <h2 class="title is-3">Try It Yourself! <br>Interactive Force Prompting Demos</h2>
-                <p class="subtitle demo-instructions">
-                  Click on a thumbnail below to select a demo. Then, click on the white bead in the image and drag along the indicated line. Release the mouse to see the generated video!
-                </p>
+            <div class="columns is-centered">
+              <!-- This column will contain your titles and paragraph.
+                   Adjust is-three-fifths, is-two-thirds, or is-fullwidth as needed for desired width. -->
+              <div class="column is-two-thirds">
+                <h2 class="title is-3 has-text-centered">Local Force Prompts</h2><br>
+                <h2 class="subtitle" style="margin-bottom: 1.5rem;">
+                  <b>Interactive Force Prompting Demos: Try It Yourself!</b> Click on a thumbnail below to select a demo. Then, click on the white bead in the image and drag along the indicated line. Release the mouse to see the generated video!
+                </h2>
               </div>
             </div>
 
@@ -598,7 +600,7 @@ future research.
   </div>
 </section>
 
-<section class="hero teaser">
+<!-- <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
       <br><br>
@@ -613,7 +615,7 @@ future research.
       </h2>
     </div>
   </div>
-</section>
+</section> -->
 
 <section class="hero teaser">
   <div class="container is-max-desktop">
@@ -623,35 +625,7 @@ future research.
         <h2 class="title is-3">Global Force Prompts</h2>
       </div>
       <h2 class="subtitle has-text-centered">
-        Apples, blueberries, dandelions being poked to the left and to the right
-      </h2>
-    </div>
-  </div>
-</section>
-
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <br><br>
-      <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Hints at Mass Understanding</h2>
-      </div>
-      <h2 class="subtitle has-text-centered">
-        Apples, blueberries, dandelions being poked to the left and to the right
-      </h2>
-    </div>
-  </div>
-</section>
-
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <br><br>
-      <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Hints at Mass Understanding</h2>
-      </div>
-      <h2 class="subtitle has-text-centered">
-        Apples, blueberries, dandelions being poked to the left and to the right
+        Interactive demos, maybe some additional videos as well
       </h2>
     </div>
   </div>
@@ -670,7 +644,85 @@ future research.
 
 </div>
 
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <br><br>
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Training dataset diversity</h2>
+      </div>
+      <h2 class="subtitle has-text-centered">
+         (arrays of training data; I'm thinking an 8 row x 3 column array of flags, where each row is an angle 45i, and each column is increasing wind strength; similar 8x3 array of PhysDreamer carnations; and two 4x3 arrays of balls, with first being bowling balls in directions 90i, , and second being soccer balls in directions 90i). Unless you want me to highlight different angles
+      </h2>
+    </div>
+  </div>
+</section>
 
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <br><br>
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Hints at Mass Understanding</h2>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        (just all of our success cases stacked vertically as looping videos so we can see horizontal translation better, there are only like 4 of them)
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <br><br>
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Analysis</h2>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        What goes in here?
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <br><br>
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Limitations</h2>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        So I think limitations we should talk about the occasional "video prior" failure (where if you try to force prompt out of what the base model is good for, it struggles -- the hair blowing backwards and swapping the neck direction is a good example of that).
+        We should also talk about "some breakages in generalization" where things sometimes become flags.
+        and say, we hope both of these will get better. or more specifically, for #1, this should get better as base model improves; 
+        for #2, this can be solved by increased diversity in training data. and then we have to be careful and say: 
+        "The point of the paper is not to replace training data diversity. 
+        The point of the paper is to introduce the task and show that even with limited resources you can still get something compelling. 
+        We expect the results will improve and be more robust as training data becomes larger and more diverse"
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <br><br>
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-3">Computational Resources</h2>
+      </div>
+      <h2 class="subtitle has-text-centered">
+        Our approach is trained on only around 15k training examples for a single day on four A100 GPUs, making these techniques broadly accessible for future research.
+      </h2>
+    </div>
+  </div>
+</section>
 
 <!-- ##########################################################################################
 ###############################################################################################
