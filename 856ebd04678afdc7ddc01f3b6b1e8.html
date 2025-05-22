@@ -596,6 +596,98 @@ future research.
 
 
 
+        <section class="section hero is-light" id="interactiveWindGallery">
+          <div class="container is-max-desktop">
+            <div class="columns is-centered">
+              <div class="column is-two-thirds has-text-centered">
+                <h2 class="title is-3">Global Force Prompts (Wind)</h2><br>
+                <h2 class="subtitle" style="margin-bottom: 1.5rem;">
+                  <b>Interactive Wind Force Demos: Try It Yourself!</b> Click on a thumbnail below to select a demo. Then, click on the image to select a wind direction and see the generated video!
+                </h2>
+              </div>
+            </div>
+
+            <div class="gallery-categories-container">
+              <div class="gallery-category-box" id="wind-category-tethered" style="background-color: #e0f7fa;">
+                <h3 class="title is-5 has-text-centered">Tethered Motion</h3>
+                <div class="line-drag-gallery-thumbnails-group">
+                  <img src="force-prompting-static/demo-wind-videos/dress1/initial_frame.png" alt="Thumbnail Wind Dress" class="line-drag-gallery-thumb" data-target="wind-gallery-item-dress1">
+                  <img src="force-prompting-static/demo-wind-videos/src-videos-wind/hair3.png" alt="Thumbnail Wind Hair (Tethered)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-hair3-tethered">
+                </div>
+              </div>
+
+              <div class="gallery-category-box" id="wind-category-aerodynamic" style="background-color: #fff9c4;">
+                <h3 class="title is-5 has-text-centered">Aerodynamic Motion</h3>
+                <div class="line-drag-gallery-thumbnails-group">
+                  <img src="force-prompting-static/demo-wind-videos/inflatabletube3/initial_frame.png" alt="Thumbnail Wind inflatabletube3" class="line-drag-gallery-thumb" data-target="wind-gallery-item-inflatabletube3">
+                </div>
+              </div>
+
+              <div class="gallery-category-box" id="wind-category-fluid" style="background-color: #f8bbd0;">
+                <h3 class="title is-5 has-text-centered">Fluid Dynamics</h3>
+                <div class="line-drag-gallery-thumbnails-group">
+                  <img src="force-prompting-static/demo-wind-videos/steamybeverage2/initial_frame.png" alt="Thumbnail Wind Hair (Fluid)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-steamybeverage2">
+                </div>
+              </div>
+            </div>
+
+            <div id="windGalleryDisplayArea">
+              <div id="wind-gallery-item-dress1" class="line-drag-gallery-item">
+                <div id="angleDemoContainerDress1_gallery" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/dress1/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Dress" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-hair3-tethered" class="line-drag-gallery-item">
+                <div id="angleDemoContainerHair3_gallery_tethered" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/src-videos-wind/"
+                    data-initial-image-file="hair3.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Tethered)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-inflatabletube3" class="line-drag-gallery-item">
+                <div id="angleDemoContainerInflatableTube3_gallery_aero" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/inflatabletube3/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Aerodynamic)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-steamybeverage2" class="line-drag-gallery-item">
+                <div id="angleDemoContainersteamybeverage2_gallery_fluid" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/steamybeverage2/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
     </div>
   </div>
 </section>
@@ -658,7 +750,7 @@ future research.
 </div> -->
 
 
-<section class="section hero is-light" id="interactiveWindGallery">
+<!-- <section class="section hero is-light" id="interactiveWindGallery">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-two-thirds has-text-centered">
@@ -747,7 +839,7 @@ future research.
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 
 <section class="hero teaser">
