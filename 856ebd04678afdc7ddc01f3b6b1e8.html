@@ -617,7 +617,7 @@ future research.
   </div>
 </section> -->
 
-<section class="hero teaser">
+<!-- <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
       <br><br>
@@ -655,7 +655,100 @@ future research.
     <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; /* pointer-events: none; NO, canvas handles clicks */"></canvas>
     <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
 
-</div>
+</div> -->
+
+
+<section class="section hero is-light" id="interactiveWindGallery">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-two-thirds has-text-centered">
+        <h2 class="title is-3">Global Force Prompts (Wind)</h2><br>
+        <h2 class="subtitle" style="margin-bottom: 1.5rem;">
+          <b>Interactive Wind Force Demos: Try It Yourself!</b> Click on a thumbnail below to select a demo. Then, click on the image to select a wind direction and see the generated video!
+        </h2>
+      </div>
+    </div>
+
+    <div class="gallery-categories-container">
+      <div class="gallery-category-box" id="wind-category-tethered" style="background-color: #e0f7fa;">
+        <h3 class="title is-5 has-text-centered">Tethered</h3>
+        <div class="line-drag-gallery-thumbnails-group">
+          <img src="force-prompting-static/demo-wind-videos/dress1/initial_frame.png" alt="Thumbnail Wind Dress" class="line-drag-gallery-thumb" data-target="wind-gallery-item-dress1">
+          <img src="force-prompting-static/demo-wind-videos/src-videos-wind/hair3.png" alt="Thumbnail Wind Hair (Tethered)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-hair3-tethered">
+        </div>
+      </div>
+
+      <div class="gallery-category-box" id="wind-category-aerodynamic" style="background-color: #fff9c4;">
+        <h3 class="title is-5 has-text-centered">Aerodynamic</h3>
+        <div class="line-drag-gallery-thumbnails-group">
+          <img src="force-prompting-static/demo-wind-videos/inflatabletube3/initial_frame.png" alt="Thumbnail Wind inflatabletube3" class="line-drag-gallery-thumb" data-target="wind-gallery-item-inflatabletube3">
+        </div>
+      </div>
+
+      <div class="gallery-category-box" id="wind-category-fluid" style="background-color: #f8bbd0;">
+        <h3 class="title is-5 has-text-centered">Fluid</h3>
+        <div class="line-drag-gallery-thumbnails-group">
+          <img src="force-prompting-static/demo-wind-videos/src-videos-wind/hair3.png" alt="Thumbnail Wind Hair (Fluid)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-hair3-fluid">
+        </div>
+      </div>
+    </div>
+
+    <div id="windGalleryDisplayArea">
+      <div id="wind-gallery-item-dress1" class="line-drag-gallery-item">
+        <div id="angleDemoContainerDress1_gallery" class="js-angle-drag-demo"
+             data-root-dir="force-prompting-static/demo-wind-videos/dress1/"
+             data-initial-image-file="initial_frame.png"
+             data-videos-dir="videos/"
+             data-specs-file="video_specs.json"
+             style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+            <img class="angle-static-image" src="" alt="Interactive Angle Selector - Dress" style="display: block; width: 100%; height: auto;">
+            <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+            <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+        </div>
+      </div>
+
+      <div id="wind-gallery-item-hair3-tethered" class="line-drag-gallery-item">
+        <div id="angleDemoContainerHair3_gallery_tethered" class="js-angle-drag-demo"
+             data-root-dir="force-prompting-static/demo-wind-videos/src-videos-wind/"
+             data-initial-image-file="hair3.png"
+             data-videos-dir="videos/"
+             data-specs-file="video_specs.json"
+             style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+            <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Tethered)" style="display: block; width: 100%; height: auto;">
+            <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+            <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+        </div>
+      </div>
+
+      <div id="wind-gallery-item-inflatabletube3" class="line-drag-gallery-item">
+        <div id="angleDemoContainerInflatableTube3_gallery_aero" class="js-angle-drag-demo"
+             data-root-dir="force-prompting-static/demo-wind-videos/inflatabletube3/"
+             data-initial-image-file="initial_frame.png"
+             data-videos-dir="videos/"
+             data-specs-file="video_specs.json"
+             style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+            <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Aerodynamic)" style="display: block; width: 100%; height: auto;">
+            <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+            <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+        </div>
+      </div>
+
+      <div id="wind-gallery-item-hair3-fluid" class="line-drag-gallery-item">
+        <div id="angleDemoContainerHair3_gallery_fluid" class="js-angle-drag-demo"
+             data-root-dir="force-prompting-static/demo-wind-videos/src-videos-wind/"
+             data-initial-image-file="hair3.png"
+             data-videos-dir="videos/"
+             data-specs-file="video_specs.json"
+             style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+            <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+            <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+            <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <section class="hero teaser">
   <div class="container is-max-desktop">
@@ -903,113 +996,152 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <!-- End of Statcounter Code -->
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const galleryItems = document.querySelectorAll('.line-drag-gallery-item');
-    const galleryThumbs = document.querySelectorAll('.line-drag-gallery-thumb');
+  // Helper function to arrange icons into rows (should be the same as you had)
+  function arrangeIconRows() {
+    const galleryThumbGroups = document.querySelectorAll('.line-drag-gallery-thumbnails-group');
 
-    function setActiveItem(targetId, isInitialCall = false) {
-      galleryItems.forEach(item => {
-        const demoContainer = item.querySelector('.js-line-drag-demo');
-        if (item.id === targetId) {
-          // ... (addClass 'is-active')
-          item.classList.add('is-active');
-          if (demoContainer && typeof demoContainer.forceRefreshDimensions === 'function') {
-            console.log(`Gallery: Activating ${item.id}. Scheduling refresh.`);
-            setTimeout(() => {
-                console.log(`Gallery: Calling forceRefreshDimensions for ${demoContainer.id || demoContainer.dataset.rootDir}`);
-                demoContainer.forceRefreshDimensions();
-            }, 50); 
-          }
-        } else {
-          // ... (removeClass 'is-active' and reset logic) ...
-          if (item.classList.contains('is-active')) {
-            item.classList.remove('is-active');
-            // (Optional reset logic as before)
-          }
+    galleryThumbGroups.forEach(group => {
+      const icons = Array.from(group.children).filter(child => child.tagName === 'IMG' && child.classList.contains('line-drag-gallery-thumb'));
+      const numIcons = icons.length;
+
+      if (numIcons === 0) return;
+
+      group.innerHTML = ''; // Clear existing icons to re-insert them into row divs
+
+      let topRowCount;
+      if (numIcons % 2 === 0) {
+        topRowCount = numIcons / 2;
+      } else {
+        topRowCount = Math.floor(numIcons / 2);
+      }
+
+      const row1Div = document.createElement('div');
+      row1Div.style.display = 'flex';
+      row1Div.style.justifyContent = 'center';
+      row1Div.style.gap = '8px';
+      row1Div.style.width = '100%';
+
+      for (let i = 0; i < topRowCount; i++) {
+        if (icons[i]) {
+          row1Div.appendChild(icons[i]);
         }
-      });
-      // ... (thumbnail active state logic) ...
-       galleryThumbs.forEach(thumb => {
-        if (thumb.dataset.target === targetId) {
-          thumb.classList.add('is-active-thumb');
-        } else {
-          thumb.classList.remove('is-active-thumb');
+      }
+      
+      if (row1Div.children.length > 0) {
+          group.appendChild(row1Div);
+      }
+
+      const row2Div = document.createElement('div');
+      row2Div.style.display = 'flex';
+      row2Div.style.justifyContent = 'center';
+      row2Div.style.gap = '8px';
+      row2Div.style.width = '100%';
+
+      for (let i = topRowCount; i < numIcons; i++) {
+        if (icons[i]) {
+          row2Div.appendChild(icons[i]);
         }
-      });
+      }
+      
+      if (row2Div.children.length > 0) {
+          group.appendChild(row2Div);
+      }
+    });
+  }
+
+  // Main function to initialize a single gallery
+  function initializeGallery(galleryContainerSelector, defaultItemId) {
+    const galleryElement = document.querySelector(galleryContainerSelector);
+    if (!galleryElement) {
+      console.warn(`Gallery container "${galleryContainerSelector}" not found.`);
+      return;
     }
+
+    const galleryItems = galleryElement.querySelectorAll('.line-drag-gallery-item');
+    const galleryThumbs = galleryElement.querySelectorAll('.line-drag-gallery-thumb');
+
+    if (galleryItems.length === 0) {
+        // console.log(`No items found in gallery: ${galleryContainerSelector}`);
+        return;
+    }
+
+  function setActiveItemInThisGallery(targetId) {
+    galleryItems.forEach(item => {
+      if (item.id === targetId) {
+        item.classList.add('is-active');
+
+        // Specific logic for line-drag demo refresh
+        const lineDemoContainer = item.querySelector('.js-line-drag-demo');
+        if (lineDemoContainer && typeof lineDemoContainer.forceRefreshDimensions === 'function') {
+          setTimeout(() => {
+            lineDemoContainer.forceRefreshDimensions();
+          }, 50); 
+        }
+
+        // --- START ADDED CODE ---
+        // Specific logic for angle-drag demo refresh
+        const angleDemoContainer = item.querySelector('.js-angle-drag-demo');
+        if (angleDemoContainer && typeof angleDemoContainer.forceRefreshDimensions === 'function') {
+          setTimeout(() => { // Use a timeout to ensure the element is rendered and dimensions are available
+            angleDemoContainer.forceRefreshDimensions();
+          }, 50); 
+        }
+        // --- END ADDED CODE ---
+
+      } else {
+        if (item.classList.contains('is-active')) {
+          item.classList.remove('is-active');
+        }
+      }
+    });
+
+    galleryThumbs.forEach(thumb => {
+      if (thumb.dataset.target === targetId) {
+        thumb.classList.add('is-active-thumb');
+      } else {
+        thumb.classList.remove('is-active-thumb');
+      }
+    });
+  }
 
     galleryThumbs.forEach(thumb => {
       thumb.addEventListener('click', (e) => {
         const targetId = e.currentTarget.dataset.target;
-        setActiveItem(targetId);
+        setActiveItemInThisGallery(targetId);
       });
     });
 
-    if (galleryItems.length > 0 && galleryThumbs.length > 0) {
-      setActiveItem('gallery-item-ornament2', true);
+    // Set the default item for *this* gallery
+    let defaultSet = false;
+    if (defaultItemId) {
+        const defaultItemElement = galleryElement.querySelector('#' + defaultItemId); // Check if default is within this gallery
+        if (defaultItemElement) {
+            setActiveItemInThisGallery(defaultItemId);
+            defaultSet = true;
+        } else {
+            console.warn(`Specified default item "${defaultItemId}" not found in gallery "${galleryContainerSelector}".`);
+        }
     }
-
-    // ✨ NEW function to arrange icons into specific row patterns
-    function arrangeIconRows() {
-      const galleryThumbGroups = document.querySelectorAll('.line-drag-gallery-thumbnails-group');
-
-      galleryThumbGroups.forEach(group => {
-        // Get all actual icon image elements (<img>) within this group
-        const icons = Array.from(group.children).filter(child => child.tagName === 'IMG' && child.classList.contains('line-drag-gallery-thumb'));
-        const numIcons = icons.length;
-
-        if (numIcons === 0) return; // Skip if no icons
-
-        // Clear the group to rebuild its content with row divs.
-        // The 'icons' array holds the actual DOM elements, so event listeners on them are preserved.
-        group.innerHTML = '';
-
-        let topRowCount;
-        if (numIcons % 2 === 0) { // Even number of icons
-          topRowCount = numIcons / 2;
-        } else { // Odd number of icons (e.g., 1, 3, 5)
-          topRowCount = Math.floor(numIcons / 2); // Results in fewer icons on top for odd counts (e.g., 5 icons -> 2 top, 3 bottom)
-        }
-
-        // Create the first row div
-        const row1Div = document.createElement('div');
-        row1Div.style.display = 'flex';
-        row1Div.style.justifyContent = 'center';
-        row1Div.style.gap = '8px'; // Horizontal gap between icons in this row
-        row1Div.style.width = '100%'; // Ensures the flex justification centers icons within the available space
-
-        for (let i = 0; i < topRowCount; i++) {
-          if (icons[i]) { // Append icons for the top row
-            row1Div.appendChild(icons[i]);
-          }
-        }
-        
-        // Only append the row if it actually contains icons
-        if (row1Div.children.length > 0) {
-            group.appendChild(row1Div);
-        }
-
-        // Create the second row div
-        const row2Div = document.createElement('div');
-        row2Div.style.display = 'flex';
-        row2Div.style.justifyContent = 'center';
-        row2Div.style.gap = '8px'; // Horizontal gap between icons in this row
-        row2Div.style.width = '100%';
-
-        for (let i = topRowCount; i < numIcons; i++) {
-          if (icons[i]) { // Append remaining icons for the bottom row
-            row2Div.appendChild(icons[i]);
-          }
-        }
-        
-        // Only append the row if it actually contains icons
-        if (row2Div.children.length > 0) {
-            group.appendChild(row2Div);
-        }
-      });
+    
+    if (!defaultSet && galleryThumbs.length > 0) {
+        // Fallback to the first item in this gallery if no valid default was specified or found
+        setActiveItemInThisGallery(galleryThumbs[0].dataset.target);
+        // console.log(`Gallery ${galleryContainerSelector}: Set first item as default fallback.`);
+    } else if (!defaultSet) {
+        // console.warn(`Gallery ${galleryContainerSelector}: No items to set as default.`);
     }
+  }
 
-    // Call the new function to arrange icons after initial setup
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize the first gallery (poke videos) with 'gallery-item-ornament2' as default
+    initializeGallery('#interactiveLineDragGallery', 'gallery-item-ornament2');
+
+    // Initialize the second gallery (wind videos) with a hair video as default
+    // You can change 'wind-gallery-item-hair3-tethered' to another hair video ID if you prefer:
+    // e.g., 'wind-gallery-item-hair3-aero' or 'wind-gallery-item-hair3-fluid'
+    initializeGallery('#interactiveWindGallery', 'wind-gallery-item-hair3-tethered');
+
+    // Arrange icons for all galleries after they are initialized
     arrangeIconRows();
   });
 </script>
