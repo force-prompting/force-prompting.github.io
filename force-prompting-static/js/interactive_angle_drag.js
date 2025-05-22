@@ -1,12 +1,19 @@
 // interactive_angle_drag.js
 
 const ANGLE_SELECTOR_DEBUG_SHOW_FILENAME = false; // Set to true for debugging
-const ANGLE_SELECTOR_BEAD_RADIUS_PX = 15; // Radius of the draggable bead
 const ANGLE_SELECTOR_CIRCLE_LINE_WIDTH_PX = 3; // Width of the circle outline
 const ANGLE_SELECTOR_CIRCLE_RADIUS_PROPORTION = 0.35; // Proportion of image width for the circle radius
 const ANGLE_SELECTOR_CIRCLE_CENTER_X_PROPORTION = 0.5; // Center X of circle (0.5 = image center)
 const ANGLE_SELECTOR_CIRCLE_CENTER_Y_PROPORTION = 0.5; // Center Y of circle (0.5 = image center)
 const ANGLE_SELECTOR_DRAG_START_TOLERANCE_PX = 30; // How close to circle edge to start drag
+
+// Icon properties
+const ICON_PATH = "force-prompting-static/demo-wind-videos/wind_pretty_print_180.0.png";
+let iconImage = null;
+let iconLoaded = false;
+// NEW: Scale proportion for the icon relative to the main image width
+const ICON_SCALE_PROPORTION_OF_IMAGE_WIDTH = 0.1; // e.g., 10% of image width
+let actualIconDisplayWidthPx = 40; // Default, will be calculated
 
 document.addEventListener('DOMContentLoaded', () => {
     const demoContainerElements = document.querySelectorAll('.js-angle-drag-demo');
@@ -23,14 +30,12 @@ function initAngleSelectorInstance(containerElement) {
     const staticImage = containerElement.querySelector('.angle-static-image');
     const canvas = containerElement.querySelector('.angle-canvas-overlay');
     const videoPlayer = containerElement.querySelector('.angle-video-player');
-    // Attempt to find a debug display, similar to the line-drag example
     const debugFilenameDisplay = búsquedaAscendente(containerElement, '.debug-filename-display');
 
-
     if (!staticImage || !canvas || !videoPlayer) {
-        console.error(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): Core child elements (.angle-static-image, .angle-canvas-overlay, .angle-video-player) missing.`);
+        console.error(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): Core child elements missing.`);
         if (debugFilenameDisplay && ANGLE_SELECTOR_DEBUG_SHOW_FILENAME) {
-            debugFilenameDisplay.textContent = "Error: Core HTML elements missing for angle selector.";
+            debugFilenameDisplay.textContent = "Error: Core HTML elements missing.";
         }
         return;
     }
@@ -49,100 +54,67 @@ function initAngleSelectorInstance(containerElement) {
     VIDEOS_BASE_PATH = effectiveRootDir + (containerElement.dataset.videosDir || "videos/");
     VIDEO_DATA_PATH = effectiveRootDir + (containerElement.dataset.specsFile || "video_specs.json");
 
-    let videoAngleData = {}; // Stores the JSON: {"angle_str": "filename.mp4"}
-    let availableUserAngles = []; // Stores numeric user angles [0, 45, 90,...]
-
+    let videoAngleData = {};
+    let availableUserAngles = [];
     let imageWidth = 0, imageHeight = 0;
     let circleCenterX = 0, circleCenterY = 0, circleRadiusPx = 0;
-    let currentBeadMathAngleRad = 0; // Standard math angle (0 is East/Right, positive is CCW)
-    let lastSelectedUserAngleDeg = 0.0; // User convention angle (0 is Left)
+    let currentBeadMathAngleRad = 0;
+    let lastSelectedUserAngleDeg = 0.0;
 
     let isDragging = false;
     const ctx = canvas.getContext('2d');
 
-    // Helper to find parent, similar to jQuery .closest()
+    iconImage = new Image();
+    iconImage.onload = () => {
+        iconLoaded = true;
+        console.log(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): Icon image loaded from ${ICON_PATH}`);
+        if (canvas.style.display === 'block' && imageWidth > 0) {
+            const mathAngleForRedraw = convertUserAngleToMathAngleRad(lastSelectedUserAngleDeg);
+            // For consistent rotation logic, this should also be the standard math angle
+            // If positive ctx.rotate is CW, then for CCW rotation by S, we need -S
+            drawCircleAndIcon(mathAngleForRedraw, -((lastSelectedUserAngleDeg - 180 + 360) % 360));
+        }
+    };
+    iconImage.onerror = () => {
+        console.error(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): Failed to load icon image from ${ICON_PATH}`);
+        iconImage = null;
+    };
+    iconImage.src = ICON_PATH;
+
     function búsquedaAscendente(el, selector) {
         let ancestro = el.parentElement;
         while (ancestro) {
-            if (ancestro.matches(selector)) return ancestro.querySelector('.debug-filename-display'); // More specific if needed
+            if (ancestro.matches(selector)) return ancestro.querySelector('.debug-filename-display');
             if (ancestro.querySelector && ancestro.querySelector(selector)) return ancestro.querySelector(selector);
             ancestro = ancestro.parentElement;
         }
-        // Fallback to a sibling or child if not found in parent structure (less common for debug displays)
         const siblingOrChild = containerElement.parentElement?.querySelector(selector) || containerElement.querySelector(selector);
         if (siblingOrChild && siblingOrChild.classList.contains('debug-filename-display')) return siblingOrChild;
-
         return null;
     }
 
-
     function convertMathAngleToUserAngle(angleRadFromAtan2_CanvasY_Down) {
-        // Step 1: Convert the input angle (from atan2 where canvas Y increases downwards) to degrees.
-        // This angle has: Right=0, CanvasTop=270 (or -90), Left=180, CanvasBottom=90.
         let canvasAngleDeg = angleRadFromAtan2_CanvasY_Down * (180 / Math.PI);
         if (canvasAngleDeg < 0) {
-            canvasAngleDeg += 360; // Normalize to 0-360
+            canvasAngleDeg += 360;
         }
-
-        // Step 2: Convert 'canvasAngleDeg' to a "Standard Mathematical Angle".
-        // Standard Math Angle: Right=0, Up=90, Left=180, Down=270.
-        // If canvasAngleDeg is 0 (Right), standardMathAngleDeg is 0.
-        // Otherwise, standardMathAngleDeg = (360 - canvasAngleDeg) % 360.
-        // This effectively mirrors the angle across the x-axis for non-zero values.
         let standardMathAngleDeg;
-        if (canvasAngleDeg === 0) { // Handle Right case separately to avoid 360%360=0 turning into 0 from 360-0
+        if (canvasAngleDeg === 0) {
             standardMathAngleDeg = 0;
         } else {
             standardMathAngleDeg = (360 - canvasAngleDeg) % 360;
         }
-        // Let's test this conversion from canvasAngleDeg to standardMathAngleDeg:
-        // - Bead Right: canvasAngleDeg = 0   => standardMathAngleDeg = 0. (Correct)
-        // - Bead Top (on canvas): canvasAngleDeg = 270 => standardMathAngleDeg = (360-270)%360 = 90. (Correct: Standard Up)
-        // - Bead Left: canvasAngleDeg = 180  => standardMathAngleDeg = (360-180)%360 = 180. (Correct)
-        // - Bead Bottom (on canvas): canvasAngleDeg = 90  => standardMathAngleDeg = (360-90)%360 = 270. (Correct: Standard Down)
-
-        // Step 3: Apply your specified mapping: UserAngle = (StandardMathAngle + 180) % 360
-        // This is the angle that will be used for your JSON keys.
-        let userAngleForJsonLookup = (standardMathAngleDeg + 180) % 360;
-
-        // Let's trace your examples with this full conversion:
-        // 1. Bead on Right:
-        //    canvasAngleDeg = 0      => standardMathAngleDeg = 0
-        //    userAngleForJsonLookup = (0 + 180) % 360 = 180. (Matches your "bead on right: 180")
-        // 2. Bead on Upper Right (Standard Math 45°):
-        //    This means canvasAngleDeg would be 315° (or -45°). (Because standard 45° is Up-Right, so canvas Y is negative from center)
-        //    canvasAngleDeg = 315    => standardMathAngleDeg = (360-315)%360 = 45
-        //    userAngleForJsonLookup = (45 + 180) % 360 = 225. (Matches your "bead on upper right: 225")
-        // 3. Bead on Top:
-        //    canvasAngleDeg = 270    => standardMathAngleDeg = 90
-        //    userAngleForJsonLookup = (90 + 180) % 360 = 270. (Matches your "bead on top: 270")
-        // 4. Bead on Top Left (Standard Math 135°):
-        //    This means canvasAngleDeg would be 225° (or -135°).
-        //    canvasAngleDeg = 225    => standardMathAngleDeg = (360-225)%360 = 135
-        //    userAngleForJsonLookup = (135 + 180) % 360 = 315. (Matches your "bead on top left: 315")
-
-        return userAngleForJsonLookup;
+        return (standardMathAngleDeg + 180) % 360;
     }
 
-    // Potential update for convertUserAngleToMathAngleRad if drawing is off:
     function convertUserAngleToMathAngleRad(userAngleDegFromJsonOrLastSelected) {
-        // userAngleDegFromJsonOrLastSelected is your target value (e.g., 180 for Right, 225 for UpperRight)
-
-        // Inverse of Step 3: Get standardMathAngleDeg
-        // userAngle = (standardMath + 180) % 360  => standardMath = (userAngle - 180 + 360) % 360
         let standardMathAngleDeg = (userAngleDegFromJsonOrLastSelected - 180 + 360) % 360;
-
-        // Inverse of Step 2: Get canvasAngleDeg
-        // standardMath = (360 - canvasAngle) % 360 (for non-zero) or standardMath = 0 if canvasAngle = 0
-        // This means canvasAngle = (360 - standardMath) % 360 (for non-zero) or canvasAngle = 0 if standardMath = 0
         let canvasAngleDeg;
         if (standardMathAngleDeg === 0) {
             canvasAngleDeg = 0;
         } else {
             canvasAngleDeg = (360 - standardMathAngleDeg) % 360;
         }
-
-        // Convert canvasAngleDeg to radians for drawing
         return canvasAngleDeg * (Math.PI / 180);
     }
 
@@ -155,33 +127,45 @@ function initAngleSelectorInstance(containerElement) {
         });
     }
 
-    function drawCircleAndBead(beadMathAngleRadToShow) {
+    // MODIFIED: Added rotationDegreesToUse parameter
+    function drawCircleAndIcon(positionalCanvasAngleRad, rotationDegreesToUse) {
         if (!imageWidth || !imageHeight || !circleRadiusPx) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw the circle
         ctx.beginPath();
         ctx.arc(circleCenterX, circleCenterY, circleRadiusPx, 0, 2 * Math.PI);
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.lineWidth = ANGLE_SELECTOR_CIRCLE_LINE_WIDTH_PX;
         ctx.stroke();
 
-        // Calculate bead position based on the provided math angle
-        const beadX = circleCenterX + circleRadiusPx * Math.cos(beadMathAngleRadToShow);
-        const beadY = circleCenterY + circleRadiusPx * Math.sin(beadMathAngleRadToShow); // Sin for Y in math angle
+        const iconX = circleCenterX + circleRadiusPx * Math.cos(positionalCanvasAngleRad);
+        const iconY = circleCenterY + circleRadiusPx * Math.sin(positionalCanvasAngleRad);
 
-        // Draw the bead
-        ctx.beginPath();
-        ctx.arc(beadX, beadY, ANGLE_SELECTOR_BEAD_RADIUS_PX, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(255, 50, 50, 0.95)'; // Red bead
-        ctx.fill();
-        ctx.strokeStyle = 'rgba(200, 200, 200, 1)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        if (iconLoaded && iconImage) {
+            ctx.save();
+            ctx.translate(iconX, iconY);
+
+            const rotationRadians = rotationDegreesToUse * (Math.PI / 180);
+            ctx.rotate(rotationRadians);
+
+            // Use actualIconDisplayWidthPx calculated in setupImageAndCanvas
+            const iconDrawWidth = actualIconDisplayWidthPx;
+            const iconAspectRatio = iconImage.naturalHeight / iconImage.naturalWidth;
+            const iconDrawHeight = iconDrawWidth * iconAspectRatio;
+
+            ctx.drawImage(iconImage, -iconDrawWidth / 2, -iconDrawHeight / 2, iconDrawWidth, iconDrawHeight);
+            ctx.restore();
+        } else {
+            ctx.beginPath();
+            ctx.arc(iconX, iconY, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.7)';
+            ctx.fill();
+        }
 
         if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-            const userAngle = convertMathAngleToUserAngle(beadMathAngleRadToShow);
-            debugFilenameDisplay.textContent = `Angle: ${userAngle.toFixed(1)}° (user) / ${((beadMathAngleRadToShow * 180/Math.PI)+360)%360 .toFixed(1)}° (math)`;
+            // For debug, show the user angle for position and the direct rotation value
+            const userAngleForJsonMatch = convertMathAngleToUserAngle(positionalCanvasAngleRad);
+            debugFilenameDisplay.textContent = `Icon Pos (JSON Angle): ${userAngleForJsonMatch.toFixed(1)}°, Icon Rot (Direct): ${rotationDegreesToUse.toFixed(1)}°`;
         }
     }
 
@@ -192,17 +176,17 @@ function initAngleSelectorInstance(containerElement) {
         staticImage.style.display = 'block';
         if (imageWidth > 0 && imageHeight > 0) {
             canvas.style.display = 'block';
-            canvas.width = imageWidth; // Ensure canvas is sized correctly
+            canvas.width = imageWidth;
             canvas.height = imageHeight;
-            // Redraw bead at its last selected position
             const mathAngleForRedraw = convertUserAngleToMathAngleRad(lastSelectedUserAngleDeg);
-            drawCircleAndBead(mathAngleForRedraw);
+            // For consistent rotation logic, this should also be the standard math angle
+            // If positive ctx.rotate is CW, then for CCW rotation by S, we need -S
+            drawCircleAndIcon(mathAngleForRedraw, -((lastSelectedUserAngleDeg - 180 + 360) % 360));
         } else {
             canvas.style.display = 'none';
         }
 
         if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay && clearDebug) {
-            // Keep last angle or clear if needed
             // debugFilenameDisplay.textContent = "Select an angle.";
         }
     }
@@ -215,28 +199,31 @@ function initAngleSelectorInstance(containerElement) {
             canvas.width = imageWidth;
             canvas.height = imageHeight;
 
-            circleRadiusPx = Math.min(imageWidth * ANGLE_SELECTOR_CIRCLE_RADIUS_PROPORTION, imageHeight * ANGLE_SELECTOR_CIRCLE_RADIUS_PROPORTION); // Base radius on smaller dimension or width
+            // Calculate actual icon display width based on new scale parameter
+            actualIconDisplayWidthPx = imageWidth * ICON_SCALE_PROPORTION_OF_IMAGE_WIDTH;
+
+            circleRadiusPx = Math.min(imageWidth * ANGLE_SELECTOR_CIRCLE_RADIUS_PROPORTION, imageHeight * ANGLE_SELECTOR_CIRCLE_RADIUS_PROPORTION);
             circleCenterX = imageWidth * ANGLE_SELECTOR_CIRCLE_CENTER_X_PROPORTION;
             circleCenterY = imageHeight * ANGLE_SELECTOR_CIRCLE_CENTER_Y_PROPORTION;
 
-            // Set initial bead position (User Angle 0 = Left)
-            lastSelectedUserAngleDeg = 0.0;
+            lastSelectedUserAngleDeg = 0.0; // This is the JSON-key equivalent angle
             currentBeadMathAngleRad = convertUserAngleToMathAngleRad(lastSelectedUserAngleDeg);
 
-            console.log(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): Setup Canvas. Img: ${imageWidth}x${imageHeight}. Circle R: ${circleRadiusPx.toFixed(1)}px at (${circleCenterX.toFixed(1)}, ${circleCenterY.toFixed(1)})`);
+            console.log(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): Setup Canvas. Img: ${imageWidth}x${imageHeight}. Icon Width: ${actualIconDisplayWidthPx.toFixed(1)}px`);
         } else {
-            console.error(`Angle Drag Demo (${containerElement.id}): Failed to get valid dimensions for static image. Path: ${INITIAL_IMAGE_PATH}. OffsetW: ${staticImage.offsetWidth}`);
+            console.error(`Angle Drag Demo (${containerElement.id}): Failed to get valid image dimensions. Path: ${INITIAL_IMAGE_PATH}`);
             canvas.style.display = 'none';
         }
-        switchToStaticImage(false); // Draw initial state
+        // Pass the negated standard math angle for initial CCW rotation
+        switchToStaticImage(false);
     }
 
     function handleDragStart(e) {
-        if (!imageWidth || !circleRadiusPx) { // Essential geometric setup check
-             console.warn(`Angle Drag Demo (${containerElement.id}): Drag start ignored, setup incomplete.`);
+        if (!imageWidth || !circleRadiusPx) {
+            console.warn(`Angle Drag Demo (${containerElement.id}): Drag start ignored, setup incomplete.`);
             if (typeof containerElement.forceRefreshDimensions === 'function') {
                 containerElement.forceRefreshDimensions();
-                if (!imageWidth || !circleRadiusPx) return; // Still not ready
+                if (!imageWidth || !circleRadiusPx) return;
             } else {
                 return;
             }
@@ -244,7 +231,6 @@ function initAngleSelectorInstance(containerElement) {
 
         if (videoPlayer.style.display === 'block' && !videoPlayer.paused) {
             switchToStaticImage();
-            // Potentially delay drag start a tiny bit if needed after UI switch
         }
 
         const rect = canvas.getBoundingClientRect();
@@ -263,9 +249,12 @@ function initAngleSelectorInstance(containerElement) {
 
         if (Math.abs(distToCenter - circleRadiusPx) < ANGLE_SELECTOR_DRAG_START_TOLERANCE_PX) {
             isDragging = true;
-            // Snap bead to current click angle immediately
-            currentBeadMathAngleRad = Math.atan2(canvasY - circleCenterY, canvasX - circleCenterX); // Standard atan2 for graphics
-            drawCircleAndBead(currentBeadMathAngleRad);
+            currentBeadMathAngleRad = Math.atan2(canvasY - circleCenterY, canvasX - circleCenterX);
+            
+            // Calculate standard math angle for rotation and negate it for CCW
+            const userAngleForJson = convertMathAngleToUserAngle(currentBeadMathAngleRad);
+            const standardMathAngleForRotation = (userAngleForJson - 180 + 360) % 360;
+            drawCircleAndIcon(currentBeadMathAngleRad, -standardMathAngleForRotation);
 
             document.addEventListener('mousemove', handleDragMove);
             document.addEventListener('mouseup', handleDragEnd);
@@ -284,7 +273,7 @@ function initAngleSelectorInstance(containerElement) {
         if (e.touches && e.touches.length > 0) {
             clientX = e.touches[0].clientX;
             clientY = e.touches[0].clientY;
-            e.preventDefault(); // Prevent scrolling while dragging bead
+            e.preventDefault();
         } else {
             clientX = e.clientX;
             clientY = e.clientY;
@@ -293,7 +282,11 @@ function initAngleSelectorInstance(containerElement) {
         const canvasY = clientY - rect.top;
 
         currentBeadMathAngleRad = Math.atan2(canvasY - circleCenterY, canvasX - circleCenterX);
-        drawCircleAndBead(currentBeadMathAngleRad);
+        // Rotate live during drag based on current position's standard math angle (negated for CCW)
+        const userAngleForJson = convertMathAngleToUserAngle(currentBeadMathAngleRad); // This is (StandardMathAngle + 180) % 360
+        // To get StandardMathAngle for rotation: (userAngleForJson - 180 + 360) % 360
+        // Negate it for CCW rotation because positive ctx.rotate is Clockwise
+        drawCircleAndIcon(currentBeadMathAngleRad, -((userAngleForJson - 180 + 360) % 360));
     }
 
     function handleDragEnd() {
@@ -306,38 +299,40 @@ function initAngleSelectorInstance(containerElement) {
         document.removeEventListener('touchend', handleDragEnd);
         document.removeEventListener('touchcancel', handleDragEnd);
 
+
         if (Object.keys(videoAngleData).length === 0) {
-            console.warn(`Angle Drag Demo (${containerElement.id}): No video data loaded.`);
+            // Rotate to standard math angle of last selected JSON key (negated for CCW)
+            switchToStaticImage(); 
+            return;
+        }
+
+        const finalUserAngleDegForJson = convertMathAngleToUserAngle(currentBeadMathAngleRad);
+        const closestUserAngleFromJson = findClosestUserAngle(finalUserAngleDegForJson, availableUserAngles);
+
+        if (closestUserAngleFromJson === null) {
             switchToStaticImage();
             return;
         }
 
-        const finalUserAngleDeg = convertMathAngleToUserAngle(currentBeadMathAngleRad);
-        const closestUserAngle = findClosestUserAngle(finalUserAngleDeg, availableUserAngles);
+        lastSelectedUserAngleDeg = closestUserAngleFromJson; // This is the angle from JSON (StandardMathAngle + 180)
+        
+        // Redraw one last time with the final position.
+        // Rotation should be the negated standard math angle corresponding to the selected JSON key for CCW.
+        const finalRotationStandardMathAngle = (lastSelectedUserAngleDeg - 180 + 360) % 360;
+        drawCircleAndIcon(currentBeadMathAngleRad, -finalRotationStandardMathAngle);
 
-        if (closestUserAngle === null) {
-            console.warn(`Angle Drag Demo (${containerElement.id}): Could not find a closest angle for ${finalUserAngleDeg.toFixed(1)}°`);
-            switchToStaticImage();
-            return;
-        }
-
-        lastSelectedUserAngleDeg = closestUserAngle; // Store for redraw
-        const videoFilename = videoAngleData[closestUserAngle.toFixed(1)]; // JSON keys are like "0.0", "45.0"
+        const videoFilename = videoAngleData[closestUserAngleFromJson.toFixed(1)];
+        console.log("Serving MP4:", videoFilename, "for angle", closestUserAngleFromJson.toFixed(1));
 
         if (videoFilename) {
-            if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                debugFilenameDisplay.textContent = `Selected: ${closestUserAngle.toFixed(1)}° User. File: ${videoFilename}`;
-            }
-            console.log("Serving MP4:", videoFilename);
             videoPlayer.src = VIDEOS_BASE_PATH + videoFilename;
-
             const onVideoReadyToPlay = () => {
                 videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay);
                 videoPlayer.removeEventListener('error', onVideoLoadError);
                 if (imageWidth > 0 && imageHeight > 0) {
                     videoPlayer.style.width = imageWidth + 'px';
                     videoPlayer.style.height = imageHeight + 'px';
-                } else { // Fallback if image dimensions weren't captured
+                } else {
                     videoPlayer.style.width = '100%'; videoPlayer.style.height = 'auto';
                 }
                 staticImage.style.display = 'none';
@@ -346,145 +341,86 @@ function initAngleSelectorInstance(containerElement) {
                 videoPlayer.play().catch(err => {
                     console.error(`Angle Drag Demo (${containerElement.id}): Error playing video ${videoFilename}:`, err);
                     switchToStaticImage();
-                     if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                        debugFilenameDisplay.textContent = `Error playing ${videoFilename}. ${err.message}`;
-                    }
                 });
             };
             const onVideoLoadError = (ev) => {
                 videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay);
                 videoPlayer.removeEventListener('error', onVideoLoadError);
                 console.error(`Angle Drag Demo (${containerElement.id}): Error loading video ${videoFilename}:`, ev);
-                if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                    debugFilenameDisplay.textContent = `Error loading ${videoFilename}. Check console.`;
-                }
                 switchToStaticImage();
             };
             videoPlayer.addEventListener('loadeddata', onVideoReadyToPlay);
             videoPlayer.addEventListener('error', onVideoLoadError);
             videoPlayer.load();
         } else {
-            console.warn(`Angle Drag Demo (${containerElement.id}): No video file found for angle ${closestUserAngle.toFixed(1)}`);
-             if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                debugFilenameDisplay.textContent = `No video for angle ${closestUserAngle.toFixed(1)}`;
-            }
             switchToStaticImage();
         }
     }
 
     function initializeInteractiveDemo() {
         staticImage.src = INITIAL_IMAGE_PATH;
-
-        const newOnload = () => {
-            staticImage.onload = null; // Prevent multiple calls if reloaded
-            console.log(`Angle Drag Demo (${containerElement.id}): Image loaded (${staticImage.naturalWidth}x${staticImage.naturalHeight}). Path: ${INITIAL_IMAGE_PATH}`);
+        staticImage.onload = () => {
+            staticImage.onload = null;
+            console.log(`Angle Drag Demo (${containerElement.id}): Image loaded (${staticImage.naturalWidth}x${staticImage.naturalHeight}).`);
             if (staticImage.naturalWidth > 0 && staticImage.naturalHeight > 0) {
                 setupImageAndCanvas();
             } else {
-                console.error(`Angle Drag Demo (${containerElement.id}): Image loaded but has zero dimensions. Path: ${INITIAL_IMAGE_PATH}`);
-                 if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                    debugFilenameDisplay.textContent = `Error: Image has 0 dimensions. Path: ${INITIAL_IMAGE_PATH}`;
-                }
+                console.error(`Angle Drag Demo (${containerElement.id}): Image has zero dimensions.`);
             }
         };
-        staticImage.onload = newOnload;
         staticImage.onerror = () => {
-            console.error(`Angle Drag Demo (${containerElement.id}): Error loading initial image. Path: ${INITIAL_IMAGE_PATH}`);
-            staticImage.style.display = 'block'; // Keep it visible or show placeholder
-            canvas.style.display = 'none';
-            if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                debugFilenameDisplay.textContent = `Error loading image: ${INITIAL_IMAGE_PATH}`;
-            }
+            console.error(`Angle Drag Demo (${containerElement.id}): Error loading initial image.`);
         };
 
-        // If image is already cached and loaded by the browser
         if (staticImage.complete && staticImage.naturalWidth > 0 && staticImage.getAttribute('src') === INITIAL_IMAGE_PATH) {
-            console.log(`Angle Drag Demo (${containerElement.id}): Image already complete on init. Calling setup via timeout.`);
-            setTimeout(setupImageAndCanvas, 0); // Use timeout to ensure layout is stable
-        } else if (staticImage.getAttribute('src') === INITIAL_IMAGE_PATH && staticImage.naturalWidth === 0){
-             console.log(`Angle Drag Demo (${containerElement.id}): Image src set but not fully loaded/decoded (0 naturalWidth). Onload will handle.`);
+            setTimeout(setupImageAndCanvas, 0);
         }
 
-
-        // Attach mousedown/touchstart listeners to the canvas for precision, or container for broader interaction area
-        // Using canvas is often better to ensure coordinates are relative to it.
-        // However, if canvas is pointer-events: none, use container. Here, canvas is active.
-        canvas.removeEventListener('mousedown', handleDragStart); // Clear if any old ones
+        canvas.removeEventListener('mousedown', handleDragStart);
         canvas.addEventListener('mousedown', handleDragStart);
         canvas.removeEventListener('touchstart', handleDragStart);
         canvas.addEventListener('touchstart', handleDragStart, { passive: false });
 
         videoPlayer.addEventListener('ended', () => switchToStaticImage());
-        videoPlayer.addEventListener('error', (e) => {
-            console.error(`Angle Drag Demo (${containerElement.id}): Video playback error.`, e);
-            switchToStaticImage();
-        });
-        // UX: Tap video to go back to selection
+        videoPlayer.addEventListener('error', (e) => switchToStaticImage());
         videoPlayer.addEventListener('click', () => {
-            if (!videoPlayer.paused) {
-                switchToStaticImage();
-            }
+            if (!videoPlayer.paused) switchToStaticImage();
         });
     }
 
-    // Expose a method to refresh dimensions, similar to the example
     containerElement.forceRefreshDimensions = function() {
-        console.log(`Angle Drag Demo (${containerElement.id}): forceRefreshDimensions called. Current image src: ${staticImage.getAttribute('src')}`);
+        console.log(`Angle Drag Demo (${containerElement.id}): forceRefreshDimensions called.`);
         if (!staticImage.getAttribute('src') || staticImage.getAttribute('src') !== INITIAL_IMAGE_PATH) {
-            console.log(`Angle Drag Demo (${containerElement.id}): Image source is different or not set. Re-initializing image source.`);
-            staticImage.src = INITIAL_IMAGE_PATH; // This will trigger onload in initializeInteractiveDemo if not already loaded
+            staticImage.src = INITIAL_IMAGE_PATH;
         } else if (staticImage.complete && staticImage.naturalWidth > 0) {
-            console.log(`Angle Drag Demo (${containerElement.id}): Image complete on refresh, running setupImageAndCanvas.`);
             setupImageAndCanvas();
         } else if (staticImage.getAttribute('src')) {
-             console.log(`Angle Drag Demo (${containerElement.id}): Image src is set, but not complete or naturalWidth is 0. Onload should handle it.`);
-             // If onload is not firing, might need to re-trigger it.
-             if (!staticImage.onload) { // if onload was nulled
-                staticImage.onload = () => { /* as in initializeInteractiveDemo */
+            if (!staticImage.onload) {
+                staticImage.onload = () => {
                     staticImage.onload = null;
                     if (staticImage.naturalWidth > 0 && staticImage.naturalHeight > 0) setupImageAndCanvas();
-                 };
-             }
+                };
+            }
         } else {
-            console.log(`Angle Drag Demo (${containerElement.id}): Image src not set. Setting it now.`);
             staticImage.src = INITIAL_IMAGE_PATH;
         }
     };
 
-    // Initial data fetch for video angles
-    if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-        debugFilenameDisplay.textContent = "Loading angle data...";
-    }
-
     fetch(VIDEO_DATA_PATH)
         .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status} while fetching ${VIDEO_DATA_PATH}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status} while fetching ${VIDEO_DATA_PATH}`);
             return response.json();
         })
         .then(data => {
             videoAngleData = data;
             availableUserAngles = Object.keys(videoAngleData).map(parseFloat).sort((a, b) => a - b);
             if (availableUserAngles.length === 0) {
-                 console.error(`Angle Drag Demo (${containerElement.id}): No angles found in ${VIDEO_DATA_PATH}.`);
-                 if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                    debugFilenameDisplay.textContent = `Error: No angles in ${VIDEO_DATA_PATH}.`;
-                }
-                // Proceed with initialization to show the image at least
-            } else {
-                 console.log(`Angle Drag Demo (${containerElement.id}): Loaded ${availableUserAngles.length} angles:`, availableUserAngles);
-                 if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                    debugFilenameDisplay.textContent = "Angle data loaded. Initializing demo.";
-                }
+                console.error(`Angle Drag Demo (${containerElement.id}): No angles in ${VIDEO_DATA_PATH}.`);
             }
             initializeInteractiveDemo();
         })
         .catch(error => {
-            console.error(`Angle Drag Demo (${containerElement.id}): Fatal Error fetching or processing video data from ${VIDEO_DATA_PATH}:`, error);
-            if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
-                debugFilenameDisplay.textContent = `Error: Failed to load ${VIDEO_DATA_PATH}. Check console.`;
-            }
-            initializeInteractiveDemo(); // Attempt to init basic structure (image display) anyway
+            console.error(`Angle Drag Demo (${containerElement.id}): Error fetching video data ${VIDEO_DATA_PATH}:`, error);
+            initializeInteractiveDemo();
         });
 }
