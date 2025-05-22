@@ -665,9 +665,12 @@ future research.
         <h2 class="title is-3">Training dataset diversity</h2>
       </div>
 
-      <br>
+
+      <br><br>
       <h2 class="subtitle has-text-centered">
-         Global wind force model sample training data. i'th row is angle 45*i, columns are varying strength.
+         The global wind force model is trained on 15k synthetic videos of flags in the wind.
+         The model learns how wind is supposed to effect the flags and generalizes the wind control signal
+         to diverse types of motions, including tethered and aerodynamic motion, as well as fluid dynamics.
       </h2>
       
 
@@ -677,22 +680,25 @@ future research.
 
 
 
-      <br>
+      <br><br>
       <h2 class="subtitle has-text-centered">
-         Local point force model sample training data, part 1: poking plants. i'th row is angle 45*i, columns are varying strength.
+        The local point force model is trained on 11k videos of plants being poked, and 12k videos of balls being poked.
+        This unified dataset allows for modeling of linear motions, as well as oscillatory and complex motions.
       </h2>
       <video poster="" autoplay="" muted="" loop="" playsinline="">
         <source src="./force-prompting-static/videos_training_data/plant/angle_180.mp4" type="video/mp4">
       </video>
-
-
-      <br>
-      <h2 class="subtitle has-text-centered">
-         Local point force model sample training data, part 2: poking soccer balls. i'th row is angle 90*i, columns are varying strength.
-      </h2>
       <video poster="" autoplay="" muted="" loop="" playsinline="">
         <source src="./force-prompting-static/videos_training_data/ball_soccer/angle_90.mp4" type="video/mp4">
       </video>
+
+      <br><br>
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <a href="gallery_synthetic_training_data.html" class="button is-secondary"><i><b>See more examples!</b></i></a>
+        </div>
+      </div>
+      <br><br>
 
     </div>
   </div>
