@@ -76,19 +76,74 @@ function initAngleSelectorInstance(containerElement) {
     }
 
 
-    function convertMathAngleToUserAngle(mathAngleRad) {
-        let mathAngleDeg = mathAngleRad * (180 / Math.PI);
-        if (mathAngleDeg < 0) mathAngleDeg += 360; // Normalize to 0-360
-        // User: L=0, B=90, R=180, T=270
-        // Math: L=180, B=270, R=0, T=90
-        return (mathAngleDeg - 180 + 360) % 360;
+    function convertMathAngleToUserAngle(angleRadFromAtan2_CanvasY_Down) {
+        // Step 1: Convert the input angle (from atan2 where canvas Y increases downwards) to degrees.
+        // This angle has: Right=0, CanvasTop=270 (or -90), Left=180, CanvasBottom=90.
+        let canvasAngleDeg = angleRadFromAtan2_CanvasY_Down * (180 / Math.PI);
+        if (canvasAngleDeg < 0) {
+            canvasAngleDeg += 360; // Normalize to 0-360
+        }
+
+        // Step 2: Convert 'canvasAngleDeg' to a "Standard Mathematical Angle".
+        // Standard Math Angle: Right=0, Up=90, Left=180, Down=270.
+        // If canvasAngleDeg is 0 (Right), standardMathAngleDeg is 0.
+        // Otherwise, standardMathAngleDeg = (360 - canvasAngleDeg) % 360.
+        // This effectively mirrors the angle across the x-axis for non-zero values.
+        let standardMathAngleDeg;
+        if (canvasAngleDeg === 0) { // Handle Right case separately to avoid 360%360=0 turning into 0 from 360-0
+            standardMathAngleDeg = 0;
+        } else {
+            standardMathAngleDeg = (360 - canvasAngleDeg) % 360;
+        }
+        // Let's test this conversion from canvasAngleDeg to standardMathAngleDeg:
+        // - Bead Right: canvasAngleDeg = 0   => standardMathAngleDeg = 0. (Correct)
+        // - Bead Top (on canvas): canvasAngleDeg = 270 => standardMathAngleDeg = (360-270)%360 = 90. (Correct: Standard Up)
+        // - Bead Left: canvasAngleDeg = 180  => standardMathAngleDeg = (360-180)%360 = 180. (Correct)
+        // - Bead Bottom (on canvas): canvasAngleDeg = 90  => standardMathAngleDeg = (360-90)%360 = 270. (Correct: Standard Down)
+
+        // Step 3: Apply your specified mapping: UserAngle = (StandardMathAngle + 180) % 360
+        // This is the angle that will be used for your JSON keys.
+        let userAngleForJsonLookup = (standardMathAngleDeg + 180) % 360;
+
+        // Let's trace your examples with this full conversion:
+        // 1. Bead on Right:
+        //    canvasAngleDeg = 0      => standardMathAngleDeg = 0
+        //    userAngleForJsonLookup = (0 + 180) % 360 = 180. (Matches your "bead on right: 180")
+        // 2. Bead on Upper Right (Standard Math 45°):
+        //    This means canvasAngleDeg would be 315° (or -45°). (Because standard 45° is Up-Right, so canvas Y is negative from center)
+        //    canvasAngleDeg = 315    => standardMathAngleDeg = (360-315)%360 = 45
+        //    userAngleForJsonLookup = (45 + 180) % 360 = 225. (Matches your "bead on upper right: 225")
+        // 3. Bead on Top:
+        //    canvasAngleDeg = 270    => standardMathAngleDeg = 90
+        //    userAngleForJsonLookup = (90 + 180) % 360 = 270. (Matches your "bead on top: 270")
+        // 4. Bead on Top Left (Standard Math 135°):
+        //    This means canvasAngleDeg would be 225° (or -135°).
+        //    canvasAngleDeg = 225    => standardMathAngleDeg = (360-225)%360 = 135
+        //    userAngleForJsonLookup = (135 + 180) % 360 = 315. (Matches your "bead on top left: 315")
+
+        return userAngleForJsonLookup;
     }
 
-    function convertUserAngleToMathAngleRad(userAngleDeg) {
-        // User: L=0, B=90, R=180, T=270
-        // Math: L=180, B=270, R=0, T=90
-        let mathAngleDeg = (userAngleDeg + 180) % 360;
-        return mathAngleDeg * (Math.PI / 180);
+    // Potential update for convertUserAngleToMathAngleRad if drawing is off:
+    function convertUserAngleToMathAngleRad(userAngleDegFromJsonOrLastSelected) {
+        // userAngleDegFromJsonOrLastSelected is your target value (e.g., 180 for Right, 225 for UpperRight)
+
+        // Inverse of Step 3: Get standardMathAngleDeg
+        // userAngle = (standardMath + 180) % 360  => standardMath = (userAngle - 180 + 360) % 360
+        let standardMathAngleDeg = (userAngleDegFromJsonOrLastSelected - 180 + 360) % 360;
+
+        // Inverse of Step 2: Get canvasAngleDeg
+        // standardMath = (360 - canvasAngle) % 360 (for non-zero) or standardMath = 0 if canvasAngle = 0
+        // This means canvasAngle = (360 - standardMath) % 360 (for non-zero) or canvasAngle = 0 if standardMath = 0
+        let canvasAngleDeg;
+        if (standardMathAngleDeg === 0) {
+            canvasAngleDeg = 0;
+        } else {
+            canvasAngleDeg = (360 - standardMathAngleDeg) % 360;
+        }
+
+        // Convert canvasAngleDeg to radians for drawing
+        return canvasAngleDeg * (Math.PI / 180);
     }
 
     function findClosestUserAngle(targetUserAngleDeg, userAngleList) {
@@ -273,6 +328,7 @@ function initAngleSelectorInstance(containerElement) {
             if (ANGLE_SELECTOR_DEBUG_SHOW_FILENAME && debugFilenameDisplay) {
                 debugFilenameDisplay.textContent = `Selected: ${closestUserAngle.toFixed(1)}° User. File: ${videoFilename}`;
             }
+            console.log("Serving MP4:", videoFilename);
             videoPlayer.src = VIDEOS_BASE_PATH + videoFilename;
 
             const onVideoReadyToPlay = () => {
