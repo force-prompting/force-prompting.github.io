@@ -612,7 +612,7 @@ future research.
                 <h3 class="title is-5 has-text-centered">Tethered Motion</h3>
                 <div class="line-drag-gallery-thumbnails-group">
                   <img src="force-prompting-static/demo-wind-videos/dress1/initial_frame.png" alt="Thumbnail Wind Dress" class="line-drag-gallery-thumb" data-target="wind-gallery-item-dress1">
-                  <img src="force-prompting-static/demo-wind-videos/src-videos-wind/hair3.png" alt="Thumbnail Wind Hair (Tethered)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-hair3-tethered">
+                  <img src="force-prompting-static/demo-wind-videos/hair3/initial_frame.png" alt="Thumbnail Wind Hair" class="line-drag-gallery-thumb" data-target="wind-gallery-item-hair3">
                 </div>
               </div>
 
@@ -645,10 +645,10 @@ future research.
                 </div>
               </div>
 
-              <div id="wind-gallery-item-hair3-tethered" class="line-drag-gallery-item">
+              <div id="wind-gallery-item-hair3" class="line-drag-gallery-item">
                 <div id="angleDemoContainerHair3_gallery_tethered" class="js-angle-drag-demo"
-                    data-root-dir="force-prompting-static/demo-wind-videos/src-videos-wind/"
-                    data-initial-image-file="hair3.png"
+                    data-root-dir="force-prompting-static/demo-wind-videos/hair3/"
+                    data-initial-image-file="initial_frame.png"
                     data-videos-dir="videos/"
                     data-specs-file="video_specs.json"
                     style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
@@ -1231,7 +1231,7 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
     // Initialize the second gallery (wind videos) with a hair video as default
     // You can change 'wind-gallery-item-hair3-tethered' to another hair video ID if you prefer:
     // e.g., 'wind-gallery-item-hair3-aero' or 'wind-gallery-item-hair3-fluid'
-    initializeGallery('#interactiveWindGallery', 'wind-gallery-item-hair3-tethered');
+    initializeGallery('#interactiveWindGallery', 'wind-gallery-item-hair3');
 
     // Arrange icons for all galleries after they are initialized
     arrangeIconRows();
