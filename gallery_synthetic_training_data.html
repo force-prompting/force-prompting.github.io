@@ -234,14 +234,16 @@
         </div>
       </div>
       <br><br>
-      
+
       <div class="columns is-centered has-text-centered">
         <h2 class="title is-3">Gallery: Synthetic Training Data</h2>
       </div>
 
       <br>
       <h2 class="subtitle has-text-centered">
-         Global wind force model sample training data. i'th row is angle 45*i, columns are varying strength.
+        Global wind force model sample training data. 
+        Columns represent varying <strong>force magnitude</strong>, and rows represent varying <strong>force angles</strong>,
+        with row <code>n/8</code> being an angle of <code>45*n</code> degrees.
       </h2>
       
       <video poster="" autoplay="" muted="" loop="" playsinline="">
@@ -270,9 +272,11 @@
       </video>
 
 
-      <br>
+      <br><br><br><br>
       <h2 class="subtitle has-text-centered">
-         Local point force model sample training data, part 1: poking plants. i'th row is angle 45*i, columns are varying strength.
+        Local point force model sample training data, part 1: poking plants.
+        Columns represent varying <strong>force magnitude</strong>, and rows represent varying <strong>force angles</strong>,
+        with row <code>n/8</code> being an angle of <code>45*n</code> degrees.
       </h2>
       <video poster="" autoplay="" muted="" loop="" playsinline="">
         <source src="./force-prompting-static/videos_training_data/plant/angle_0.mp4" type="video/mp4">
@@ -299,9 +303,11 @@
         <source src="./force-prompting-static/videos_training_data/plant/angle_315.mp4" type="video/mp4">
       </video>
 
-      <br>
+      <br><br><br><br>
       <h2 class="subtitle has-text-centered">
-         Local point force model sample training data, part 2: poking soccer balls. i'th row is angle 90*i, columns are varying strength.
+        Local point force model sample training data, part 2: poking soccer balls.
+        Columns represent varying <strong>force magnitude</strong>, and rows represent varying <strong>force angles</strong>,
+        with row <code>n/4</code> being an angle of <code>90*n</code> degrees.
       </h2>
       <video poster="" autoplay="" muted="" loop="" playsinline="">
         <source src="./force-prompting-static/videos_training_data/ball_soccer/angle_0.mp4" type="video/mp4">
@@ -316,9 +322,12 @@
         <source src="./force-prompting-static/videos_training_data/ball_soccer/angle_270.mp4" type="video/mp4">
       </video>
 
-      <br>
+      <br><br><br><br>
       <h2 class="subtitle has-text-centered">
-         Local point force model sample training data, part 2: poking bowling balls. i'th row is angle 90*i, columns are varying strength.
+        Local point force model sample training data, part 3: poking bowling balls.
+        Columns represent varying <strong>force magnitude</strong>, and rows represent varying <strong>force angles</strong>,
+        with row <code>n/4</code> being an angle of <code>90*n</code> degrees.
+        The bowling balls weigh <code>4x</code> as much as the soccer balls, so they travel a shorter distance.
       </h2>
       <video poster="" autoplay="" muted="" loop="" playsinline="">
         <source src="./force-prompting-static/videos_training_data/ball_bowling/angle_0.mp4" type="video/mp4">
