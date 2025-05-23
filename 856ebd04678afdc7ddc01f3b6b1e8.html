@@ -1119,15 +1119,82 @@ future research.
 </section>
 
 <section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <br><br>
-      <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3">Analysis</h2>
+  <div class="columns is-multiline is-variable is-4 is-vcentered is-centered" style="padding-top: 0;">
+    <div class="column is-four-fifths">
+      <div class="has-text-centered">
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Analysis of Effect of Text Keywords on Generalization</h2>
+          </div>
       </div>
-      <h2 class="subtitle has-text-centered">
-        What goes in here?
+
+      <h2 class="subtitle">
+        We find that the usage of standard keywords (e.g. "wind", "blows") <b>at train time</b> are crucial for generalization of the wind model. Interestingly
+        whether they are present or not at inference time does not seem to matter significantly. We hypothesize that using these keywords at train time allow
+        the model to connect the conditioning signal with these keywords and the video distributions they represent.
       </h2>
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width">
+    <h3 class="title is-4">"Wind" keyword is important at train time but not at inference time</h3>
+      <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+        <source src="./force-prompting-static/analysis/analysis_keywords_joint.mp4" type="video/mp4">
+      </video>
+          </div>
+      </div>
+
+
+        <!-- Weird for this to be here, but whatever -->
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-full-width" style="margin-top: 3rem; margin-bottom: 1.5rem;">
+            <h2 class="title is-3">Analysis of Effect of Visual Diversity on Generalization</h2>
+          </div>
+        </div>
+        
+	<h2 class="subtitle">
+        Our main finding is the surprising generalization given limited paired data; however this generalization still requires strategically selecting certain types of visual diversity. Below we ablate several of these types of diversity and their effects when they are removed. While we find the generalization ability promising, we also believe that more diverse training data will improve the robustness of the model. 
+      </h2>
+
+        <div class="columns is-multiline is-variable is-3">
+          <div class="column is-third">
+            <div class="has-text-centered">
+  
+              <div class="subtitle-with-button" style="margin-bottom: 0.5rem;">
+                <h2 class="title is-4">Background Diversity</h2>
+              </div>
+  
+              <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <source src="./force-prompting-static/analysis/analysis_diversity_background.mp4" type="video/mp4" controls height="240">
+              </video>
+            </div>
+          </div>
+          <div class="column is-third">
+            <div class="has-text-centered">
+  
+              <div class="subtitle-with-button" style="margin-bottom: 0.5rem;" style="width: 80%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <h2 class="title is-4">Number of Flags for Wind</h2>
+              </div>
+  
+              <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <source src="./force-prompting-static/analysis/analysis_diversity_flag.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div class="column is-third">
+            <div class="has-text-centered">
+  
+              <div class="subtitle-with-button" style="margin-bottom: 0.5rem;">
+                <h2 class="title is-4" >Number of Balls for Poke</h2>
+              </div>
+  
+              <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <source src="./force-prompting-static/analysis/analysis_diversity_ball.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
