@@ -657,10 +657,10 @@ future research.
         <section class="section hero is-light" id="interactiveWindGallery">
           <div class="container is-max-desktop">
             <div class="columns is-centered">
-              <div class="column is-two-thirds has-text-centered">
-                <h2 class="title is-3">Global Force Prompts</h2><br>
+              <div class="column is-two-thirds">
+                <h2 class="title is-3 has-text-centered">Global Force Prompts</h2><br>
                 <h2 class="subtitle" style="margin-bottom: 1.5rem;">
-                  <b>Interactive Force Prompting Demos: Try It Yourself!</b> Click on a thumbnail below to select a demo. Then, click on the wind icon to select a wind direction and see the generated video!
+                  <b>Interactive Force Prompting Demos: Try It Yourself!</b> Click on a thumbnail below to select a demo. Then, click on the wind icon to select a wind direction and release the mouse to see the generated video!
                 </h2>
               </div>
             </div>
@@ -671,6 +671,8 @@ future research.
                 <div class="line-drag-gallery-thumbnails-group">
                   <img src="force-prompting-static/demo-wind-videos/dress1/initial_frame.png" alt="Thumbnail Wind Dress" class="line-drag-gallery-thumb" data-target="wind-gallery-item-dress1">
                   <img src="force-prompting-static/demo-wind-videos/hair3/initial_frame.png" alt="Thumbnail Wind Hair" class="line-drag-gallery-thumb" data-target="wind-gallery-item-hair3">
+                  <img src="force-prompting-static/demo-wind-videos/paperlantern1/initial_frame.png" alt="Thumbnail Wind paperlantern1" class="line-drag-gallery-thumb" data-target="wind-gallery-item-paperlantern1">
+                  <img src="force-prompting-static/demo-wind-videos/whitecloth4/initial_frame.png" alt="Thumbnail Wind whitecloth4" class="line-drag-gallery-thumb" data-target="wind-gallery-item-whitecloth4">
                 </div>
               </div>
 
@@ -678,13 +680,19 @@ future research.
                 <h3 class="title is-5 has-text-centered">Aerodynamic Motion</h3>
                 <div class="line-drag-gallery-thumbnails-group">
                   <img src="force-prompting-static/demo-wind-videos/inflatabletube3/initial_frame.png" alt="Thumbnail Wind inflatabletube3" class="line-drag-gallery-thumb" data-target="wind-gallery-item-inflatabletube3">
+                  <img src="force-prompting-static/demo-wind-videos/bubbles1/initial_frame.png" alt="Thumbnail Wind bubbles1" class="line-drag-gallery-thumb" data-target="wind-gallery-item-bubbles1">
+                  <img src="force-prompting-static/demo-wind-videos/confetti1/initial_frame.png" alt="Thumbnail Wind confetti1" class="line-drag-gallery-thumb" data-target="wind-gallery-item-confetti1">
+                  <img src="force-prompting-static/demo-wind-videos/confetti2/initial_frame.png" alt="Thumbnail Wind confetti2" class="line-drag-gallery-thumb" data-target="wind-gallery-item-confetti2">
+                  <img src="force-prompting-static/demo-wind-videos/fallingleaves1/initial_frame.png" alt="Thumbnail Wind fallingleaves1" class="line-drag-gallery-thumb" data-target="wind-gallery-item-fallingleaves1">
                 </div>
               </div>
 
               <div class="gallery-category-box" id="wind-category-fluid" style="background-color: #f8bbd0;">
                 <h3 class="title is-5 has-text-centered">Fluid Dynamics</h3>
                 <div class="line-drag-gallery-thumbnails-group">
-                  <img src="force-prompting-static/demo-wind-videos/steamybeverage2/initial_frame.png" alt="Thumbnail Wind Hair (Fluid)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-steamybeverage2">
+                  <img src="force-prompting-static/demo-wind-videos/steamybeverage2/initial_frame.png" alt="Thumbnail steamybeverage2 (Fluid)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-steamybeverage2">
+                  <img src="force-prompting-static/demo-wind-videos/campfire4/initial_frame.png" alt="Thumbnail campfire4 (Fluid)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-campfire4">
+                  <img src="force-prompting-static/demo-wind-videos/chimney1/initial_frame.png" alt="Thumbnail chimney1 (Fluid)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-chimney1">
                 </div>
               </div>
             </div>
@@ -741,6 +749,113 @@ future research.
                     <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
                 </div>
               </div>
+
+              <div id="wind-gallery-item-bubbles1" class="line-drag-gallery-item">
+                <div id="angleDemoContainer-bubbles1" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/bubbles1/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-campfire4" class="line-drag-gallery-item">
+                <div id="angleDemoContainer-campfire4" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/campfire4/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-chimney1" class="line-drag-gallery-item">
+                <div id="angleDemoContainer-chimney1" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/chimney1/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-confetti1" class="line-drag-gallery-item">
+                <div id="angleDemoContainer-confetti1" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/confetti1/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-confetti2" class="line-drag-gallery-item">
+                <div id="angleDemoContainer-confetti2" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/confetti2/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-fallingleaves1" class="line-drag-gallery-item">
+                <div id="angleDemoContainer-fallingleaves1" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/fallingleaves1/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-paperlantern1" class="line-drag-gallery-item">
+                <div id="angleDemoContainer-paperlantern1" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/paperlantern1/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-whitecloth4" class="line-drag-gallery-item">
+                <div id="angleDemoContainer-whitecloth4" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/whitecloth4/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+
+
             </div>
           </div>
         </section>
