@@ -1025,7 +1025,97 @@ future research.
       <div class="columns is-centered has-text-centered">
         <h2 class="title is-3">Limitations</h2>
       </div>
-      <h2 class="subtitle has-text-centered">
+      <br>
+
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-4">Failure Case #1: The Physics is Out-of-Domain for the Base Video Model</h2>
+      </div>
+
+
+      <div class="columns is-centered"> 
+        <div class="column">
+          <h2 class="subtitle has-text-centered">
+            <i>The dust is blown in the prompted direction, but the base video model has difficulty generating a physically plausible person-plow-ground interaction</i>
+          </h2>
+        </div>
+        <div class="column">
+          <h2 class="subtitle has-text-centered">
+            <i>The kite is blown in the prompted direction, but the base video model has difficulty generating a physically plausible video of a kite dragging a person</i>
+          </h2>
+        </div>
+        <div class="column">
+          <h2 class="subtitle has-text-centered">
+            <i>The egg rolls in the prompted direction, but the base video model has difficulty rolling non-spherical objects, so the egg appears to float</i>
+          </h2>
+        </div>
+      </div>
+
+      <div class="columns is-centered"> 
+        <div class="column">
+          <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
+            <source src="./force-prompting-static/failure_cases/step-5000__file_id__dust2__speed_0.50__angle_0.0__video_3_prompt.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="column">
+          <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
+            <source src="./force-prompting-static/failure_cases/step-5000__file_id__kite2__speed_0.67__angle_0.0__video_0_prompt.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="column">
+          <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
+            <source src="./force-prompting-static/failure_cases/step-5000__file_id__egg1__xpos_0.22__ypos_0.47__angle_270.00__force_0.50___video_0_with_pretty_force_prompt.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+
+
+      <div class="columns is-centered has-text-centered">
+        <h2 class="title is-4">Failure Case #2: The Base Video Model's Prior Competes with the Force Prompt </h2>
+      </div>
+
+      <div class="columns is-centered"> 
+        <div class="column">
+          <h2 class="subtitle has-text-centered">
+            <i>The rocking chair moves in the prompted direction, but the base video model has trouble distinguishing between foreground and background objects</i>
+          </h2>
+        </div>
+        <div class="column">
+          <h2 class="subtitle has-text-centered">
+            <i>
+              The rubber duck moves in the prompted direction but bobs up and down due to the base model's prior. 
+              Also, all objects move because the base model struggles with object atomicity for complex scenes
+            </i>
+          </h2>
+        </div>
+        <div class="column">
+          <h2 class="subtitle has-text-centered">
+            <i>The confetti moves in the prompted direction, but the base video model forces the scene to conjure extra confetti</i>
+          </h2>
+        </div>
+      </div>
+
+      <div class="columns is-centered"> 
+        <div class="column">
+          <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
+            <source src="./force-prompting-static/failure_cases/step-5000__file_id__rockingchair1__xpos_0.32__ypos_0.58__angle_0.00__force_0.50___video_0_with_pretty_force_prompt.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="column">
+          <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
+            <source src="./force-prompting-static/failure_cases/step-5000__file_id__rubberduck1__xpos_0.47__ypos_0.49__angle_180.00__force_0.50___video_0_with_pretty_force_prompt.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="column">
+          <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
+            <source src="./force-prompting-static/failure_cases/step-5000__file_id__confetti3__speed_0.50__angle_180.0__video_2_prompt.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <!-- The base video model has a strong prior for the image, and the Force Prompt is fighting against it -->
+      
+      <!-- <h2 class="subtitle has-text-centered">
         So I think limitations we should talk about the occasional "video prior" failure (where if you try to force prompt out of what the base model is good for, it struggles -- the hair blowing backwards and swapping the neck direction is a good example of that).
         We should also talk about "some breakages in generalization" where things sometimes become flags.
         and say, we hope both of these will get better. or more specifically, for #1, this should get better as base model improves; 
@@ -1033,7 +1123,7 @@ future research.
         "The point of the paper is not to replace training data diversity. 
         The point of the paper is to introduce the task and show that even with limited resources you can still get something compelling. 
         We expect the results will improve and be more robust as training data becomes larger and more diverse"
-      </h2>
+      </h2> -->
     </div>
   </div>
 </section>
