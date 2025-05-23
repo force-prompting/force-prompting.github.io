@@ -685,7 +685,8 @@ future research.
               <div class="gallery-category-box" id="wind-category-fluid" style="background-color: #f8bbd0;">
                 <h3 class="title is-5 has-text-centered">Fluid Dynamics</h3>
                 <div class="line-drag-gallery-thumbnails-group">
-                  <img src="force-prompting-static/demo-wind-videos/steamybeverage2/initial_frame.png" alt="Thumbnail Wind Hair (Fluid)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-steamybeverage2">
+                  <img src="force-prompting-static/demo-wind-videos/steamybeverage2/initial_frame.png" alt="Thumbnail steamybeverage2 (Fluid)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-steamybeverage2">
+                  <img src="force-prompting-static/demo-wind-videos/campfire4/initial_frame.png" alt="Thumbnail campfire4 (Fluid)" class="line-drag-gallery-thumb" data-target="wind-gallery-item-campfire4">
                 </div>
               </div>
             </div>
@@ -746,6 +747,19 @@ future research.
               <div id="wind-gallery-item-bubbles1" class="line-drag-gallery-item">
                 <div id="angleDemoContainer-bubbles1" class="js-angle-drag-demo"
                     data-root-dir="force-prompting-static/demo-wind-videos/bubbles1/"
+                    data-initial-image-file="initial_frame.png"
+                    data-videos-dir="videos/"
+                    data-specs-file="video_specs.json"
+                    style="max-width: 560px; width: 90%; margin: 20px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; position: relative; cursor: pointer;">
+                    <img class="angle-static-image" src="" alt="Interactive Angle Selector - Hair (Fluid)" style="display: block; width: 100%; height: auto;">
+                    <canvas class="angle-canvas-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    <video class="angle-video-player" playsinline style="display: none; width: 100%; height: auto;"></video>
+                </div>
+              </div>
+
+              <div id="wind-gallery-item-campfire4" class="line-drag-gallery-item">
+                <div id="angleDemoContainer-campfire4" class="js-angle-drag-demo"
+                    data-root-dir="force-prompting-static/demo-wind-videos/campfire4/"
                     data-initial-image-file="initial_frame.png"
                     data-videos-dir="videos/"
                     data-specs-file="video_specs.json"
