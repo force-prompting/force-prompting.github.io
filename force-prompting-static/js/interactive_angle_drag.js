@@ -2,7 +2,7 @@
 
 const ANGLE_SELECTOR_DEBUG_SHOW_FILENAME = false; // Set to true for debugging
 const ANGLE_SELECTOR_CIRCLE_LINE_WIDTH_PX = 3; // Width of the circle outline
-const ANGLE_SELECTOR_CIRCLE_RADIUS_PROPORTION = 0.35; // Proportion of image width for the circle radius
+const ANGLE_SELECTOR_CIRCLE_RADIUS_PROPORTION = 0.39; // Proportion of image width for the circle radius
 const ANGLE_SELECTOR_CIRCLE_CENTER_X_PROPORTION = 0.5; // Center X of circle (0.5 = image center)
 const ANGLE_SELECTOR_CIRCLE_CENTER_Y_PROPORTION = 0.5; // Center Y of circle (0.5 = image center)
 const ANGLE_SELECTOR_DRAG_START_TOLERANCE_PX = 30; // How close to circle edge to start drag
@@ -12,7 +12,7 @@ const ICON_PATH = "force-prompting-static/demo-wind-videos/wind_pretty_print_180
 let iconImage = null;
 let iconLoaded = false;
 // NEW: Scale proportion for the icon relative to the main image width
-const ICON_SCALE_PROPORTION_OF_IMAGE_WIDTH = 0.1; // e.g., 10% of image width
+const ICON_SCALE_PROPORTION_OF_IMAGE_WIDTH = 0.12; // e.g., 10% of image width
 let actualIconDisplayWidthPx = 40; // Default, will be calculated
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -209,6 +209,29 @@ function initAngleSelectorInstance(containerElement) {
         switchToStaticImage(false); // Draw initial state
     }
 
+    function handleVideoInteractionInitiation(e) {
+        // Check if the video is currently being "served" (i.e., visible and playing)
+        if (videoPlayer.style.display === 'block' && !videoPlayer.paused && videoPlayer.readyState >= videoPlayer.HAVE_CURRENT_DATA) {
+
+            // Prevent default for touch events to avoid page scroll during the drag that's about to start.
+            if (e.type.startsWith('touch')) {
+                e.preventDefault(); 
+            }
+
+            console.log(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): Interaction on active video. Switching to static and initiating angle selection.`);
+
+            // Switch to the static image view. The canvas overlay will become active.
+            switchToStaticImage(); 
+
+            // Now, call handleDragStart as if the mousedown/touchstart occurred directly on the canvas.
+            // handleDragStart will use the event's coordinates to calculate the initial angle,
+            // set isDragging = true, and add document listeners for move/end.
+            handleDragStart(e);
+        }
+        // If the video is visible but paused, or not ready, this function does nothing on mousedown/touchstart.
+        // The 'ended' listener and other interactions will handle those cases as before.
+    }
+
     function handleDragStart(e) {
         // Check if canvas and circle parameters are initialized
         if (!imageWidth || !imageHeight || !circleRadiusPx) {
@@ -387,40 +410,60 @@ function initAngleSelectorInstance(containerElement) {
     function initializeInteractiveDemo() {
         staticImage.src = INITIAL_IMAGE_PATH;
         staticImage.onload = () => {
-            staticImage.onload = null;
-            console.log(`Angle Drag Demo (${containerElement.id}): Image loaded (${staticImage.naturalWidth}x${staticImage.naturalHeight}).`);
+            staticImage.onload = null; // Prevent re-triggering if src is set again
+            console.log(`Angle Drag Demo (<span class="math-inline">\{containerElement\.id\}\)\: Image loaded \(</span>{staticImage.naturalWidth}x${staticImage.naturalHeight}).`);
             if (staticImage.naturalWidth > 0 && staticImage.naturalHeight > 0) {
                 setupImageAndCanvas();
             } else {
                 console.error(`Angle Drag Demo (${containerElement.id}): Image has zero dimensions.`);
+                // Potentially hide or show an error message on the canvas/containerElement
             }
         };
         staticImage.onerror = () => {
             console.error(`Angle Drag Demo (${containerElement.id}): Error loading initial image.`);
+            // Potentially hide or show an error message on the canvas/containerElement
         };
 
+        // Ensure image onload/onerror are set before checking .complete if src might already be set
         if (staticImage.complete && staticImage.naturalWidth > 0 && staticImage.getAttribute('src') === INITIAL_IMAGE_PATH) {
-            setTimeout(setupImageAndCanvas, 0); // Already loaded
+            console.log(`Angle Drag Demo (${containerElement.id}): Image already loaded, setting up canvas.`);
+            setTimeout(setupImageAndCanvas, 0); // Call setupImageAndCanvas asynchronously
         }
 
+
+        // Listen for drag initiation on the canvas (when static image is shown)
         canvas.removeEventListener('mousedown', handleDragStart); // Ensure no double listeners
         canvas.addEventListener('mousedown', handleDragStart);
         canvas.removeEventListener('touchstart', handleDragStart); // Ensure no double listeners
         canvas.addEventListener('touchstart', handleDragStart, { passive: false });
 
+        // Video player event listeners
         videoPlayer.addEventListener('ended', () => {
-            // When video ends, switch to static. Icon will use lastSelectedUserAngleDeg (the actual angle).
+            // When video ends, switch to static. Icon will use lastSelectedUserAngleDeg.
             switchToStaticImage(); 
         });
         videoPlayer.addEventListener('error', (e) => {
             console.error(`Angle Drag Demo (${containerElement.id}): Video player error.`, e);
             switchToStaticImage(); // Switch to static on error
         });
-        videoPlayer.addEventListener('click', () => {
-            if (!videoPlayer.paused) {
-                switchToStaticImage(); // If user clicks video to stop it, show static image with icon at actual angle.
-            }
-        });
+
+        // --- MODIFICATION START ---
+        // REMOVE the old 'click' listener for videoPlayer:
+        // videoPlayer.removeEventListener('click', OLD_CLICK_HANDLER_IF_ANY); // Make sure to remove the correct one if it was named
+        // For example, if the old listener was an anonymous function, you might need to find a way to remove it
+        // or ensure this `initializeInteractiveDemo` is only called once per instance.
+        // Based on your provided code, the old listener was added anonymously within this function,
+        // so if `initializeInteractiveDemo` is re-run, new ones are added.
+        // For simplicity, we'll assume it's safe to just add the new ones and that
+        // the old anonymous 'click' listener won't conflict if this is part of a robust init.
+        // Ideally, you would store and remove the specific anonymous listener if needed.
+
+        // ADD new listeners for mousedown/touchstart on videoPlayer to initiate angle selection
+        videoPlayer.removeEventListener('mousedown', handleVideoInteractionInitiation); // Ensure no double listeners
+        videoPlayer.addEventListener('mousedown', handleVideoInteractionInitiation);
+        videoPlayer.removeEventListener('touchstart', handleVideoInteractionInitiation); // Ensure no double listeners
+        videoPlayer.addEventListener('touchstart', handleVideoInteractionInitiation, { passive: false });
+        // --- MODIFICATION END ---
     }
 
     containerElement.forceRefreshDimensions = function() {
