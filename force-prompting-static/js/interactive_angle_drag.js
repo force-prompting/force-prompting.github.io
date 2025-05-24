@@ -187,8 +187,25 @@ function initAngleSelectorInstance(containerElement) {
     }
 
     function setupImageAndCanvas() {
-        imageWidth = staticImage.offsetWidth;
-        imageHeight = staticImage.offsetHeight;
+        let currentOffsetWidth = staticImage.offsetWidth;
+        let currentOffsetHeight = staticImage.offsetHeight;
+
+        let determinedImageWidth = 0;
+        let determinedImageHeight = 0;
+
+        if (currentOffsetWidth > 0 && currentOffsetHeight > 0) {
+            determinedImageWidth = currentOffsetWidth;
+            determinedImageHeight = currentOffsetHeight;
+        } else if (staticImage.naturalWidth > 0 && staticImage.naturalHeight > 0) {
+            // Fallback to natural dimensions if offset dimensions are 0 (e.g., element is hidden)
+            console.warn(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): offsetWidth/offsetHeight is 0. This can happen if the element or its parent is hidden (e.g., display: none). Falling back to naturalWidth/naturalHeight (${staticImage.naturalWidth}x${staticImage.naturalHeight}) for canvas sizing.`);
+            determinedImageWidth = staticImage.naturalWidth;
+            determinedImageHeight = staticImage.naturalHeight;
+        }
+
+        // Update global imageWidth/imageHeight which are used by other functions like drawCircleAndIcon and switchToStaticImage
+        imageWidth = determinedImageWidth;
+        imageHeight = determinedImageHeight;
 
         if (imageWidth > 0 && imageHeight > 0) {
             canvas.width = imageWidth;
@@ -201,12 +218,14 @@ function initAngleSelectorInstance(containerElement) {
             lastSelectedUserAngleDeg = 0.0; // Initial "User Angle"
             currentBeadMathAngleRad = convertUserAngleToMathAngleRad(lastSelectedUserAngleDeg); // Corresponding math angle
 
-            console.log(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): Setup Canvas. Img: ${imageWidth}x${imageHeight}. Icon Width: ${actualIconDisplayWidthPx.toFixed(1)}px`);
+            console.log(`Angle Drag Demo (${containerElement.id || 'Unknown ID'}): Setup Canvas. Img (used for canvas): ${imageWidth}x${imageHeight}. Icon Width: ${actualIconDisplayWidthPx.toFixed(1)}px`);
         } else {
-            console.error(`Angle Drag Demo (${containerElement.id}): Failed to get valid image dimensions. Path: ${INITIAL_IMAGE_PATH}`);
+            // This is the original error condition if neither offset nor natural dimensions are valid
+            console.error(`Angle Drag Demo (${containerElement.id}): Failed to get valid image dimensions (neither offset nor natural are > 0). Path: ${INITIAL_IMAGE_PATH}`); // This is line 206 in the original code.
             canvas.style.display = 'none';
+            // imageWidth and imageHeight remain 0, switchToStaticImage will handle hiding canvas.
         }
-        switchToStaticImage(false); // Draw initial state
+        switchToStaticImage(false); // Draw initial state (or hide canvas if dimensions are invalid)
     }
 
     function handleVideoInteractionInitiation(e) {
@@ -411,23 +430,33 @@ function initAngleSelectorInstance(containerElement) {
         staticImage.src = INITIAL_IMAGE_PATH;
         staticImage.onload = () => {
             staticImage.onload = null; // Prevent re-triggering if src is set again
-            console.log(`Angle Drag Demo (<span class="math-inline">\{containerElement\.id\}\)\: Image loaded \(</span>{staticImage.naturalWidth}x${staticImage.naturalHeight}).`);
+            // Corrected console.log statement:
+            console.log(`Angle Drag Demo (${containerElement.id}): Image loaded (${staticImage.naturalWidth}x${staticImage.naturalHeight}). Path: ${INITIAL_IMAGE_PATH}`);
             if (staticImage.naturalWidth > 0 && staticImage.naturalHeight > 0) {
-                setupImageAndCanvas();
+                setupImageAndCanvas(); // This will now use the fallback if needed
             } else {
-                console.error(`Angle Drag Demo (${containerElement.id}): Image has zero dimensions.`);
+                console.error(`Angle Drag Demo (${containerElement.id}): Image loaded but has zero natural dimensions. Path: ${INITIAL_IMAGE_PATH}`);
                 // Potentially hide or show an error message on the canvas/containerElement
             }
         };
         staticImage.onerror = () => {
-            console.error(`Angle Drag Demo (${containerElement.id}): Error loading initial image.`);
+            console.error(`Angle Drag Demo (${containerElement.id}): Error loading initial image. Path: ${INITIAL_IMAGE_PATH}`);
             // Potentially hide or show an error message on the canvas/containerElement
         };
 
         // Ensure image onload/onerror are set before checking .complete if src might already be set
-        if (staticImage.complete && staticImage.naturalWidth > 0 && staticImage.getAttribute('src') === INITIAL_IMAGE_PATH) {
-            console.log(`Angle Drag Demo (${containerElement.id}): Image already loaded, setting up canvas.`);
-            setTimeout(setupImageAndCanvas, 0); // Call setupImageAndCanvas asynchronously
+        if (staticImage.complete && staticImage.getAttribute('src') === INITIAL_IMAGE_PATH) {
+            // console.log(`Angle Drag Demo (${containerElement.id}): Image already loaded, processing. Path: ${INITIAL_IMAGE_PATH}`);
+            // Defer to ensure DOM layout might have a chance, though naturalWidth/Height check is primary for data.
+            // The setupImageAndCanvas will handle if offsetWidth/Height are still 0.
+             if (staticImage.naturalWidth > 0 && staticImage.naturalHeight > 0) {
+                console.log(`Angle Drag Demo (${containerElement.id}): Image already complete with natural dimensions (${staticImage.naturalWidth}x${staticImage.naturalHeight}). Calling setupImageAndCanvas. Path: ${INITIAL_IMAGE_PATH}`);
+                setTimeout(setupImageAndCanvas, 0);
+            } else if (staticImage.naturalWidth === 0 && staticImage.naturalHeight === 0 && staticImage.complete) {
+                 console.error(`Angle Drag Demo (${containerElement.id}): Image already complete but has zero natural dimensions. Path: ${INITIAL_IMAGE_PATH}`);
+            } else {
+                 console.log(`Angle Drag Demo (${containerElement.id}): Image already complete but natural dimensions not positive or src mismatch. Will rely on onload if src is reset by forceRefresh or similar. Path: ${INITIAL_IMAGE_PATH}`);
+            }
         }
 
 
@@ -439,31 +468,17 @@ function initAngleSelectorInstance(containerElement) {
 
         // Video player event listeners
         videoPlayer.addEventListener('ended', () => {
-            // When video ends, switch to static. Icon will use lastSelectedUserAngleDeg.
-            switchToStaticImage(); 
+            switchToStaticImage();
         });
         videoPlayer.addEventListener('error', (e) => {
             console.error(`Angle Drag Demo (${containerElement.id}): Video player error.`, e);
             switchToStaticImage(); // Switch to static on error
         });
 
-        // --- MODIFICATION START ---
-        // REMOVE the old 'click' listener for videoPlayer:
-        // videoPlayer.removeEventListener('click', OLD_CLICK_HANDLER_IF_ANY); // Make sure to remove the correct one if it was named
-        // For example, if the old listener was an anonymous function, you might need to find a way to remove it
-        // or ensure this `initializeInteractiveDemo` is only called once per instance.
-        // Based on your provided code, the old listener was added anonymously within this function,
-        // so if `initializeInteractiveDemo` is re-run, new ones are added.
-        // For simplicity, we'll assume it's safe to just add the new ones and that
-        // the old anonymous 'click' listener won't conflict if this is part of a robust init.
-        // Ideally, you would store and remove the specific anonymous listener if needed.
-
-        // ADD new listeners for mousedown/touchstart on videoPlayer to initiate angle selection
-        videoPlayer.removeEventListener('mousedown', handleVideoInteractionInitiation); // Ensure no double listeners
+        videoPlayer.removeEventListener('mousedown', handleVideoInteractionInitiation);
         videoPlayer.addEventListener('mousedown', handleVideoInteractionInitiation);
-        videoPlayer.removeEventListener('touchstart', handleVideoInteractionInitiation); // Ensure no double listeners
+        videoPlayer.removeEventListener('touchstart', handleVideoInteractionInitiation);
         videoPlayer.addEventListener('touchstart', handleVideoInteractionInitiation, { passive: false });
-        // --- MODIFICATION END ---
     }
 
     containerElement.forceRefreshDimensions = function() {
