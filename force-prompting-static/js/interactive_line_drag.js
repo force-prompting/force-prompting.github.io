@@ -395,9 +395,16 @@ function initLineDragInstance(containerElement) {
         updateDebugFilename("Drag started.");
     }
 
+    // These constants should ideally match the internal visual properties of your arrowhead
+    // as defined within drawArrowOnContext. Assuming headLength = 25 and wingAngle = Math.PI / 6
+    // are used in drawArrowOnContext to define the arrowhead shape.
+    const ARROW_VISUAL_HEAD_SLANT_LENGTH = 25; // Corresponds to 'headLength' in drawArrowOnContext
+    const ARROW_VISUAL_WING_ANGLE = Math.PI / 6; // Corresponds to 'wingAngle' in drawArrowOnContext
+    const ARROW_VISUAL_HEAD_DEPTH = ARROW_VISUAL_HEAD_SLANT_LENGTH * Math.cos(ARROW_VISUAL_WING_ANGLE);
+
     function handleDragMove(e) {
         if (!isDragging || !interactionPointPx || jsonAllowedAngles.length < 2) return;
-        
+
         const rect = containerElement.getBoundingClientRect();
         let clientX, clientY;
         if (e.touches && e.touches.length > 0) {
@@ -432,14 +439,35 @@ function initLineDragInstance(containerElement) {
             const ratio = maxPixelDragLength / dragDistance;
             projectedDx *= ratio;
             projectedDy *= ratio;
+            dragDistance = maxPixelDragLength;
         }
         lastProjectedDx = projectedDx;
         lastProjectedDy = projectedDy;
 
-        drawGuidanceSliderAndBead(); // Clears canvas, draws bead/slider
-        if (Math.sqrt(projectedDx * projectedDx + projectedDy * projectedDy) > 1) {
-            // Draw arrow on the main canvas (ctx)
-            drawArrowOnContext(ctx, dragOriginX, dragOriginY, dragOriginX + projectedDx, dragOriginY + projectedDy);
+        drawGuidanceSliderAndBead();
+
+        if (dragDistance > 0.1) { // Only draw if there's a meaningful drag vector
+            const tailX = dragOriginX; // Arrow shaft starts at the bead
+            const tailY = dragOriginY;
+
+            // Current mouse position (projected) where the base of the arrowhead should be
+            const headBaseX = dragOriginX + projectedDx;
+            const headBaseY = dragOriginY + projectedDy;
+
+            // Unit vector in the direction of the drag
+            const unitVecX = projectedDx / dragDistance;
+            const unitVecY = projectedDy / dragDistance;
+
+            // Calculate the actual tip of the arrowhead
+            // It's ARROW_VISUAL_HEAD_DEPTH beyond the headBaseX/Y
+            const finalTipX = headBaseX + unitVecX * ARROW_VISUAL_HEAD_DEPTH;
+            const finalTipY = headBaseY + unitVecY * ARROW_VISUAL_HEAD_DEPTH;
+
+            drawArrowOnContext(ctx, tailX, tailY, finalTipX, finalTipY);
+        } else {
+            // If drag is very short, you might still want to clear or draw a default state
+            // For now, no arrow is drawn if dragDistance is too small.
+            // drawGuidanceSliderAndBead() would have cleared the canvas.
         }
     }
 
@@ -449,22 +477,51 @@ function initLineDragInstance(containerElement) {
 
         document.removeEventListener('mousemove', handleDragMove);
         document.removeEventListener('mouseup', handleDragEnd);
-        // ... remove other listeners ...
+        document.removeEventListener('touchmove', handleDragMove, { passive: false });
+        document.removeEventListener('touchend', handleDragEnd);
+        document.removeEventListener('touchcancel', handleDragEnd);
 
         if (!containerElement.isFullyInitialized || !interactionPointPx || Object.keys(videoData).length === 0 || !singleCoordKey || !imageWidth || !maxPixelDragLength) {
-            switchToStaticImage(); return;
+            switchToStaticImage();
+            return;
         }
 
         const pixelLength = Math.sqrt(lastProjectedDx * lastProjectedDx + lastProjectedDy * lastProjectedDy);
 
-        if (pixelLength < 5) {
+        // The bead is always drawn at interactionPointPx for the baked image
+        const beadCenterX = interactionPointPx.x;
+        const beadCenterY = interactionPointPx.y;
+
+        if (pixelLength < 5) { // Threshold for playing a video; arrow might still be drawn if > 0.1 for visual feedback
             updateDebugFilename("Drag too short, no video.");
-            switchToStaticImage(); // This will reset staticImage.src if needed, and clear canvas for bead
-            return;
+            // If an arrow was drawn for feedback (pixelLength > 0.1 but < 5),
+            // we might want to bake it or clear it.
+            // For simplicity, let's only bake a significant arrow.
+            // If we need to ensure the bead is on the baked image even without a significant arrow:
+            if (staticImage.getAttribute('src') === LINE_DEMO_INITIAL_IMAGE_PATH) { // Only if showing pristine image
+                const originalImageToDrawOn = new Image();
+                originalImageToDrawOn.onload = () => {
+                    const tempCompositeCanvas = document.createElement('canvas');
+                    tempCompositeCanvas.width = imageWidth; tempCompositeCanvas.height = imageHeight;
+                    const tempCompositeCtx = tempCompositeCanvas.getContext('2d');
+                    tempCompositeCtx.drawImage(originalImageToDrawOn, 0, 0, imageWidth, imageHeight);
+                    // Draw just the bead
+                    if (BEAD_RADIUS > 0) {
+                        drawArrowOnContext(tempCompositeCtx, beadCenterX, beadCenterY, beadCenterX, beadCenterY, BEAD_RADIUS, beadCenterX, beadCenterY);
+                    }
+                    staticImage.src = tempCompositeCanvas.toDataURL();
+                    switchToStaticImage(false); // Show the (potentially) updated static image
+                };
+                originalImageToDrawOn.onerror = () => switchToStaticImage();
+                originalImageToDrawOn.src = LINE_DEMO_INITIAL_IMAGE_PATH;
+                return; // Don't proceed to video logic
+            } else {
+                switchToStaticImage(); // Already showing some baked arrow, just switch
+                return;
+            }
         }
 
         const coordData = videoData[singleCoordKey];
-        // ... (video selection logic: actualAngleDeg, chosenAngleForVideo, closestAngleKey, normalizedForce, targetNumericForce, targetForceKey, angleData, videoFileArray)
         let actualAngleDeg = Math.atan2(-lastProjectedDy, lastProjectedDx) * (180 / Math.PI);
         if (actualAngleDeg < 0) actualAngleDeg += 360;
         const angle1 = jsonAllowedAngles[0]; const angle2 = jsonAllowedAngles[1];
@@ -480,42 +537,64 @@ function initLineDragInstance(containerElement) {
         if (!angleData) { switchToStaticImage(); return; }
         const videoFileArray = angleData[targetForceKey];
 
-
         if (videoFileArray && videoFileArray.length > 0) {
             const videoFilename = videoFileArray[0];
-            
+
             const originalImageToDrawOn = new Image();
             originalImageToDrawOn.onload = () => {
                 const tempCompositeCanvas = document.createElement('canvas');
-                tempCompositeCanvas.width = imageWidth; // Use dimensions from successful setup
+                tempCompositeCanvas.width = imageWidth;
                 tempCompositeCanvas.height = imageHeight;
                 const tempCompositeCtx = tempCompositeCanvas.getContext('2d');
 
-                tempCompositeCtx.drawImage(originalImageToDrawOn, 0, 0, imageWidth, imageHeight); // Draw pristine image
-                // Draw current arrow and bead onto this temporary canvas
-                drawArrowOnContext(tempCompositeCtx, dragOriginX, dragOriginY, dragOriginX + lastProjectedDx, dragOriginY + lastProjectedDy, BEAD_RADIUS, interactionPointPx.x, interactionPointPx.y);
-                
-                staticImage.src = tempCompositeCanvas.toDataURL(); // Update static image to show arrow briefly
+                tempCompositeCtx.drawImage(originalImageToDrawOn, 0, 0, imageWidth, imageHeight);
 
+                if (pixelLength > 0.1) { // Only draw arrow if drag was somewhat meaningful
+                    const tailX = beadCenterX; // Arrow shaft starts at the bead
+                    const tailY = beadCenterY;
+
+                    const headBaseX = beadCenterX + lastProjectedDx;
+                    const headBaseY = beadCenterY + lastProjectedDy;
+
+                    const unitVecX = lastProjectedDx / pixelLength;
+                    const unitVecY = lastProjectedDy / pixelLength;
+
+                    const finalTipX = headBaseX + unitVecX * ARROW_VISUAL_HEAD_DEPTH;
+                    const finalTipY = headBaseY + unitVecY * ARROW_VISUAL_HEAD_DEPTH;
+
+                    drawArrowOnContext(tempCompositeCtx, tailX, tailY, finalTipX, finalTipY, BEAD_RADIUS, beadCenterX, beadCenterY);
+                } else if (BEAD_RADIUS > 0) { // Draw only bead if no significant arrow
+                    drawArrowOnContext(tempCompositeCtx, beadCenterX, beadCenterY, beadCenterX, beadCenterY, BEAD_RADIUS, beadCenterX, beadCenterY);
+                }
+
+
+                staticImage.src = tempCompositeCanvas.toDataURL();
+                // ... (rest of video playing logic remains the same) ...
                 console.log(`Line Drag Demo (${containerElement.id}): Playing video: ${videoFilename}`);
                 updateDebugFilename(`Playing: ${videoFilename}`);
 
-                videoPlayer.style.display = 'none'; 
+                videoPlayer.style.display = 'none';
                 if (!videoPlayer.paused) videoPlayer.pause();
                 videoPlayer.src = LINE_DEMO_VIDEOS_BASE_PATH + videoFilename;
 
-                const onVideoReadyToPlay = () => { /* ... as before ... */ 
+                const onVideoReadyToPlay = () => {
                     videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay);
                     videoPlayer.removeEventListener('error', onVideoLoadError);
                     videoPlayer.style.width = imageWidth + 'px'; videoPlayer.style.height = imageHeight + 'px';
                     staticImage.style.display = 'none'; canvas.style.display = 'none';
                     videoPlayer.style.display = 'block';
-                    videoPlayer.play().catch(err => { switchToStaticImage(); });
+                    videoPlayer.play().catch(err => {
+                        console.error(`Line Drag Demo (${containerElement.id}): Video play failed.`, err);
+                        updateDebugFilename("Error: Video play() rejected.");
+                        switchToStaticImage();
+                    });
                 };
-                const onVideoLoadError = (e) => { /* ... as before ... */ 
+                const onVideoLoadError = (e) => {
                     videoPlayer.removeEventListener('loadeddata', onVideoReadyToPlay);
                     videoPlayer.removeEventListener('error', onVideoLoadError);
-                    switchToStaticImage(); 
+                    console.error(`Line Drag Demo (${containerElement.id}): Video load error.`, e);
+                    updateDebugFilename("Error: Video file load failed.");
+                    switchToStaticImage();
                 };
                 videoPlayer.addEventListener('loadeddata', onVideoReadyToPlay);
                 videoPlayer.addEventListener('error', onVideoLoadError);
@@ -523,13 +602,13 @@ function initLineDragInstance(containerElement) {
             };
             originalImageToDrawOn.onerror = () => {
                 console.error(`Line Drag Demo (${containerElement.id}): Failed to load initial image for drawing arrow overlay.`);
-                switchToStaticImage(); // Fallback
+                updateDebugFilename("Error: Initial image reload failed for overlay.");
+                switchToStaticImage();
             };
-            originalImageToDrawOn.src = LINE_DEMO_INITIAL_IMAGE_PATH; // Load pristine image
-
+            originalImageToDrawOn.src = LINE_DEMO_INITIAL_IMAGE_PATH;
         } else {
             updateDebugFilename(`No video for angle ${closestAngleKey}, force ${targetForceKey}.`);
-            switchToStaticImage(); // Reset to initial image and clean canvas
+            switchToStaticImage();
         }
     }
 
