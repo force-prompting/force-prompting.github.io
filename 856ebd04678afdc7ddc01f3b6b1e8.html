@@ -1187,78 +1187,91 @@ future research.
     <div class="hero-body">
       <br><br>
       <div class="columns is-centered has-text-centered">
-        <h2 class="title is-3" id="mass-understanding">Comparison to prior works that use physics simulator at inference</h2>
+        <h2 class="title is-3" id="mass-understanding">Force Prompting Can Recreate Some Demos for<br>Prior Works that Use a Physics Simulator at Inference</h2>
       </div>
       <h2 class="subtitle has-text-centered">
-        The <i>same force</i> results in <i>different motion</i> depending on the object's <i>inferred mass</i>
+        To demonstrate the point force model's versatility, we curate a benchmark using first-frame images from some prominent physics-in-the-loop papers.
+        We are <b style="color:red">not claiming</b> that the Force Prompting method outperforms those methods on visual fidelity or physical realism.
+        Rather, we wish to illustrate that our purely neural method can handle some of the same visual scenarios almost as effectively as approaches which require some combination of 3D assets and explicit physics simulation at inference time. 
       </h2>
       <div class="columns is-centered"> 
+
         <div class="column">
           <h2 class="subtitle has-text-centered">
-            <i><b>Single book</b> vs. <b>stack of books</b></i>
+            <i>Recreating a <b><a href="https://physdreamer.github.io/" target="_blank">PhysDreamer</a></b> (ECCV 2024) demo</i>
           </h2>
           <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
             <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__alocasiaphysdreamer1__xpos_0.30__ypos_0.65__angle_0.00__force_0.50___video_0_bold_arrow.mp4" type="video/mp4">
           </video>
         </div>
+
         <div class="column">
           <h2 class="subtitle has-text-centered">
-            <i><b>Empty laundry basket</b> vs. <b>full laundry basket</b></i>
+            <i>Recreating a <b><a href="https://github.com/tyhuang0428/DreamPhysics" target="_blank">DreamPhysics</a></b> (AAAI 2025) demo</i>
           </h2>
           <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
-            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__alocasiaphysdreamer1__xpos_0.30__ypos_0.65__angle_0.00__force_0.50___video_0_bold_arrow.mp4" type="video/mp4">
+            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__DreamPhysicsPoke1__xpos_0.40__ypos_0.67__angle_0.00__force_0.50___video_0_bold_arrow.mp4" type="video/mp4">
           </video>
         </div>
+
         <div class="column">
           <h2 class="subtitle has-text-centered">
-            <i><b>Single cube</b> vs. <b>stack of cubes</b></i>
+            <i>Recreating a <b><a href="https://mezzelfo.github.io/MotionCraft/" target="_blank">MotionCraft</a></b> (NeurIPS 2024) demo</i>
           </h2>
           <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
-            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__alocasiaphysdreamer1__xpos_0.30__ypos_0.65__angle_0.00__force_0.50___video_0_bold_arrow.mp4" type="video/mp4">
+            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__MotionCraftPoke1__xpos_0.66__ypos_0.40__angle_135.00__force_0.50__video_0_bold_arrow.mp4" type="video/mp4">
           </video>
         </div>
+
         <div class="column">
           <h2 class="subtitle has-text-centered">
-            <i><b>Wooden ornament</b> vs. <b>metal ornament</b></i>
+            <i>Recreating a <b><a href="https://xpandora.github.io/PhysGaussian/" target="_blank">PhysGaussian</a></b> (CVPR 2024) demo</i>
           </h2>
           <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
-            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__alocasiaphysdreamer1__xpos_0.30__ypos_0.65__angle_0.00__force_0.50___video_0_bold_arrow.mp4" type="video/mp4">
+            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__PhyGaussianPoke1__xpos_0.35__ypos_0.57__angle_270.00__force_0.50__video_0_bold_arrow.mp4" type="video/mp4">
           </video>
         </div>
+
       </div>
+
       <div class="columns is-centered"> 
+
         <div class="column">
           <h2 class="subtitle has-text-centered">
-            <i><b>Single book</b> vs. <b>stack of books</b></i>
+            <i>Recreating a <b><a href="https://stevenlsw.github.io/physgen/" target="_blank">PhysGen</a></b> (ECCV 2024) demo</i>
           </h2>
           <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
-            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__alocasiaphysdreamer1__xpos_0.30__ypos_0.65__angle_0.00__force_0.50___video_0_bold_arrow.mp4" type="video/mp4">
+            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__PhysGenPoke1__xpos_0.60__ypos_0.39__angle_180.00__force_0.50__video_0_bold_arrow.mp4" type="video/mp4">
           </video>
         </div>
+
         <div class="column">
           <h2 class="subtitle has-text-centered">
-            <i><b>Empty laundry basket</b> vs. <b>full laundry basket</b></i>
+            <i>Recreating a <b><a href="https://liuff19.github.io/Physics3D/" target="_blank">Physics3D</a></b> demo</i>
           </h2>
           <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
-            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__alocasiaphysdreamer1__xpos_0.30__ypos_0.65__angle_0.00__force_0.50___video_0_bold_arrow.mp4" type="video/mp4">
+            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__Physics3DPoke1__xpos_0.68__ypos_0.73__angle_0.00__force_0.50__video_0_bold_arrow.mp4" type="video/mp4">
           </video>
         </div>
+
         <div class="column">
           <h2 class="subtitle has-text-centered">
-            <i><b>Single cube</b> vs. <b>stack of cubes</b></i>
+            <i>Recreating a <b><a href="https://supertan0204.github.io/physmotion_website/" target="_blank">PhysMotion</a></b> demo</i>
           </h2>
           <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
-            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__alocasiaphysdreamer1__xpos_0.30__ypos_0.65__angle_0.00__force_0.50___video_0_bold_arrow.mp4" type="video/mp4">
+            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__PhysMotionPoke1__xpos_0.51__ypos_0.55__angle_0.00__force_0.50__video_0_bold_arrow.mp4" type="video/mp4">
           </video>
         </div>
+
         <div class="column">
           <h2 class="subtitle has-text-centered">
-            <i><b>Wooden ornament</b> vs. <b>metal ornament</b></i>
+            <i>Recreating a <b><a href="https://by-luckk.github.io/PhysGen3D/" target="_blank">PhysGen3D</a></b> demo</i>
           </h2>
           <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 100%; height: auto;">
-            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__alocasiaphysdreamer1__xpos_0.30__ypos_0.65__angle_0.00__force_0.50___video_0_bold_arrow.mp4" type="video/mp4">
+            <source src="./force-prompting-static/videos-comparison-to-prior-works/step-5000__file_id__PhysGen3DPoke1__xpos_0.61__ypos_0.44__angle_180.00__force_0.50__video_0_bold_arrow.mp4" type="video/mp4">
           </video>
         </div>
+
       </div>
 
     </div>
