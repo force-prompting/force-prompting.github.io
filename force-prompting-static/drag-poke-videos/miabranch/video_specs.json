@@ -1,0 +1,38 @@
+{
+    "(0.26, 0.7)": {
+        "125.00": {
+            "0.300": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_180.00__force_0.300__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_180.00__force_0.500__video_0.mp4"
+            ],
+            "0.700": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_180.00__force_0.700__video_0.mp4"
+            ],
+            "0.100": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_180.00__force_0.100__video_0.mp4"
+            ],
+            "0.900": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_180.00__force_0.900__video_0.mp4"
+            ]
+        },
+        "305.00": {
+            "0.100": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_0.00__force_0.300__video_0.mp4"
+            ],
+            "0.300": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_0.00__force_0.300__video_0.mp4"
+            ],
+            "0.500": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_0.00__force_0.500__video_0.mp4"
+            ],
+            "0.700": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_0.00__force_0.700__video_0.mp4"
+            ],
+            "0.900": [
+                "step-5000__file_id__mia_flower2__xpos_0.26__ypos_0.70__angle_0.00__force_0.900__video_0.mp4"
+            ]
+        }
+    }
+}
