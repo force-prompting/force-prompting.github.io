@@ -193,6 +193,22 @@
       transform: scale(1.05); /* Keep scale for active */
     }
 
+    /* Default style for larger screens */
+    .responsive-video {
+      width: 70%;
+      height: auto;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Style for mobile screens (e.g., screens less than 768px wide) */
+    @media screen and (max-width: 768px) {
+      .responsive-video {
+        width: 95% !important; /* Use !important to ensure this overrides inline styles if necessary */
+      }
+    }
+
   </style>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -326,12 +342,12 @@
             <h2 class="title is-3">1. Train a Force Conditioned Video Model <br>with <b style="color:red">Limited</b> Synthetic Data</h2>
 
             <h3 class="title is-4"><b style="color:pink">Local Force Model (Poke)</h3>
-              <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 65%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+              <video class="responsive-video" poster="" autoplay="" muted="" loop="" playsinline="" style="width: 65%; height: auto; display: block; margin-left: auto; margin-right: auto;">
                 <source src="./force-prompting-static/teaser/teaser_keynote_video_train_poke.mp4" type="video/mp4">
               </video>
               <br><br>
               <h3 class="title is-4"><b style="color:lightblue">Global Force Model (Wind)</h3>
-                <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 65%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+                <video class="responsive-video" poster="" autoplay="" muted="" loop="" playsinline="" style="width: 65%; height: auto; display: block; margin-left: auto; margin-right: auto;">
                   <source src="./force-prompting-static/teaser/teaser_keynote_video_train_wind.mp4" type="video/mp4">
                 </video>      
 
@@ -1237,7 +1253,7 @@ future research.
         <div class="columns is-centered has-text-centered">
           <div class="column is-full-width">
             <h3 class="title is-4">"Wind" keyword is important at train time but not at inference time</h3>
-            <video poster="" autoplay="" muted="" loop="" playsinline="" style="width: 70%; height: auto; display: block; margin-left: auto; margin-right: auto;">
+            <video class="responsive-video" poster="" autoplay="" muted="" loop="" playsinline="" style="width: 70%; height: auto; display: block; margin-left: auto; margin-right: auto;">
               <source src="./force-prompting-static/analysis/analysis_keywords_joint.mp4" type="video/mp4">
             </video>
           </div>
