@@ -147,7 +147,7 @@ function initLineDragInstance(containerElement) {
 
         const newOnload = () => {
             // staticImage.onload = null; // Keep it if forceRefreshDimensions might re-trigger by setting src
-            console.log(`Line Drag Demo (${containerElement.id}): Image data loaded (${staticImage.naturalWidth}x${staticImage.naturalHeight}). Path: ${staticImage.src}`);
+            console.log(`Line Drag Demo (${containerElement.id}): Image data loaded (${staticImage.naturalWidth}x${staticImage.naturalHeight}).`);
             updateDebugFilename(`Image data loaded (${staticImage.naturalWidth}x${staticImage.naturalHeight})`);
             if (staticImage.naturalWidth > 0 && staticImage.naturalHeight > 0) {
                 attemptFullSetup();
@@ -539,6 +539,10 @@ function initLineDragInstance(containerElement) {
 
         if (videoFileArray && videoFileArray.length > 0) {
             const videoFilename = videoFileArray[0];
+
+            const dragPercentage = (pixelLength / maxPixelDragLength) * 100;
+            console.log(`Drag distance along line: ${dragPercentage.toFixed(2)}%`);
+            console.log(`Serving video: ${videoFilename}`);
 
             const originalImageToDrawOn = new Image();
             originalImageToDrawOn.onload = () => {
