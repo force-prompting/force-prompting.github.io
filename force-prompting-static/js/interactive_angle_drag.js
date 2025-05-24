@@ -133,7 +133,11 @@ function initAngleSelectorInstance(containerElement) {
         ctx.arc(circleCenterX, circleCenterY, circleRadiusPx, 0, 2 * Math.PI);
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.lineWidth = ANGLE_SELECTOR_CIRCLE_LINE_WIDTH_PX;
+        // --- MODIFICATION START ---
+        ctx.setLineDash([5, 5]); // Set the line to be dashed (e.g., 5 pixels on, 5 pixels off)
         ctx.stroke();
+        ctx.setLineDash([]); // Reset line dash to solid for any subsequent drawing
+        // --- MODIFICATION END ---
 
         const iconX = circleCenterX + circleRadiusPx * Math.cos(positionalCanvasAngleRad);
         const iconY = circleCenterY + circleRadiusPx * Math.sin(positionalCanvasAngleRad);
@@ -152,6 +156,7 @@ function initAngleSelectorInstance(containerElement) {
             ctx.drawImage(iconImage, -iconDrawWidth / 2, -iconDrawHeight / 2, iconDrawWidth, iconDrawHeight);
             ctx.restore();
         } else {
+            // Fallback if icon isn't loaded (draws a red dot)
             ctx.beginPath();
             ctx.arc(iconX, iconY, 5, 0, 2 * Math.PI);
             ctx.fillStyle = 'rgba(255, 0, 0, 0.7)';
